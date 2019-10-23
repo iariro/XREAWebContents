@@ -20,9 +20,9 @@ print(
 </head>
 
 <body>
-<div id="chart_days" style="width:800px; height:400px"></div>
-<div id="chart_mean" style="width:800px; height:400px"></div>
-<div id="chart_max" style="width:800px; height:400px"></div>
+<div id="chart_days" style="width:900px; height:400px; text-align:center;"></div>
+<div id="chart_mean" style="width:900px; height:400px; text-align:center;"></div>
+<div id="chart_max" style="width:900px; height:400px; text-align:center;"></div>
 <script type="text/javascript">
 function draw()
 {
