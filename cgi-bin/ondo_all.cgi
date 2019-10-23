@@ -5,7 +5,7 @@ import json
 import urllib.request
 import ondotori
 
-daily = ondotori.getLatestDataFromWebStorage()
+(monthly, weekly) = ondotori.getAllDataFromWebStorage()
 
 print('Content-Type: text/html')
 print()
@@ -20,39 +20,30 @@ print(
 </head>
 
 <body>
-<div id="chart_days" style="width:800px; height:400px"></div>
-<div id="chart_mean" style="width:800px; height:400px"></div>
-<div id="chart_max" style="width:800px; height:400px"></div>
+<div id="chart_weekly" style="width:800px; height:400px"></div>
+<div id="chart_monthly" style="width:800px; height:400px"></div>
 <script type="text/javascript">
 function draw()
 {
         new Highcharts.Chart(
         {
-                chart: {renderTo: 'chart_days', zoomType:'xy', plotBackgroundColor: 'lightgray'},
-                title: {text: 'latest 5days'},
-                xAxis: {title: 'Hour'},
-                yAxis: {title: {text:'degrees C'}},
-                series: [ %s ]
-        });
-        new Highcharts.Chart(
-        {
-                chart: {renderTo: 'chart_mean', type:'column', zoomType:'xy', plotBackgroundColor: 'lightgray'},
-                title: {text: 'mean temp'},
+                chart: {renderTo: 'chart_weekly', type:'column', zoomType:'xy', plotBackgroundColor: 'lightgray'},
+                title: {text: 'weekly'},
                 xAxis: {title: 'Date', type: 'datetime'},
                 yAxis: {title: {text:'degrees C'}},
                 series: [ {name:'Mean temp', data:[%s]} ]
         });
         new Highcharts.Chart(
         {
-                chart: {renderTo: 'chart_max', type:'column', zoomType:'xy', plotBackgroundColor: 'lightgray'},
-                title: {text: 'max temp'},
+                chart: {renderTo: 'chart_monthly', type:'column', zoomType:'xy', plotBackgroundColor: 'lightgray'},
+                title: {text: 'Monthly'},
                 xAxis: {title: 'Date', type: 'datetime'},
                 yAxis: {title: {text:'degrees C'}},
-                series: [ {name:'Max temp', data:[%s]} ]
+                series: [ {name:'Mean temp', data:[%s]} ]
         });
 };
 document.body.onload = draw();
 </script>
 <br>
 </body>
-</html>''' % (ondotori.getDaysSeries(daily), ondotori.getMeanOfDaySeries(daily), ondotori.getMaxOfDaySeries(daily)))
+</html>''' % (ondotori.getMeanOfDaySeries(weekly), ondotori.getMeanOfDaySeries(monthly)))
