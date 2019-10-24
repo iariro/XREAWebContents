@@ -20,8 +20,8 @@ print(
 </head>
 
 <body>
-<div id="chart_weekly" style="width:900px; height:400px; text-align:center;"></div>
-<div id="chart_monthly" style="width:900px; height:400px; text-align:center;"></div>
+<div id="chart_weekly" style="width:900px; height:400px; display:table;margin: 0 auto;"></div>
+<div id="chart_monthly" style="width:900px; height:400px; display:table;margin: 0 auto;"></div>
 <script type="text/javascript">
 function draw()
 {
