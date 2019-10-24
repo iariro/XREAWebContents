@@ -56,7 +56,7 @@ def getLatestDataFromWebStorage():
     return daily
 
 def getDaysSeries(days):
-    return ','.join(["{name:'%s', data:%s}" % (date, [temp for temp in temps if temp]) for date, temps in sorted(days.items())[-5:]])
+    return ','.join(["{name:'%s', data:%s}" % (date[5:], [temp for temp in temps if temp]) for date, temps in sorted(days.items())[-5:]])
 
 def getMeanOfDaySeries(days):
     return ','.join(["[%d, %d]" % (datetime.datetime.strptime(date, '%Y/%m/%d').timestamp() * 1000, mean([temp for temp in temps if temp])) for date, temps in sorted(days.items())])

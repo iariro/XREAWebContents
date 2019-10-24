@@ -28,7 +28,7 @@ function draw()
         new Highcharts.Chart(
         {
                 chart: {renderTo: 'chart_weekly', type:'column', zoomType:'xy', plotBackgroundColor: 'lightgray'},
-                title: {text: 'weekly'},
+                title: {text: 'Weekly'},
                 xAxis: {title: 'Date', type: 'datetime'},
                 yAxis: {title: {text:'degrees C'}},
                 series: [ {name:'Mean temp', data:[%s]} ]

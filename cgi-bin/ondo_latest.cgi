@@ -29,15 +29,15 @@ function draw()
         new Highcharts.Chart(
         {
                 chart: {renderTo: 'chart_days', zoomType:'xy', plotBackgroundColor: 'lightgray'},
-                title: {text: 'latest 5days'},
-                xAxis: {title: 'Hour'},
+                title: {text: 'Up & down latest 5 days'},
+                xAxis: {title: 'Hour', tickInterval:1},
                 yAxis: {title: {text:'degrees C'}},
                 series: [ %s ]
         });
         new Highcharts.Chart(
         {
                 chart: {renderTo: 'chart_mean', type:'column', zoomType:'xy', plotBackgroundColor: 'lightgray'},
-                title: {text: 'mean temp'},
+                title: {text: 'Latest 13 days mean'},
                 xAxis: {title: 'Date', type: 'datetime'},
                 yAxis: {title: {text:'degrees C'}},
                 series: [ {name:'Mean temp', data:[%s]} ]
@@ -45,7 +45,7 @@ function draw()
         new Highcharts.Chart(
         {
                 chart: {renderTo: 'chart_max', type:'column', zoomType:'xy', plotBackgroundColor: 'lightgray'},
-                title: {text: 'max temp'},
+                title: {text: 'Latest 13 days max'},
                 xAxis: {title: 'Date', type: 'datetime'},
                 yAxis: {title: {text:'degrees C'}},
                 series: [ {name:'Max temp', data:[%s]} ]
