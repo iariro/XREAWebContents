@@ -3,17 +3,35 @@ import json
 import urllib.request
 from statistics import mean
 
-def getAllDataFromWebStorage():
-    url = 'https://api.webstorage.jp/v1/devices/data'
-    data = {"api-key":"j8j04n070kccokm8c7odoa89m6tjbi0qt69o4k8dac1n1","login-id": "tbac0004","login-pass": "bukkuden", "remote-serial": "5214C18D"}
+apikey = "j8j04n070kccokm8c7odoa89m6tjbi0qt69o4k8dac1n1"
+login_id = "tbac0004"
+login_pass = "bukkuden"
+remote_serial = "5214C18D"
+
+def getCurrentDataFromWebStorage():
+    url = 'https://api.webstorage.jp/v1/devices/current'
     headers = {
         'Content-Type': 'application/json',
         'X-HTTP-Method-Override': 'GET'
     }
+    req_data = {"api-key":apikey,"login-id": login_id,"login-pass": login_pass, "remote-serial": [remote_serial]}
+    req = urllib.request.Request(url, json.dumps(req_data).encode(), headers)
+    with urllib.request.urlopen(req) as res:
+        body = res.read()
+        js = json.loads(body.decode())
+    return js
+
+def getAllDataFromWebStorage():
+    url = 'https://api.webstorage.jp/v1/devices/data'
+    headers = {
+        'Content-Type': 'application/json',
+        'X-HTTP-Method-Override': 'GET'
+    }
+    req_data = {"api-key":apikey,"login-id": login_id,"login-pass": login_pass, "remote-serial": remote_serial}
 
     monthly = {}
     weekly = {}
-    req = urllib.request.Request(url, json.dumps(data).encode(), headers)
+    req = urllib.request.Request(url, json.dumps(req_data).encode(), headers)
     with urllib.request.urlopen(req) as res:
         body = res.read()
         js = json.loads(body.decode())
@@ -35,14 +53,14 @@ def getAllDataFromWebStorage():
 
 def getLatestDataFromWebStorage():
     url = 'https://api.webstorage.jp/v1/devices/latest-data'
-    data = {"api-key":"j8j04n070kccokm8c7odoa89m6tjbi0qt69o4k8dac1n1","login-id": "tbac0004","login-pass": "bukkuden", "remote-serial": "5214C18D"}
     headers = {
         'Content-Type': 'application/json',
         'X-HTTP-Method-Override': 'GET'
     }
+    req_data = {"api-key":apikey,"login-id": login_id,"login-pass": login_pass, "remote-serial": remote_serial}
 
     daily = {}
-    req = urllib.request.Request(url, json.dumps(data).encode(), headers)
+    req = urllib.request.Request(url, json.dumps(req_data).encode(), headers)
     with urllib.request.urlopen(req) as res:
         body = res.read()
         js = json.loads(body.decode())
@@ -65,8 +83,9 @@ def getMaxOfDaySeries(days):
     return ','.join(["[%d, %d]" % (datetime.datetime.strptime(date, '%Y/%m/%d').timestamp() * 1000, max([temp for temp in temps if temp])) for date, temps in sorted(days.items())])
 
 if __name__ == '__main__':
-    (monthly, weekly) = getAllDataFromWebStorage()
-    print(monthly, weekly)
+    json.dump(getCurrentDataFromWebStorage(), open('current.json', 'w'))
+#   (monthly, weekly) = getAllDataFromWebStorage()
+#   print(monthly, weekly)
 #   with open('weekly.json', 'w') as file:
 #       json.dump(weekly, file)
 
