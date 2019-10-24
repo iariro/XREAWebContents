@@ -18,8 +18,10 @@ def getCurrentDataFromWebStorage():
     req = urllib.request.Request(url, json.dumps(req_data).encode(), headers)
     with urllib.request.urlopen(req) as res:
         body = res.read()
-        js = json.loads(body.decode())
-    return js
+        devices = json.loads(body.decode())
+        for device in devices['devices']:
+            device['datetime'] = datetime.datetime.fromtimestamp(int(device['unixtime']))
+    return devices
 
 def getAllDataFromWebStorage():
     url = 'https://api.webstorage.jp/v1/devices/data'

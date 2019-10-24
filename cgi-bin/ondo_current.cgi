@@ -14,13 +14,14 @@ print(
 </head>
 <body>''')
 
-print('<table border><tr><th>Model</th><th>Serial</th><th>Battery</th><th>Temp</th><th>Humid</th></tr>')
+print('<table border><tr><th>Model</th><th>Serial</th><th>Battery</th><th>Datetime</th><th>Temp</th><th>Humid</th></tr>')
 for device in devices['devices']:
-	print('<tr><td><img src="%s"><br>%s</td><td>%s</td><td align="right">%s</td><td align="right">%s %s</td><td align="right">%s %s</td></tr>' %
+	print('<tr><td><img src="%s"><br>%s</td><td>%s</td><td align="right">%s</td><td align="right">%s</td><td align="right">%s %s</td><td align="right">%s %s</td></tr>' %
 		(image_url,
 		device['model'],
 		device['serial'],
 		device['battery'],
+		device['datetime'],
 		device['channel'][0]['value'],
 		device['channel'][0]['unit'],
 		device['channel'][1]['value'],
