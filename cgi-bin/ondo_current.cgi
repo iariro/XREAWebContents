@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 
 import ondotori
+import sys, io
+
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding = 'utf-8')
 
 devices = ondotori.getCurrentDataFromWebStorage()
 image_url = 'https://ondotori.webstorage.jp/img/device/tr7.svg'
@@ -14,7 +17,7 @@ print(
 </head>
 <body>''')
 
-print('<table border><tr><th>Model</th><th>Serial</th><th>Battery</th><th>Datetime</th><th>Temp</th><th>Humid</th></tr>')
+print('<table border><tr><th>モデル</th><th>シリアルNo</th><th>電池残量</th><th>取得日時</th><th>温度</th><th>湿度</th></tr>')
 for device in devices['devices']:
 	print('<tr><td><img src="%s"><br>%s</td><td>%s</td><td align="right">%s</td><td align="right">%s</td><td align="right">%s %s</td><td align="right">%s %s</td></tr>' %
 		(image_url,

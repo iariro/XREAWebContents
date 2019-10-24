@@ -4,6 +4,9 @@ import datetime
 import json
 import urllib.request
 import ondotori
+import sys, io
+
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding = 'utf-8')
 
 (monthly, weekly) = ondotori.getAllDataFromWebStorage()
 
@@ -28,18 +31,18 @@ function draw()
         new Highcharts.Chart(
         {
                 chart: {renderTo: 'chart_weekly', type:'column', zoomType:'xy', plotBackgroundColor: 'lightgray'},
-                title: {text: 'Weekly'},
-                xAxis: {title: 'Date', type: 'datetime'},
-                yAxis: {title: {text:'degrees C'}},
-                series: [ {name:'Mean temp', data:[%s]} ]
+                title: {text: '週ごと平均'},
+                xAxis: {title: '日', type: 'datetime'},
+                yAxis: {title: {text:'℃'}},
+                series: [ {name:'温度', data:[%s]} ]
         });
         new Highcharts.Chart(
         {
                 chart: {renderTo: 'chart_monthly', type:'column', zoomType:'xy', plotBackgroundColor: 'lightgray'},
-                title: {text: 'Monthly'},
-                xAxis: {title: 'Date', type: 'datetime'},
-                yAxis: {title: {text:'degrees C'}},
-                series: [ {name:'Mean temp', data:[%s]} ]
+                title: {text: '月ごと平均'},
+                xAxis: {title: '日', type: 'datetime'},
+                yAxis: {title: {text:'℃'}},
+                series: [ {name:'温度', data:[%s]} ]
         });
 };
 document.body.onload = draw();

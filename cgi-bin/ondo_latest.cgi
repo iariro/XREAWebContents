@@ -4,6 +4,9 @@ import datetime
 import json
 import urllib.request
 import ondotori
+import sys, io
+
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding = 'utf-8')
 
 daily = ondotori.getLatestDataFromWebStorage()
 
@@ -29,26 +32,26 @@ function draw()
         new Highcharts.Chart(
         {
                 chart: {renderTo: 'chart_days', zoomType:'xy', plotBackgroundColor: 'lightgray'},
-                title: {text: 'Up & down latest 5 days'},
+                title: {text: '日ごとの変動 直近５日分'},
                 xAxis: {title: 'Hour', tickInterval:1},
-                yAxis: {title: {text:'degrees C'}},
+                yAxis: {title: {text:'℃'}},
                 series: [ %s ]
         });
         new Highcharts.Chart(
         {
                 chart: {renderTo: 'chart_mean', type:'column', zoomType:'xy', plotBackgroundColor: 'lightgray'},
-                title: {text: 'Latest 13 days mean'},
+                title: {text: '日ごとの平均気温'},
                 xAxis: {title: 'Date', type: 'datetime'},
-                yAxis: {title: {text:'degrees C'}},
-                series: [ {name:'Mean temp', data:[%s]} ]
+                yAxis: {title: {text:'℃'}},
+                series: [ {name:'温度', data:[%s]} ]
         });
         new Highcharts.Chart(
         {
                 chart: {renderTo: 'chart_max', type:'column', zoomType:'xy', plotBackgroundColor: 'lightgray'},
-                title: {text: 'Latest 13 days max'},
+                title: {text: '日ごとの最高気温'},
                 xAxis: {title: 'Date', type: 'datetime'},
-                yAxis: {title: {text:'degrees C'}},
-                series: [ {name:'Max temp', data:[%s]} ]
+                yAxis: {title: {text:'℃'}},
+                series: [ {name:'温度', data:[%s]} ]
         });
 };
 document.body.onload = draw();
