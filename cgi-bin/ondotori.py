@@ -4,17 +4,14 @@ import urllib.request
 from statistics import mean
 
 apikey = "j8j04n070kccokm8c7odoa89m6tjbi0qt69o4k8dac1n1"
-login_id = "tbac0004"
-login_pass = "bukkuden"
-remote_serial = "5214C18D"
 
-def getCurrentDataFromWebStorage():
+def getCurrentDataFromWebStorage(login_id, login_pass):
     url = 'https://api.webstorage.jp/v1/devices/current'
     headers = {
         'Content-Type': 'application/json',
         'X-HTTP-Method-Override': 'GET'
     }
-    req_data = {"api-key":apikey,"login-id": login_id,"login-pass": login_pass, "remote-serial": [remote_serial]}
+    req_data = {"api-key":apikey,"login-id": login_id,"login-pass": login_pass}
     req = urllib.request.Request(url, json.dumps(req_data).encode(), headers)
     with urllib.request.urlopen(req) as res:
         body = res.read()
@@ -23,7 +20,7 @@ def getCurrentDataFromWebStorage():
             device['datetime'] = datetime.datetime.fromtimestamp(int(device['unixtime']))
     return devices
 
-def getAllDataFromWebStorage():
+def getAllDataFromWebStorage(login_id, login_pass, remote_serial):
     url = 'https://api.webstorage.jp/v1/devices/data'
     headers = {
         'Content-Type': 'application/json',
@@ -53,7 +50,7 @@ def getAllDataFromWebStorage():
             monthly[month].append(temp)
     return (monthly, weekly)
 
-def getLatestDataFromWebStorage():
+def getLatestDataFromWebStorage(login_id, login_pass, remote_serial):
     url = 'https://api.webstorage.jp/v1/devices/latest-data'
     headers = {
         'Content-Type': 'application/json',
