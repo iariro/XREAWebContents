@@ -26,6 +26,7 @@ try:
 	<link rel="stylesheet" type="text/css" href="hatena.css">
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script type="text/javascript" src="http://code.highcharts.com/highcharts.js"></script>
+	<title>おんどとり - 長期グラフ</title>
 	</head>
 
 	<body>
