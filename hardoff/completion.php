@@ -8,8 +8,10 @@
 </head>
 
 <body>
-<div id="chart_monthly" style="width:900px; height:600px; display:table;margin: 0 auto;"></div>
+<div id="chart_monthly" style="width:900px; height:600px;"></div>
 <?php
+	date_default_timezone_set('Asia/Tokyo');
+
     $db = new mysqli('localhost', 'iariro', '3ViewsOf4', 'iariro');
     if ($db->connect_error) {
         echo $db->connect_error;
@@ -69,15 +71,20 @@
 <script type="text/javascript">
 function draw()
 {
+	Highcharts.setOptions({
+	    global: {
+	        useUTC: false
+	    }
+	});
 	new Highcharts.Chart(
 	{
 		chart: {renderTo: 'chart_monthly', zoomType:'xy', plotBackgroundColor: 'lightgray'},
-		title: {text: '開拓店舗数・コンプリート率'},
+		title: {text: '開拓店舗数'},
 		xAxis: {title: '月', type: 'datetime'},
-		yAxis: [{title: {text:'店舗数'}},{title: {text:'コンプリート率'}, opposite: true}],
+		yAxis: [{title: {text:'月ごと店舗数'}},{title: {text:'累計店舗数'}, opposite: true}],
 		series: [
-			{name:'店舗数', type:'column', data:[ <?php echo $bardata; ?> ], yAxis: 0},
-			{name:'コンプリート率', data:[ <?php echo $linedata; ?> ], yAxis: 1}
+			{name:'月ごと店舗数', type:'column', data:[ <?php echo $bardata; ?> ], yAxis: 0},
+			{name:'累計店舗数', data:[ <?php echo $linedata; ?> ], yAxis: 1}
 		]
 	});
 };

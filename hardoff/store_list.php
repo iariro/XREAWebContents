@@ -26,23 +26,6 @@ $(function() { $('#sorter').tablesorter({sortInitialOrder:"desc",headers:{5:{sor
         $db->set_charset("utf8");
     }
 
-    $sql = "SELECT SUBSTRING(address,1, CASE WHEN locate('県',address)<>0 THEN locate('県',address) WHEN locate('府',address)<>0 THEN locate('府',address) WHEN locate('都',address)<>0 THEN locate('都',address) END) as prefecture, count(visit_date), count(*) FROM iariro.ho_store group by prefecture;";
-    echo "<table>";
-    echo "<tr><th>都道府県</th><th>来店数</th><th>全店舗数</th><th>コンプリート率</th></tr>";
-    if ($result = $db->query($sql)) {
-        while ($row = $result->fetch_assoc()) {
-            echo "<tr>";
-            echo "<td>" . $row["prefecture"] . "</td>";
-            echo "<td align='right'>" . $row["count(visit_date)"] . "</td>";
-            echo "<td align='right'>" . $row["count(*)"] . "</td>";
-            echo "<td align='right'>" . floor($row["count(visit_date)"] * 100 / $row["count(*)"]) . "%</td>";
-            echo "</tr>";
-        }
-        //結果を閉じる
-        $result->close();
-	}
-    echo "</table>";
-
     echo "<table id='sorter' class='tablesorter'>";
     echo "<thead><tr><th>店舗名</th><th>住所</th><th>最寄り駅</th><th>徒歩</th><th>来店日</th><th>編集</th></tr></thead><tbody>";
     //SQL文でデータを取得
