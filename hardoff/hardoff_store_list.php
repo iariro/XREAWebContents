@@ -1,13 +1,15 @@
 ﻿<html>
 <head>
 <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
-<link rel="stylesheet" type="text/css" href="hatena.css">
+<meta http-equiv=Content-Style-Type content=text/css>
 <title>ハードオフ来店管理</title>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script src="jquery/jquery.tablesorter.min.js"></script>
 <script>
 $(function() { $('#sorter').tablesorter({sortInitialOrder:"desc",headers:{5:{sorter:false}}}); });
 </script>
+<link rel="stylesheet" type="text/css" href="jquery/style.css">
+<link rel="stylesheet" type="text/css" href="hatena.css">
 </head>
 <body>
 <div class=hatena-body>
@@ -42,7 +44,7 @@ $(function() { $('#sorter').tablesorter({sortInitialOrder:"desc",headers:{5:{sor
     echo "</table>";
 
     echo "<table id='sorter' class='tablesorter'>";
-    echo "<tr><th>店舗名</th><th>住所</th><th>最寄り駅</th><th>徒歩</th><th>来店日</th><th>編集</th></tr>";
+    echo "<thead><tr><th>店舗名</th><th>住所</th><th>最寄り駅</th><th>徒歩</th><th>来店日</th><th>編集</th></tr></thead><tbody>";
     //SQL文でデータを取得
     $sql = "SELECT * FROM ho_store;";
     if ($result = $db->query($sql)) {
@@ -71,7 +73,7 @@ $(function() { $('#sorter').tablesorter({sortInitialOrder:"desc",headers:{5:{sor
         //結果を閉じる
         $result->close();
     }
-    echo "</table>";
+    echo "</tbody></table>";
  
     //データベース切断
     $db->close();
