@@ -15,6 +15,7 @@ $(function() { $('#sorter').tablesorter({sortInitialOrder:"desc",headers:{5:{sor
 <div class=hatena-body>
 <div class=main>
 <div class=day>
+<a href='completion.php'>開拓店舗数・コンプリート率</a>
 <?php
  
     //データベースに接続
