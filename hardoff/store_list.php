@@ -15,7 +15,6 @@ $(function() { $('#sorter').tablesorter({sortInitialOrder:"desc",headers:{5:{sor
 <div class=hatena-body>
 <div class=main>
 <div class=day>
-<a href='completion.php'>開拓店舗数・コンプリート率</a>
 <?php
  
     //データベースに接続
@@ -61,7 +60,7 @@ $(function() { $('#sorter').tablesorter({sortInitialOrder:"desc",headers:{5:{sor
             echo "<td>" . $row["minutes_from_near_station"] . "</td>";
             echo "<td>" . $row["visit_date"] . "</td>";
             echo "<td>";
-            echo "<form action='hardoff_store_edit1.php' method='get'>";
+            echo "<form action='store_edit1.php' method='get'>";
             echo "<input type='hidden' name='store_id' value='" . $row["store_id"] . "'>";
             echo "<input type='hidden' name='name' value='" . $row["name"] . "'>";
             echo "<input type='hidden' name='address' value='" . $row["address"] . "'>";

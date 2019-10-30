@@ -4,7 +4,7 @@
 <title>ハードオフ来店管理</title>
 </head>
 <body>
-<form action='hardoff_store_edit2.php' method='get'>
+<form action='store_edit2.php' method='get'>
 <?php
 echo "<input type='hidden' name='store_id' value='" . $_GET['store_id'] . "'><br>";
 echo "店舗名：<input type='text' name='name' value='" . $_GET['name'] . "'><br>";
