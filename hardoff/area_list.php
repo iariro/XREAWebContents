@@ -39,7 +39,7 @@
 			{
 				$unvisited = $unvisited . ',';
 			}
-			$unvisited = $unvisited . $row["count(*)"];
+			$unvisited = $unvisited . ($row["count(*)"] - $row["count(visit_date)"]);
         }
         $result->close();
 	}
