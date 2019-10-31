@@ -1,22 +1,13 @@
 ﻿<html>
 <head>
 <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
-<meta http-equiv=Content-Style-Type content=text/css>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://code.highcharts.com/highcharts.js"></script>
 <title>ハードオフ来店管理</title>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-<script src="jquery/jquery.tablesorter.min.js"></script>
-<script>
-$(function() { $('#sorter').tablesorter({sortInitialOrder:"desc",headers:{5:{sorter:false}}}); });
-</script>
-<link rel="stylesheet" type="text/css" href="jquery/style.css">
-<link rel="stylesheet" type="text/css" href="hatena.css">
 </head>
 <body>
-<div class=hatena-body>
-<div class=main>
-<div class=day>
+<div id="chart_area" style="width:900px; height:600px;"></div>
 <?php
- 
     //データベースに接続
     $db = new mysqli('localhost', 'iariro', '3ViewsOf4', 'iariro');
     if ($db->connect_error) {
@@ -26,28 +17,51 @@ $(function() { $('#sorter').tablesorter({sortInitialOrder:"desc",headers:{5:{sor
         $db->set_charset("utf8");
     }
 
+	$prefectures = '';
+	$visited = '';
+	$unvisited = '';
     $sql = "SELECT SUBSTRING(address,1, CASE WHEN locate('県',address)<>0 THEN locate('県',address) WHEN locate('府',address)<>0 THEN locate('府',address) WHEN locate('都',address)<>0 THEN locate('都',address) END) as prefecture, count(visit_date), count(*) FROM iariro.ho_store group by prefecture;";
-    echo "<table>";
-    echo "<tr><th>都道府県</th><th>来店数</th><th>全店舗数</th><th>コンプリート率</th></tr>";
     if ($result = $db->query($sql)) {
         while ($row = $result->fetch_assoc()) {
-            echo "<tr>";
-            echo "<td>" . $row["prefecture"] . "</td>";
-            echo "<td align='right'>" . $row["count(visit_date)"] . "</td>";
-            echo "<td align='right'>" . $row["count(*)"] . "</td>";
-            echo "<td align='right'>" . floor($row["count(visit_date)"] * 100 / $row["count(*)"]) . "%</td>";
-            echo "</tr>";
+			if (strlen($prefectures) > 0)
+			{
+				$prefectures = $prefectures . ',';
+			}
+			$prefectures = $prefectures . "'" . $row["prefecture"] . "'";
+
+			if (strlen($visited) > 0)
+			{
+				$visited = $visited . ',';
+			}
+			$visited = $visited . $row["count(visit_date)"];
+
+			if (strlen($unvisited) > 0)
+			{
+				$unvisited = $unvisited . ',';
+			}
+			$unvisited = $unvisited . $row["count(*)"];
         }
-        //結果を閉じる
         $result->close();
 	}
-    echo "</table>";
- 
-    //データベース切断
     $db->close();
 ?>
-</div>
-</div>
-</div>
+<script type="text/javascript">
+function draw()
+{
+	new Highcharts.Chart(
+	{
+		chart: {renderTo: 'chart_area', type: 'column', zoomType:'xy', plotBackgroundColor: 'lightgray'},
+		plotOptions: {column: {stacking: 'normal'}},
+		title: {text: '都道府県別開拓店舗数'},
+		xAxis: {title: '都道府県', categories: [ <?php echo $prefectures; ?> ]},
+		yAxis: {title: {text:'店舗数'}},
+		series: [
+			{name:'来店済み', data:[ <?php echo $visited; ?> ], index:1},
+			{name:'未来店', data:[ <?php echo $unvisited; ?> ], index:0}
+		]
+	});
+};
+document.body.onload = draw();
+</script>
 </body>
 </html>
