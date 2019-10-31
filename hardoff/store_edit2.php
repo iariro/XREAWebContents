@@ -19,13 +19,17 @@
 	{
 		$sql = $sql . "near_station='" .  $_GET['near_station'] . "', minutes_from_near_station=" . $_GET['minutes_from_near_station'];
 	}
+	if (strlen($sql) > 0)
+	{
+		$sql = $sql . ",";
+	}
 	if (strlen($_GET['visit_date']) > 0)
 	{
-		if (strlen($sql) > 0)
-		{
-			$sql = $sql . ",";
-		}
 		$sql = $sql . "visit_date='" . $_GET['visit_date'] . "'";
+	}
+	else
+	{
+		$sql = $sql . "visit_date=null";
 	}
 	$sql = "update ho_store set " . $sql . " where store_id=" .  $_GET['store_id'] . ";";
     if ($result = $db->query($sql)) {
