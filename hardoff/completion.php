@@ -12,7 +12,7 @@
 <?php
 	date_default_timezone_set('Asia/Tokyo');
 
-    $db = new mysqli('localhost', 'iariro', '3ViewsOf4', 'iariro');
+    $db = new mysqli('localhost', 'iariro', 'abc123', 'iariro');
     if ($db->connect_error) {
         echo $db->connect_error;
         exit();

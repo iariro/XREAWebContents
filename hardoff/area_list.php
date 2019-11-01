@@ -9,7 +9,7 @@
 <div id="chart_area" style="width:900px; height:600px;"></div>
 <?php
     //データベースに接続
-    $db = new mysqli('localhost', 'iariro', '3ViewsOf4', 'iariro');
+    $db = new mysqli('localhost', 'iariro', 'abc123', 'iariro');
     if ($db->connect_error) {
         echo $db->connect_error;
         exit();
