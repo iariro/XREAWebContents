@@ -19,6 +19,7 @@ try:
 	'''<html>
 	<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width">
 	<title>おんどとり - デバイスリスト</title>
 	</head>
 	<body>''')
