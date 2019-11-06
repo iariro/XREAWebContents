@@ -57,15 +57,15 @@
 		}
 	}
 
-	$bardata = '';
-	$linedata = '';
+	$bardata = [];
+	$linedata = [];
 	foreach ($monthlycount as $month => $count)
 	{
-		$bardata = $bardata . '[' . ($month * 1000) . ',' . $count . '],';
+		$bardata[] = sprintf('[%d,%d]', $month * 1000, $count);
 	}
 	foreach ($monthlycount2 as $month => $count)
 	{
-		$linedata = $linedata . '[' . ($month * 1000) . ',' . $count . '],';
+		$linedata[] = sprintf('[%d,%d]', $month * 1000, $count);
 	}
 ?>
 <script type="text/javascript">
@@ -83,8 +83,8 @@ function draw()
 		xAxis: {title: '月', type: 'datetime'},
 		yAxis: [{title: {text:'月ごと店舗数'}},{title: {text:'累計店舗数'}, opposite: true}],
 		series: [
-			{name:'月ごと店舗数', type:'column', data:[ <?php echo $bardata; ?> ], yAxis: 0},
-			{name:'累計店舗数', data:[ <?php echo $linedata; ?> ], yAxis: 1}
+			{name:'月ごと店舗数', type:'column', data:[ <?php echo join(',', $bardata); ?> ], yAxis: 0},
+			{name:'累計店舗数', data:[ <?php echo join(',', $linedata); ?> ], yAxis: 1}
 		]
 	});
 };

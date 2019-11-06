@@ -15,24 +15,21 @@
         $db->set_charset("utf8");
     }
 
-	$sql = "";
+	$values = [];
 	if (strlen($_GET['near_station']) > 0 && strlen($_GET['minutes_from_near_station']) > 0)
 	{
-		$sql = $sql . "near_station='" .  $_GET['near_station'] . "', minutes_from_near_station=" . $_GET['minutes_from_near_station'];
-	}
-	if (strlen($sql) > 0)
-	{
-		$sql = $sql . ",";
+		$values[] = sprintf("near_station='%s'",  $_GET['near_station']);
+		$values[] = sprintf("minutes_from_near_station=%d", $_GET['minutes_from_near_station']);
 	}
 	if (strlen($_GET['visit_date']) > 0)
 	{
-		$sql = $sql . "visit_date='" . $_GET['visit_date'] . "'";
+		$values[] = sprintf("visit_date='%s'", $_GET['visit_date']);
 	}
 	else
 	{
-		$sql = $sql . "visit_date=null";
+		$values[] = "visit_date=null";
 	}
-	$sql = "update ho_store set " . $sql . " where store_id=" .  $_GET['store_id'] . ";";
+	$sql = sprintf("update ho_store set %s where store_id=%d;",  join(',', $values),  $_GET['store_id']);
     if ($result = $db->query($sql)) {
         //結果を閉じる
 		echo '更新しました';

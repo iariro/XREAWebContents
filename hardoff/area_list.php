@@ -17,29 +17,15 @@
         $db->set_charset("utf8");
     }
 
-	$prefectures = '';
-	$visited = '';
-	$unvisited = '';
+	$prefectures = [];
+	$visited = [];
+	$unvisited = [];
     $sql = "SELECT SUBSTRING(address,1, CASE WHEN locate('県',address)<>0 THEN locate('県',address) WHEN locate('府',address)<>0 THEN locate('府',address) WHEN locate('都',address)<>0 THEN locate('都',address) END) as prefecture, count(visit_date), count(*) FROM iariro.ho_store group by prefecture;";
     if ($result = $db->query($sql)) {
         while ($row = $result->fetch_assoc()) {
-			if (strlen($prefectures) > 0)
-			{
-				$prefectures = $prefectures . ',';
-			}
-			$prefectures = $prefectures . "'" . $row["prefecture"] . "'";
-
-			if (strlen($visited) > 0)
-			{
-				$visited = $visited . ',';
-			}
-			$visited = $visited . $row["count(visit_date)"];
-
-			if (strlen($unvisited) > 0)
-			{
-				$unvisited = $unvisited . ',';
-			}
-			$unvisited = $unvisited . ($row["count(*)"] - $row["count(visit_date)"]);
+			$prefectures[] = sprintf("'%s'", $row["prefecture"]);
+			$visited[] = $row["count(visit_date)"];
+			$unvisited[] = ($row["count(*)"] - $row["count(visit_date)"]);
         }
         $result->close();
 	}
@@ -53,11 +39,11 @@ function draw()
 		chart: {renderTo: 'chart_area', type: 'column', zoomType:'xy', plotBackgroundColor: 'lightgray'},
 		plotOptions: {column: {stacking: 'normal'}},
 		title: {text: '都道府県別開拓店舗数'},
-		xAxis: {title: '都道府県', categories: [ <?php echo $prefectures; ?> ]},
+		xAxis: {title: '都道府県', categories: [ <?php echo join(',', $prefectures); ?> ]},
 		yAxis: {title: {text:'店舗数'}},
 		series: [
-			{name:'来店済み', data:[ <?php echo $visited; ?> ], index:1},
-			{name:'未来店', data:[ <?php echo $unvisited; ?> ], index:0}
+			{name:'来店済み', data:[ <?php echo join(',', $visited); ?> ], index:1},
+			{name:'未来店', data:[ <?php echo join(',', $unvisited); ?> ], index:0}
 		]
 	});
 };

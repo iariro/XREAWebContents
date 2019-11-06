@@ -37,19 +37,19 @@ $(function() { $('#sorter').tablesorter({sortInitialOrder:"desc",headers:{5:{sor
 				echo "<tr style='background-color:powderblue;'>";
 			else
 				echo "<tr>";
-            echo "<td>" . $row["name"] . "</td>";
-            echo "<td>" . $row["address"] . "</td>";
-            echo "<td>" . $row["near_station"] . "</td>";
-            echo "<td>" . $row["minutes_from_near_station"] . "</td>";
-            echo "<td>" . $row["visit_date"] . "</td>";
+            echo sprintf("<td>%s</td>",  $row["name"]);
+            echo sprintf("<td>%s</td>",  $row["address"]);
+            echo sprintf("<td>%s</td>",  $row["near_station"]);
+            echo sprintf("<td style='text-align:right;'>%s</td>",  $row["minutes_from_near_station"]);
+            echo sprintf("<td>%s</td>",  $row["visit_date"]);
             echo "<td>";
             echo "<form action='store_edit1.php' method='get'>";
-            echo "<input type='hidden' name='store_id' value='" . $row["store_id"] . "'>";
-            echo "<input type='hidden' name='name' value='" . $row["name"] . "'>";
-            echo "<input type='hidden' name='address' value='" . $row["address"] . "'>";
-            echo "<input type='hidden' name='near_station' value='" . $row["near_station"] . "'>";
-            echo "<input type='hidden' name='minutes_from_near_station' value='" . $row["minutes_from_near_station"] . "'>";
-            echo "<input type='hidden' name='visit_date' value='" . $row["visit_date"] . "'>";
+            echo sprintf("<input type='hidden' name='store_id' value='%s'>",  $row["store_id"]);
+            echo sprintf("<input type='hidden' name='name' value='%s'>",  $row["name"]);
+            echo sprintf("<input type='hidden' name='address' value='%s'>",  $row["address"]);
+            echo sprintf("<input type='hidden' name='near_station' value='%s'>",  $row["near_station"]);
+            echo sprintf("<input type='hidden' name='minutes_from_near_station' value='%s'>",  $row["minutes_from_near_station"]);
+            echo sprintf("<input type='hidden' name='visit_date' value='%s'>",  $row["visit_date"]);
             echo "<input type='submit' value='編集'></form></td>";
             echo "</tr>";
         }
