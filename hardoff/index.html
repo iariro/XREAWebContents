@@ -8,8 +8,16 @@
 </head>
 <body>
 <img src='https://www.hardoff.co.jp/wp/wp-content/themes/hardoff/images/logo/logo_hardoff.png'><br>
-<li><a href='store_list.php'>店舗一覧</a>
+<ul>
+<li>店舗一覧
+<ul>
+<li><a href='store_list.php?where=all'>全部</a>
+<li><a href='store_list.php?where=visited'>来店済み</a>
+<li><a href='store_list.php?where=unvisited'>未来店</a>
+<li><a href='store_list.php?where=target'>来店予定</a>
+</ul>
 <li><a href='area_list.php'>都道府県別集計</a>
 <li><a href='completion.php'>開拓店舗数</a>
+</ul>
 </body>
 </html>

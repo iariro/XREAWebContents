@@ -26,12 +26,25 @@ $(function() { $('#sorter').tablesorter({sortInitialOrder:"desc",headers:{5:{sor
         $db->set_charset("utf8");
     }
 
-    echo "<table id='sorter' class='tablesorter'>";
-    echo "<thead><tr><th>店舗名</th><th>住所</th><th>最寄り駅</th><th>徒歩</th><th>来店日</th><th>編集</th></tr></thead><tbody>";
     //SQL文でデータを取得
-    $sql = "SELECT * FROM ho_store;";
+    $sql = "SELECT * FROM ho_store";
+	if ($_GET['where'] == 'visited')
+	{
+		$sql .= ' where visit_date is not null;';
+	}
+	elseif ($_GET['where'] == 'unvisited')
+	{
+		$sql .= ' where visit_date is null;';
+	}
+	elseif ($_GET['where'] == 'target')
+	{
+		$sql .= ' where visit_date is null and near_station is not null;';
+	}
     if ($result = $db->query($sql)) {
         //連想配列を取得
+		echo $result->num_rows . '件<br>';
+	    echo "<table id='sorter' class='tablesorter'>";
+	    echo "<thead><tr><th>店舗名</th><th>住所</th><th>最寄り駅</th><th>徒歩</th><th>来店日</th><th>編集</th></tr></thead><tbody>";
         while ($row = $result->fetch_assoc()) {
             if (strlen($row["visit_date"]) > 0)
 				echo "<tr style='background-color:powderblue;'>";
@@ -53,10 +66,10 @@ $(function() { $('#sorter').tablesorter({sortInitialOrder:"desc",headers:{5:{sor
             echo "<input type='submit' value='編集'></form></td>";
             echo "</tr>";
         }
+	    echo "</tbody></table>";
         //結果を閉じる
         $result->close();
     }
-    echo "</tbody></table>";
  
     //データベース切断
     $db->close();
