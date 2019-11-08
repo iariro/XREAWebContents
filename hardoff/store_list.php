@@ -16,7 +16,6 @@ $(function() { $('#sorter').tablesorter({sortInitialOrder:"desc",headers:{5:{sor
 <div class=main>
 <div class=day>
 <?php
- 
     //データベースに接続
     $db = new mysqli('localhost', 'iariro', 'abc123', 'iariro');
     if ($db->connect_error) {
@@ -26,21 +25,20 @@ $(function() { $('#sorter').tablesorter({sortInitialOrder:"desc",headers:{5:{sor
         $db->set_charset("utf8");
     }
 
+	$where = array('visited'=>' where visit_date is not null',
+		'unvisited'=>' where visit_date is null',
+		'target'=>' where visit_date is null and near_station is not null');
+
     //SQL文でデータを取得
     $sql = "SELECT * FROM ho_store";
-	if ($_GET['where'] == 'visited')
+	if (array_key_exists($_GET['where'], $where))
 	{
-		$sql .= ' where visit_date is not null;';
+		$sql .= $where[$_GET['where']];
 	}
-	elseif ($_GET['where'] == 'unvisited')
+	$sql .= ';';
+
+	if ($result = $db->query($sql))
 	{
-		$sql .= ' where visit_date is null;';
-	}
-	elseif ($_GET['where'] == 'target')
-	{
-		$sql .= ' where visit_date is null and near_station is not null;';
-	}
-    if ($result = $db->query($sql)) {
         //連想配列を取得
 		echo $result->num_rows . '件<br>';
 	    echo "<table id='sorter' class='tablesorter'>";
