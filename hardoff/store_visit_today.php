@@ -16,29 +16,8 @@
     }
 
 	$values = [];
-	if (strlen($_GET['near_station']) > 0 && strlen($_GET['minutes_from_near_station']) > 0)
-	{
-		$values[] = sprintf("near_station='%s'",  $_GET['near_station']);
-		$values[] = sprintf("minutes_from_near_station=%d", $_GET['minutes_from_near_station']);
-	}
+	$values[] = sprintf("visit_date='%s'", date('Y/m/d', time()));
 
-	if (strlen($_GET['visit_date']) > 0)
-	{
-		$values[] = sprintf("visit_date='%s'", $_GET['visit_date']);
-	}
-	else
-	{
-		$values[] = "visit_date=null";
-	}
-
-	if (strlen($_GET['targeting']) > 0)
-	{
-		$values[] = "targeting='target'";
-	}
-	else
-	{
-		$values[] = "targeting=null";
-	}
 	$sql = sprintf("update ho_store set %s where store_id=%d;",  join(',', $values),  $_GET['store_id']);
     if ($result = $db->query($sql)) {
         //結果を閉じる

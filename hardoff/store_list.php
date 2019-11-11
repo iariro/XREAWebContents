@@ -6,7 +6,7 @@
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script src="jquery/jquery.tablesorter.min.js"></script>
 <script>
-$(function() { $('#sorter').tablesorter({sortInitialOrder:"desc",headers:{5:{sorter:false}}}); });
+$(function() { $('#sorter').tablesorter({sortInitialOrder:"desc",headers:{5:{sorter:false},6:{sorter:false}}}); });
 </script>
 <link rel="stylesheet" type="text/css" href="jquery/style.css">
 <link rel="stylesheet" type="text/css" href="hatena.css">
@@ -27,7 +27,7 @@ $(function() { $('#sorter').tablesorter({sortInitialOrder:"desc",headers:{5:{sor
 
 	$where = array('visited'=>' where visit_date is not null',
 		'unvisited'=>' where visit_date is null',
-		'target'=>' where visit_date is null and near_station is not null');
+		'target'=>' where visit_date is null and targeting is not null');
 
     //SQL文でデータを取得
     $sql = "SELECT * FROM ho_store";
@@ -42,7 +42,7 @@ $(function() { $('#sorter').tablesorter({sortInitialOrder:"desc",headers:{5:{sor
         //連想配列を取得
 		echo $result->num_rows . '件<br>';
 	    echo "<table id='sorter' class='tablesorter'>";
-	    echo "<thead><tr><th>店舗名</th><th>住所</th><th>最寄り駅</th><th>徒歩</th><th>来店日</th><th>編集</th></tr></thead><tbody>";
+	    echo "<thead><tr><th>店舗名</th><th>住所</th><th>最寄り駅</th><th>徒歩</th><th>来店日</th><th>編集</th><th>ターゲット</th></tr></thead><tbody>";
         while ($row = $result->fetch_assoc()) {
             if (strlen($row["visit_date"]) > 0)
 				echo "<tr style='background-color:powderblue;'>";
@@ -61,7 +61,9 @@ $(function() { $('#sorter').tablesorter({sortInitialOrder:"desc",headers:{5:{sor
             echo sprintf("<input type='hidden' name='near_station' value='%s'>",  $row["near_station"]);
             echo sprintf("<input type='hidden' name='minutes_from_near_station' value='%s'>",  $row["minutes_from_near_station"]);
             echo sprintf("<input type='hidden' name='visit_date' value='%s'>",  $row["visit_date"]);
+            echo sprintf("<input type='hidden' name='targeting' value='%s'>",  $row["targeting"]);
             echo "<input type='submit' value='編集'></form></td>";
+            echo sprintf("<td>%s</td>",  $row["targeting"] == 'target' ? '〇' : '');
             echo "</tr>";
         }
 	    echo "</tbody></table>";
