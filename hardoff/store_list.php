@@ -63,7 +63,7 @@ $(function() { $('#sorter').tablesorter({sortInitialOrder:"desc",headers:{5:{sor
             echo sprintf("<input type='hidden' name='visit_date' value='%s'>",  $row["visit_date"]);
             echo sprintf("<input type='hidden' name='targeting' value='%s'>",  $row["targeting"]);
             echo "<input type='submit' value='編集'></form></td>";
-            echo sprintf("<td>%s</td>",  $row["targeting"] == 'target' ? '〇' : '');
+            echo sprintf("<td style='text-align:center;'>%s</td>",  $row["targeting"] == 'target' ? '〇' : '');
             echo "</tr>";
         }
 	    echo "</tbody></table>";
