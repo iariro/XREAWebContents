@@ -26,6 +26,7 @@ $(function() { $('#sorter').tablesorter({sortInitialOrder:"desc",headers:{5:{sor
     }
 
 	$where = array('visited'=>' where visit_date is not null',
+		'visited_day'=>' where visit_date is not null',
 		'unvisited'=>' where visit_date is null',
 		'target'=>' where visit_date is null and targeting is not null');
 
@@ -35,15 +36,28 @@ $(function() { $('#sorter').tablesorter({sortInitialOrder:"desc",headers:{5:{sor
 	{
 		$sql .= $where[$_GET['where']];
 	}
-	$sql .= ';';
+	if ($_GET['where'] == 'visited_day')
+	{
+		$sql .= ' order by visit_date desc;';
+	}
 
+	$pday = NULL;
 	if ($result = $db->query($sql))
 	{
         //連想配列を取得
 		echo $result->num_rows . '件<br>';
 	    echo "<table id='sorter' class='tablesorter'>";
 	    echo "<thead><tr><th>店舗名</th><th>住所</th><th>最寄り駅</th><th>徒歩</th><th>来店日</th><th>編集</th><th>ターゲット</th></tr></thead><tbody>";
-        while ($row = $result->fetch_assoc()) {
+		while ($row = $result->fetch_assoc())
+		{
+			if (($_GET['where'] == 'visited_day') && ($pday != NULL) && ($pday != $row["visit_date"]))
+			{
+				echo "</tbody></table>";
+
+				echo "<table>";
+				echo "<thead><tr><th>店舗名</th><th>住所</th><th>最寄り駅</th><th>徒歩</th><th>来店日</th><th>編集</th><th>ターゲット</th></tr></thead><tbody>";
+			}
+
             if (strlen($row["visit_date"]) > 0)
 				echo "<tr style='background-color:powderblue;'>";
 			else
@@ -65,6 +79,8 @@ $(function() { $('#sorter').tablesorter({sortInitialOrder:"desc",headers:{5:{sor
             echo "<input type='submit' value='編集'></form></td>";
             echo sprintf("<td style='text-align:center;'>%s</td>",  $row["targeting"] == 'target' ? '〇' : '');
             echo "</tr>";
+
+			$pday = $row["visit_date"];
         }
 	    echo "</tbody></table>";
         //結果を閉じる
