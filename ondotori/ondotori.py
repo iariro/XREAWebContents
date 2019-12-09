@@ -76,10 +76,10 @@ def getDaysSeries(days):
     return ','.join(["{name:'%s', data:%s}" % (date[5:], [temp for temp in temps if temp]) for date, temps in sorted(days.items())[-5:]])
 
 def getMeanOfDaySeries(days):
-    return ','.join(["[%d, %d]" % (datetime.datetime.strptime(date, '%Y/%m/%d').timestamp() * 1000, mean([temp for temp in temps if temp])) for date, temps in sorted(days.items())])
+    return ','.join(["[%d, %.2f]" % (datetime.datetime.strptime(date, '%Y/%m/%d').timestamp() * 1000, mean([temp for temp in temps if temp])) for date, temps in sorted(days.items())])
 
 def getMaxOfDaySeries(days):
-    return ','.join(["[%d, %d]" % (datetime.datetime.strptime(date, '%Y/%m/%d').timestamp() * 1000, max([temp for temp in temps if temp])) for date, temps in sorted(days.items())])
+    return ','.join(["[%d, %.2f]" % (datetime.datetime.strptime(date, '%Y/%m/%d').timestamp() * 1000, max([temp for temp in temps if temp])) for date, temps in sorted(days.items())])
 
 if __name__ == '__main__':
     json.dump(getCurrentDataFromWebStorage(), open('current.json', 'w'))
