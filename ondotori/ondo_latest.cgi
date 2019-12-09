@@ -33,6 +33,7 @@ try:
 	<div id="chart_days" style="width:900px; height:400px; display:table;margin: 0 auto;"></div>
 	<div id="chart_mean" style="width:900px; height:400px; display:table;margin: 0 auto;"></div>
 	<div id="chart_max" style="width:900px; height:400px; display:table;margin: 0 auto;"></div>
+	<div id="chart_min" style="width:900px; height:400px; display:table;margin: 0 auto;"></div>
 	<script type="text/javascript">
 	function draw()
 	{
@@ -60,12 +61,20 @@ try:
 	                yAxis: {title: {text:'℃'}},
 	                series: [ {name:'温度', data:[%s]} ]
 	        });
+	        new Highcharts.Chart(
+	        {
+	                chart: {renderTo: 'chart_min', type:'column', zoomType:'xy', plotBackgroundColor: 'lightgray'},
+	                title: {text: '日ごとの最低気温'},
+	                xAxis: {title: 'Date', type: 'datetime'},
+	                yAxis: {title: {text:'℃'}},
+	                series: [ {name:'温度', data:[%s]} ]
+	        });
 	};
 	document.body.onload = draw();
 	</script>
 	<br>
 	</body>
-	</html>''' % (ondotori.getDaysSeries(daily), ondotori.getMeanOfDaySeries(daily), ondotori.getMaxOfDaySeries(daily)))
+	</html>''' % (ondotori.getDaysSeries(daily), ondotori.getMeanOfDaySeries(daily), ondotori.getMaxOfDaySeries(daily), ondotori.getMinOfDaySeries(daily)))
 except Exception as e:
 	print('Content-Type: text/html')
 	print()
