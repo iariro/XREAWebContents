@@ -35,7 +35,7 @@ try:
 		else:
 			print('<tr><td>%s</td><td>%s</td><td>%s</td><td align="right">%s' % (version['date'], version['author'], version['version'], diff_to_today))
 
-		if diff_to_today < 100:
+		if diff_to_today < 30:
 			print('<td><img src="http://sozai.akuseru-design.com/img_new/new025/new025_06.gif"></td>')
 
 		print('</td></tr>')
