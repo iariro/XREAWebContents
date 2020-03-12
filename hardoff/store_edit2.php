@@ -31,6 +31,15 @@
 		$values[] = "visit_date=null";
 	}
 
+	if (strlen($_GET['address']) > 0)
+	{
+		$values[] = sprintf("address='%s'", $_GET['address']);
+	}
+	else
+	{
+		$values[] = "visit_date=null";
+	}
+
 	if (strlen($_GET['targeting']) > 0)
 	{
 		$values[] = "targeting='target'";
