@@ -1,3 +1,4 @@
+# coding: utf-8
 import MySQLdb
 import sys, io
 
@@ -8,11 +9,13 @@ def query(sql):
     cur = conn.cursor()
     cur.execute(sql)
     rows = cur.fetchall()
-    conn.close
+    cur.close()
+    conn.commit()
+    conn.close()
     return rows
 
 def read_all():
-    rows = query('select * from mv_title;')
+    rows = query('select * from mv_title where watch_date is not null;')
     titles = []
     for row in rows:
         if row[5]:
@@ -26,6 +29,13 @@ def read_all():
                 titles_target_year = {'year': year, 'titles': []}
                 titles.append(titles_target_year)
             titles_target_year['titles'].append({'release_year': row[1], 'youga_houga': row[2], 'chrome_type': row[3], 'acquisition_type': row[4], 'watch_date': str(row[5]), 'title': row[6]})
+    return titles
+
+def read_unwatched():
+    rows = query('select * from mv_title where watch_date is null;')
+    titles = []
+    for row in rows:
+        titles.append({'id': row[0], 'release_year': row[1], 'youga_houga': row[2], 'chrome_type': row[3], 'acquisition_type': row[4], 'watch_date': str(row[5]), 'title': row[6], 'target': row[7]})
     return titles
 
 def get_monthly_count(years, get_key):
@@ -68,13 +78,20 @@ def get_annual_count(years, get_key):
 
     return year_labels, [{'name': key, 'data': value} for key, value in year_count.items()]
 
+def update(id, release_year, youga_houga, chrome_type, acquisition_type, title, target):
+    sql = "SET SQL_SAFE_UPDATES=0; update iariro.mv_title set release_year={}, youga_houga='{}', chrome_type='{}', acquisition_type='{}', title='{}', target={} where id={};".format(release_year, youga_houga, chrome_type, acquisition_type, title, target, id)
+    rows = query(sql)
+    return sql, rows
+
 if __name__ == '__main__':
-    years = read_all()
-    month_labels, monthly = get_monthly_count(years, lambda title: '月ごと視聴数')
-    month_labels, monthly_count = get_monthly_count(years, lambda title: title['youga_houga'])
-    print(month_labels)
-    print(monthly_count)
-    year_labels, year_count = get_annual_count(years, lambda title: '年ごと視聴数')
-    print(year_labels)
-    print(year_count)
+    #print(read_unwatched())
+    #years = read_all()
+    #month_labels, monthly = get_monthly_count(years, lambda title: '月ごと視聴数')
+    #month_labels, monthly_count = get_monthly_count(years, lambda title: title['youga_houga'])
+    #print(month_labels)
+    #print(monthly_count)
+    #year_labels, year_count = get_annual_count(years, lambda title: '年ごと視聴数')
+    #print(year_labels)
+    #print(year_count)
+    print(update(191, '2008', 'youga', 'color', 'NR', 'happening', 1))
 

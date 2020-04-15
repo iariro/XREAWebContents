@@ -1,0 +1,94 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link rel="stylesheet" type="text/css" href="static/css/hatena.css">
+		<title>映画視聴情報</title>
+	</head>
+
+	<body>
+		<h1>タイトル編集</h1>
+
+		<div class=hatena-body>
+		<div class=main>
+		<div class=day>
+
+		<form action="edittitle2" method="POST">
+		ID：<input type="text" name="id" value="{{ id }}" readonly="on"><br>
+		公開年：<input type="text" name="release_year" value="{{ release_year }}"><br>
+
+		洋画／邦画：
+		% if youga_houga == '洋':
+		<input type="radio" name="youga_houga" value="youga" checked>洋画
+		% else:
+		<input type="radio" name="youga_houga" value="youga">洋画
+		% end
+		% if youga_houga == '邦':
+		<input type="radio" name="youga_houga" value="houga" checked>邦画<br>
+		% else:
+		<input type="radio" name="youga_houga" value="houga">邦画<br>
+		% end
+
+		カラー／モノクロ：
+		% if chrome_type == 'カ':
+		<input type="radio" name="chrome_type" value="color" checked>カラー
+		% else:
+		<input type="radio" name="chrome_type" value="color">カラー
+		% end
+		% if chrome_type == 'モ':
+		<input type="radio" name="chrome_type" value="monochrome" checked>モノクロ<br>
+		% else:
+		<input type="radio" name="chrome_type" value="monochrome">モノクロ<br>
+		% end
+
+		鑑賞方法：
+		% if acquisition_type == 'NR':
+		<input type="radio" name="acquisition_type" value="NR" checked>ネットレンタル
+		% else:
+		<input type="radio" name="acquisition_type" value="NR">ネットレンタル
+		% end
+		% if acquisition_type == 'DR':
+		<input type="radio" name="acquisition_type" value="DR" checked>DVDレンタル
+		% else:
+		<input type="radio" name="acquisition_type" value="DR">DVDレンタル
+		% end
+		% if acquisition_type == 'DP':
+		<input type="radio" name="acquisition_type" value="DP" checked>DVD購入
+		% else:
+		<input type="radio" name="acquisition_type" value="DP">DVD購入
+		% end
+		% if acquisition_type == 'DA':
+		<input type="radio" name="acquisition_type" value="DA" checked>DVDオークション
+		% else:
+		<input type="radio" name="acquisition_type" value="DA">DVDオークション
+		% end
+		% if acquisition_type == 'DB':
+		<input type="radio" name="acquisition_type" value="DB" checked>DVD人から借りて
+		% else:
+		<input type="radio" name="acquisition_type" value="DB">DVD人から借りて
+		% end
+		% if acquisition_type == 'VA':
+		<input type="radio" name="acquisition_type" value="VA" checked>VHS購入
+		% else:
+		<input type="radio" name="acquisition_type" value="VA">VHS購入
+		% end
+		% if acquisition_type == 'TV':
+		<input type="radio" name="acquisition_type" value="TV" checked>TV
+		% else:
+		<input type="radio" name="acquisition_type" value="TV">TV
+		% end
+		% if acquisition_type == 'LP':
+		<input type="radio" name="acquisition_type" value="LP" checked>LD購入<br>
+		% else:
+		<input type="radio" name="acquisition_type" value="LP">LD購入<br>
+		% end
+		タイトル：<input type="text" name="title" value="{{ title }}"><br>
+		鑑賞対象：<input type="checkbox" name="target" ><br>
+		<input type="submit" value="更新">
+		</form>
+
+		</div>
+		</div>
+		</div>
+
+	</body>
+</html>
