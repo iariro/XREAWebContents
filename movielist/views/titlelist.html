@@ -1,0 +1,41 @@
+<html>
+<head>
+<title>movie list</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="static/css/hatena.css">
+</head>
+<body>
+	<h1>映画視聴情報 - タイトル一覧</h1>
+
+	<div class=hatena-body>
+	<div class=main>
+	<div class=day>
+
+	<br>
+
+	% for year in movielist:
+	<h2>{{ year['year'] }}年</h2>
+	<table>
+		<tr><th>年</th><th>洋／邦</th><th>カラー／白黒</th><th>視聴方法</th><th>鑑賞日</th><th>タイトル</th></tr>
+		% for title in year['titles']:
+			<tr>
+				<td>{{ title['release_year'] }}</td>
+				<td>{{ title['youga_houga'] }}</td>
+				<td>{{ title['chrome_type'] }}</td>
+				<td>{{ title['acquisition_type'] }}</td>
+				<td>{{ title['watch_date'] }}</td>
+				<td>{{ title['title'] }}</td>
+			</tr>
+		% end
+	</table>
+
+	<br>
+	</title>
+	% end
+
+	</div>
+	</div>
+	</div>
+
+</body>
+</html>
