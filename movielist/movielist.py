@@ -134,13 +134,13 @@ def annual_graph_by_category():
 @route('/annual_graph_by_acquisition_type')
 def annual_graph_by_acquisition_type():
     years = movielistdb.read_watched_title()
-    year_labels, year_count = movielistdb.get_annual_count(years, lambda title: movielistdb.extend_acquisition_type(title['acquisition_type']))
+    year_labels, year_count = movielistdb.get_annual_count(years, lambda title: title['acquisition_type'])
     return template('histgram.html', x_labels=year_labels, count=year_count, title='鑑賞方法')
 
 @route('/annual_graph_by_chrome_type')
 def annual_graph_by_chrome_type():
     years = movielistdb.read_watched_title()
-    year_labels, year_count = movielistdb.get_annual_count(years, lambda title: movielistdb.extend_chrome_type(title['chrome_type']))
+    year_labels, year_count = movielistdb.get_annual_count(years, lambda title: title['chrome_type'])
     return template('histgram.html', x_labels=year_labels, count=year_count, title='カラー／モノクロ区別')
 
 @route('/monthly_graph_all')
@@ -158,11 +158,11 @@ def monthly_graph_by_category():
 @route('/monthly_graph_by_acquisition_type')
 def monthly_graph_by_acquisition_type():
     years = movielistdb.read_watched_title()
-    month_labels, monthly_count = movielistdb.get_monthly_count(years, lambda title: movielistdb.extend_acquisition_type(title['acquisition_type']))
+    month_labels, monthly_count = movielistdb.get_monthly_count(years, lambda title: title['acquisition_type'])
     return template('histgram.html', x_labels=month_labels, count=monthly_count, title='鑑賞方法')
 
 @route('/monthly_graph_by_chrome_type')
 def monthly_graph_by_chrome_type():
     years = movielistdb.read_watched_title()
-    month_labels, monthly_count = movielistdb.get_monthly_count(years, lambda title: movielistdb.extend_chrome_type(title['chrome_type']))
+    month_labels, monthly_count = movielistdb.get_monthly_count(years, lambda title: title['chrome_type'])
     return template('histgram.html', x_labels=month_labels, count=monthly_count, title='カラー／モノクロ区別')
