@@ -15,6 +15,12 @@ def query(sql):
     conn.close()
     return rows
 
+def extend_chrome_type(code):
+    chrome_types = {
+        "モ": "モノクロ",
+        "カ": "カラー"}
+    return chrome_types[code]
+
 def extend_acquisition_type(code):
     acquisition_types = {
         "DR": "DVDレンタル",
@@ -43,7 +49,7 @@ def scatter():
         item['data'].append({
             'x': int(datetime.datetime.combine(row[1], datetime.time()).timestamp()) * 1000,
             'y': int(datetime.datetime(year=row[0], month=1, day=1).timestamp()) * 1000,
-            'name': row[2]})
+            'name': row[3]})
     return titles
 
 def read_all():
