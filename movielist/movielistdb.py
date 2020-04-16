@@ -136,9 +136,9 @@ def update(id, release_year, youga_houga, chrome_type, acquisition_type, watch_d
 
 if __name__ == '__main__':
     #print(scatter()[0])
-    print(read_watched(True))
-    #years = read_all()
-    #month_labels, monthly = get_monthly_count(years, lambda title: '月ごと視聴数')
+    #print(read_watched_title())
+    years = read_watched_title()
+    month_labels, monthly = get_monthly_count(years, lambda title: '月ごと視聴数')
     #month_labels, monthly_count = get_monthly_count(years, lambda title: title['youga_houga'])
     #print(month_labels)
     #print(monthly_count)
