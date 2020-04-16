@@ -66,7 +66,7 @@ def read_watched_title():
             if titles_target_year == None:
                 titles_target_year = {'year': year, 'titles': []}
                 titles.append(titles_target_year)
-            titles_target_year['titles'].append({'release_year': row[1], 'youga_houga': row[2], 'chrome_type': row[3], 'acquisition_type': row[4], 'watch_date': str(row[5]), 'title': row[6]})
+            titles_target_year['titles'].append({'release_year': row[1], 'youga_houga': row[2] + '画', 'chrome_type': extend_chrome_type(row[3]), 'acquisition_type': row[4], 'watch_date': str(row[5]), 'title': row[6]})
     return titles
 
 def read_unwatched_title(target):
@@ -80,7 +80,7 @@ def read_unwatched_title(target):
             if target == 0:
                 target = None
 
-        titles.append({'id': row[0], 'release_year': row[1], 'youga_houga': row[2], 'chrome_type': row[3], 'acquisition_type': row[4], 'watch_date': str(row[5]), 'title': row[6], 'target': target})
+        titles.append({'id': row[0], 'release_year': row[1], 'youga_houga': row[2] + '画', 'chrome_type': row[3], 'acquisition_type': row[4], 'watch_date': str(row[5]), 'title': row[6], 'target': target})
     return titles
 
 def get_monthly_count(years, get_key):
