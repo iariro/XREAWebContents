@@ -52,7 +52,7 @@ def scatter():
             'name': row[3]})
     return titles
 
-def read_all():
+def read_watched_title():
     rows = query('select id, release_year, youga_houga, chrome_type, acquisition_type, watch_date, title, target from mv_title where watch_date is not null;')
     titles = []
     for row in rows:
@@ -69,8 +69,8 @@ def read_all():
             titles_target_year['titles'].append({'release_year': row[1], 'youga_houga': row[2], 'chrome_type': row[3], 'acquisition_type': row[4], 'watch_date': str(row[5]), 'title': row[6]})
     return titles
 
-def read_unwatched():
-    rows = query('select id, release_year, youga_houga, chrome_type, acquisition_type, watch_date, title, target from mv_title where watch_date is null;')
+def read_unwatched_title(target):
+    rows = query('select id, release_year, youga_houga, chrome_type, acquisition_type, watch_date, title, target from mv_title where watch_date is null %s' % ('and target=1' if target else ''))
     titles = []
     for row in rows:
         if row[7] is None:
@@ -135,8 +135,8 @@ def update(id, release_year, youga_houga, chrome_type, acquisition_type, watch_d
     return sql, rows
 
 if __name__ == '__main__':
-    print(scatter()[0])
-    #print(read_unwatched())
+    #print(scatter()[0])
+    print(read_watched(True))
     #years = read_all()
     #month_labels, monthly = get_monthly_count(years, lambda title: '月ごと視聴数')
     #month_labels, monthly_count = get_monthly_count(years, lambda title: title['youga_houga'])

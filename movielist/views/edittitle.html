@@ -85,19 +85,19 @@
 
 		状態：
 		% if status == 'unwatched':
-		<input type="radio" name="unwatched" checked>未鑑賞
+		<input type="radio" name="status" value="unwatched" checked>未鑑賞
 		% else:
-		<input type="radio" name="unwatched" >未鑑賞
+		<input type="radio" name="status" value="unwatched" >未鑑賞
 		% end
 		% if status == 'target':
-		<input type="radio" name="target" checked>鑑賞予定
+		<input type="radio" name="status" value="target" checked>鑑賞予定
 		% else:
-		<input type="radio" name="target" >鑑賞予定
+		<input type="radio" name="status" value="target" >鑑賞予定
 		% end
 		% if status == 'watched':
-		<input type="radio" name="watched" checked>鑑賞済み
+		<input type="radio" name="status" value="watched" checked>鑑賞済み
 		% else:
-		<input type="radio" name="watched" >鑑賞済み
+		<input type="radio" name="status" value="watched" >鑑賞済み
 		% end
 		<br>
 

@@ -13,9 +13,26 @@ import movielistdb
 def index():
     return template('index.html')
 
+@route('/targetlist')
+def targetlist():
+    try:
+        return template('simplelist.html', movielist=movielistdb.read_unwatched_title(True))
+    except Exception as e:
+        return str(e)
+
 @route('/unwatchedlist')
 def unwatchedlist():
-    return template('unwatchedlist.html', movielist=movielistdb.read_unwatched())
+    try:
+        return template('simplelist.html', movielist=movielistdb.read_unwatched_title(False))
+    except Exception as e:
+        return str(e)
+
+@route('/watchedlist')
+def titlelist():
+    try:
+        return template('annuallist.html', movielist=movielistdb.read_watched_title())
+    except Exception as e:
+        return str(e)
 
 @route('/edittitle', method="POST")
 def edittitle():
@@ -94,10 +111,6 @@ def edittitle2():
             target=target)
     except Exception as e:
         return str(e)
-
-@route('/titlelist')
-def titlelist():
-    return template('titlelist.html', movielist=movielistdb.read_all())
 
 @route('/scatter')
 def scatter():
