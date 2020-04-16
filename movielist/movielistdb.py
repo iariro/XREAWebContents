@@ -79,8 +79,10 @@ def read_unwatched_title(target):
             target = int.from_bytes(row[7].encode(), 'little')
             if target == 0:
                 target = None
-
-        titles.append({'id': row[0], 'release_year': row[1], 'youga_houga': row[2] + '画', 'chrome_type': row[3], 'acquisition_type': row[4], 'watch_date': str(row[5]), 'title': row[6], 'target': target})
+        youga_houga = row[2]
+        if youga_houga:
+            youga_houga += '画'
+        titles.append({'id': row[0], 'release_year': row[1], 'youga_houga': youga_houga, 'chrome_type': row[3], 'acquisition_type': row[4], 'watch_date': str(row[5]), 'title': row[6], 'target': target})
     return titles
 
 def get_monthly_count(years, get_key):
@@ -138,8 +140,9 @@ if __name__ == '__main__':
     #print(scatter()[0])
     #print(read_watched_title())
     years = read_watched_title()
+    print(read_unwatched_title(True))
     #month_labels, monthly = get_monthly_count(years, lambda title: '月ごと視聴数')
-    month_labels, monthly_count = get_monthly_count(years, lambda title: title['chrome_type'])
+    #month_labels, monthly_count = get_monthly_count(years, lambda title: title['chrome_type'])
     #print(month_labels)
     #print(monthly_count)
     #year_labels, year_count = get_annual_count(years, lambda title: '年ごと視聴数')
