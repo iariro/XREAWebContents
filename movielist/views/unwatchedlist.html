@@ -5,7 +5,7 @@
 <link rel="stylesheet" type="text/css" href="static/css/hatena.css">
 </head>
 <body>
-	<h1>映画視聴情報 - タイトル一覧</h1>
+	<h1>映画鑑賞情報 - タイトル一覧</h1>
 
 	<div class=hatena-body>
 	<div class=main>
@@ -20,7 +20,11 @@
 				<td>{{ title['release_year'] }}</td>
 				<td>{{ title['youga_houga'] }}</td>
 				<td>{{ title['title'] }}</td>
-				<td>{{ title['target'] }}</td>
+				<td>
+				% if title['target'] == 1:
+				〇
+				% end
+				</td>
 				<td>
 				<form action="edittitle" method="POST">
 				<input type="hidden" name="id" value="{{ title['id'] }}">
@@ -29,6 +33,7 @@
 				<input type="hidden" name="youga_houga" value="{{ title['youga_houga'] }}">
 				<input type="hidden" name="acquisition_type" value="{{ title['acquisition_type'] }}">
 				<input type="hidden" name="title" value="{{ title['title'] }}">
+				<input type="hidden" name="target" value="{{ title['target'] }}">
 				<input type="submit" value="編集">
 				</form>
 				</td>

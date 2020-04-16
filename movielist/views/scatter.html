@@ -1,0 +1,27 @@
+<html>
+	<head>
+		<meta charset='UTF-8' />
+		<script src='http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js'></script>
+		<script src='http://code.highcharts.com/highcharts.js'></script>
+		<title>映画鑑賞情報</title>
+	</head>
+
+	<body>
+		<h3>映画鑑賞情報</h3>
+		<div id='scatter' style='width: 900px; height: 500px;'></div>
+		<script>
+		$(document).ready(function()
+		{
+			$('#scatter').highcharts(
+			{
+				chart : {type: 'scatter', zoomType:'xy', plotBackgroundColor: 'lightgray'},
+				title : {text: '鑑賞作品年代散布図'},
+				xAxis : {title: '鑑賞時期', type: 'datetime'},
+				yAxis : {title: '作品公開時期', type: 'datetime'},
+				tooltip: { formatter: function () { return '<b>' + this.point.name + '</b><br/>' + dateFormat(new Date(this.point.x));}},
+				series : {{ !scatter }}
+			});
+		});
+		</script>
+	</body>
+</html>

@@ -3,11 +3,11 @@
 		<meta charset='UTF-8' />
 		<script src='http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js'></script>
 		<script src='http://code.highcharts.com/highcharts.js'></script>
-		<title>映画視聴情報</title>
+		<title>映画鑑賞情報</title>
 	</head>
 
 	<body>
-		<h3>映画視聴情報</h3>
+		<h3>映画鑑賞情報</h3>
 		<div id='monthly_graph' style='width: 1200px; height: 500px;'></div>
 		<script>
 		$(document).ready(function()
@@ -15,10 +15,10 @@
 			$('#monthly_graph').highcharts(
 			{
 				chart : {type: 'column'},
-				title : {text: '月ごと視聴数'},
-				xAxis : {categories: {{ !month_labels }}, title: {text: null}},
+				title : {text: '{{ title }}'},
+				xAxis : {categories: {{ !x_labels }}, title: {text: null}},
 				yAxis : { min: 0, title: {text: '件数', align: 'high'}, labels: {overflow: 'justify'}},
-				series : {{ !monthly_count }},
+				series : {{ !count }},
 				legend: {reversed:true},
 				plotOptions : {bar: {dataLabels: {enabled: true}},series: {stacking: 'normal'}},
 				credits : {enabled: false}

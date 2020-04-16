@@ -2,7 +2,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<link rel="stylesheet" type="text/css" href="static/css/hatena.css">
-		<title>映画視聴情報</title>
+		<title>映画鑑賞情報</title>
 	</head>
 
 	<body>
@@ -82,7 +82,25 @@
 		<input type="radio" name="acquisition_type" value="LP">LD購入<br>
 		% end
 		タイトル：<input type="text" name="title" value="{{ title }}"><br>
-		鑑賞対象：<input type="checkbox" name="target" ><br>
+
+		状態：
+		% if status == 'unwatched':
+		<input type="radio" name="unwatched" checked>未鑑賞
+		% else:
+		<input type="radio" name="unwatched" >未鑑賞
+		% end
+		% if status == 'target':
+		<input type="radio" name="target" checked>鑑賞予定
+		% else:
+		<input type="radio" name="target" >鑑賞予定
+		% end
+		% if status == 'watched':
+		<input type="radio" name="watched" checked>鑑賞済み
+		% else:
+		<input type="radio" name="watched" >鑑賞済み
+		% end
+		<br>
+
 		<input type="submit" value="更新">
 		</form>
 

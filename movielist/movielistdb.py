@@ -1,6 +1,7 @@
 # coding: utf-8
-import MySQLdb
 import sys, io
+import datetime
+import MySQLdb
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
@@ -14,8 +15,39 @@ def query(sql):
     conn.close()
     return rows
 
+def extend_acquisition_type(code):
+    acquisition_types = {
+        "DR": "DVDレンタル",
+        "DP": "DVD購入",
+        "DA": "DVDオークション",
+        "NR": "ネットレンタル",
+        "TV": "TV視聴",
+        "VA": "VHSオークション",
+        "LP": "LD購入",
+        "DB": "ひとのDVD"}
+    return acquisition_types[code]
+
+def scatter():
+    rows = query('select release_year, watch_date, acquisition_type, title from mv_title where watch_date is not null;')
+    titles = []
+    for row in rows:
+        acquisition_type = extend_acquisition_type(row[2])
+        item = None
+        for item2 in titles:
+            if item2['name'] == acquisition_type:
+                item = item2
+                break
+        if item is None:
+            item = {'name': acquisition_type, 'data':[]}
+            titles.append(item)
+        item['data'].append({
+            'x': int(datetime.datetime.combine(row[1], datetime.time()).timestamp()) * 1000,
+            'y': int(datetime.datetime(year=row[0], month=1, day=1).timestamp()) * 1000,
+            'name': row[2]})
+    return titles
+
 def read_all():
-    rows = query('select * from mv_title where watch_date is not null;')
+    rows = query('select id, release_year, youga_houga, chrome_type, acquisition_type, watch_date, title, target from mv_title where watch_date is not null;')
     titles = []
     for row in rows:
         if row[5]:
@@ -32,10 +64,17 @@ def read_all():
     return titles
 
 def read_unwatched():
-    rows = query('select * from mv_title where watch_date is null;')
+    rows = query('select id, release_year, youga_houga, chrome_type, acquisition_type, watch_date, title, target from mv_title where watch_date is null;')
     titles = []
     for row in rows:
-        titles.append({'id': row[0], 'release_year': row[1], 'youga_houga': row[2], 'chrome_type': row[3], 'acquisition_type': row[4], 'watch_date': str(row[5]), 'title': row[6], 'target': row[7]})
+        if row[7] is None:
+            target = None
+        else:
+            target = int.from_bytes(row[7].encode(), 'little')
+            if target == 0:
+                target = None
+
+        titles.append({'id': row[0], 'release_year': row[1], 'youga_houga': row[2], 'chrome_type': row[3], 'acquisition_type': row[4], 'watch_date': str(row[5]), 'title': row[6], 'target': target})
     return titles
 
 def get_monthly_count(years, get_key):
@@ -78,12 +117,19 @@ def get_annual_count(years, get_key):
 
     return year_labels, [{'name': key, 'data': value} for key, value in year_count.items()]
 
-def update(id, release_year, youga_houga, chrome_type, acquisition_type, title, target):
-    sql = "SET SQL_SAFE_UPDATES=0; update iariro.mv_title set release_year={}, youga_houga='{}', chrome_type='{}', acquisition_type='{}', title='{}', target={} where id={};".format(release_year, youga_houga, chrome_type, acquisition_type, title, target, id)
+def string_or_null(value):
+    if value is None:
+        return 'null'
+    else:
+        return "'%s'" % value
+
+def update(id, release_year, youga_houga, chrome_type, acquisition_type, watch_date, title, target):
+    sql = "SET SQL_SAFE_UPDATES=0; update iariro.mv_title set release_year={}, youga_houga={}, chrome_type={}, acquisition_type={}, watch_date={}, title={}, target={} where id={};".format(release_year, string_or_null(youga_houga), string_or_null(chrome_type), string_or_null(acquisition_type), string_or_null(watch_date), string_or_null(title), target, id)
     rows = query(sql)
     return sql, rows
 
 if __name__ == '__main__':
+    print(scatter()[0])
     #print(read_unwatched())
     #years = read_all()
     #month_labels, monthly = get_monthly_count(years, lambda title: '月ごと視聴数')
@@ -93,5 +139,5 @@ if __name__ == '__main__':
     #year_labels, year_count = get_annual_count(years, lambda title: '年ごと視聴数')
     #print(year_labels)
     #print(year_count)
-    print(update(191, '2008', 'youga', 'color', 'NR', 'happening', 1))
+    #print(update(191, '2008', 'youga', 'color', 'NR', 'happening', 1))
 
