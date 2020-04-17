@@ -128,7 +128,7 @@ def annual_graph_all():
 @route('/annual_graph_by_category')
 def annual_graph_by_category():
     years = movielistdb.read_watched_title()
-    year_labels, year_count = movielistdb.get_annual_count(years, lambda title: title['youga_houga'] + '画')
+    year_labels, year_count = movielistdb.get_annual_count(years, lambda title: title['youga_houga'])
     return template('histgram.html', x_labels=year_labels, count=year_count, title='洋画／邦画区別')
 
 @route('/annual_graph_by_acquisition_type')
@@ -152,7 +152,7 @@ def monthly_graph_all():
 @route('/monthly_graph_by_category')
 def monthly_graph_by_category():
     years = movielistdb.read_watched_title()
-    month_labels, monthly_count = movielistdb.get_monthly_count(years, lambda title: title['youga_houga'] + '画')
+    month_labels, monthly_count = movielistdb.get_monthly_count(years, lambda title: title['youga_houga'])
     return template('histgram.html', x_labels=month_labels, count=monthly_count, title='洋画／邦画区別')
 
 @route('/monthly_graph_by_acquisition_type')
