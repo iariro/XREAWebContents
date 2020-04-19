@@ -17,12 +17,12 @@
 		公開年：<input type="text" name="release_year" value="{{ release_year }}"><br>
 
 		洋画／邦画：
-		% if youga_houga == '洋':
+		% if youga_houga == '洋画':
 		<input type="radio" name="youga_houga" value="youga" checked>洋画
 		% else:
 		<input type="radio" name="youga_houga" value="youga">洋画
 		% end
-		% if youga_houga == '邦':
+		% if youga_houga == '邦画':
 		<input type="radio" name="youga_houga" value="houga" checked>邦画<br>
 		% else:
 		<input type="radio" name="youga_houga" value="houga">邦画<br>
