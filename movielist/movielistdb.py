@@ -96,6 +96,8 @@ def get_monthly_count(years, get_key):
             if key not in keys:
                 keys.append(key)
 
+    total = 0
+    sum = {key: {'count': 0, 'ratio': 0} for key in keys}
     month_labels = []
     monthly_count = {}
     for year in years:
@@ -103,10 +105,14 @@ def get_monthly_count(years, get_key):
         for key in keys:
             monthly_count[key] = [0] * 12 + (monthly_count[key] if key in monthly_count else [])
         for title in year['titles']:
+            total += 1
             key = get_key(title)
+            sum[key]['count'] += 1
             monthly_count[key][int(title['watch_date'][5:7])-1] += 1
+    for key, value in sum.items():
+        value['ratio'] = '%2.2f' % (value['count'] * 100 / total)
 
-    return month_labels, [{'name': key, 'data': value} for key, value in monthly_count.items()]
+    return month_labels, sum, [{'name': key, 'data': value} for key, value in monthly_count.items()]
 
 def get_annual_count(years, get_key):
     keys = []
@@ -116,6 +122,8 @@ def get_annual_count(years, get_key):
             if key not in keys:
                 keys.append(key)
 
+    total = 0
+    sum = {key: {'count': 0, 'ratio': 0} for key in keys}
     year_labels = []
     year_count = {}
     for year in years:
@@ -123,10 +131,14 @@ def get_annual_count(years, get_key):
         for key in keys:
             year_count[key] = [0] + (year_count[key] if key in year_count else [])
         for title in year['titles']:
+            total += 1
             key = get_key(title)
+            sum[key]['count'] += 1
             year_count[key][0] += 1
+    for key, value in sum.items():
+        value['ratio'] = '%2.2f' % (value['count'] * 100 / total)
 
-    return year_labels, [{'name': key, 'data': value} for key, value in year_count.items()]
+    return year_labels, sum, [{'name': key, 'data': value} for key, value in year_count.items()]
 
 def string_or_null(value):
     if value is None:
@@ -145,10 +157,10 @@ if __name__ == '__main__':
     years = read_watched_title()
     print(read_unwatched_title(True))
     #month_labels, monthly = get_monthly_count(years, lambda title: '月ごと視聴数')
-    #month_labels, monthly_count = get_monthly_count(years, lambda title: title['chrome_type'])
+    #month_labels, sum, monthly_count = get_monthly_count(years, lambda title: title['chrome_type'])
     #print(month_labels)
     #print(monthly_count)
-    #year_labels, year_count = get_annual_count(years, lambda title: '年ごと視聴数')
+    #year_labels, sum, year_count = get_annual_count(years, lambda title: '年ごと視聴数')
     #print(year_labels)
     #print(year_count)
     #print(update(191, '2008', 'youga', 'color', 'NR', 'happening', 1))

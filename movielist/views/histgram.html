@@ -3,6 +3,7 @@
 		<meta charset='UTF-8' />
 		<script src='http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js'></script>
 		<script src='http://code.highcharts.com/highcharts.js'></script>
+		<link rel="stylesheet" type="text/css" href="static/css/hatena.css">
 		<title>映画鑑賞情報</title>
 	</head>
 
@@ -25,5 +26,29 @@
 			});
 		});
 		</script>
+
+		<div class=hatena-body>
+		<div class=main>
+		<div class=day>
+
+		<table>
+		<tr>
+		<th>分類</th>
+		<th>本数</th>
+		<th>割合</th>
+		</tr>
+		% for key, value in sum.items():
+		<tr>
+		<td>{{ key }}</td>
+		<td>{{ value['count'] }}</td>
+		<td>{{ value['ratio'] }}%</td>
+		</tr>
+		% end
+		</table>
+
+		</div>
+		</div>
+		</div>
+
 	</body>
 </html>
