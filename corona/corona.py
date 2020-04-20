@@ -19,16 +19,19 @@ def input():
 
 @route('/input2', method="POST")
 def input2():
-	date = request.POST.getunicode('date')
-	infect_num = request.POST.getunicode('infect_num')
-	coronadata.add(date, infect_num)
-	return template('input2.html', date=date, infect_num=infect_num)
+	try:
+		date = request.POST.getunicode('date')
+		infect_num = request.POST.getunicode('infect_num')
+		coronadata.add(date, infect_num)
+		return template('input2.html', date=date, infect_num=infect_num)
+	except Exception as e:
+		return str(e)
 
 @route('/graph')
 def graph():
 	try:
-		daily_num = coronadata.read_data('2020/03/02', '2020/04/19')
-		weeks, weekly_num = coronadata.statistic_weekly(daily_num)
+		daily_num = coronadata.read_data()
+		weeks, weekly_num = coronadata.statistic_weekly(daily_num, '2020/03/02', '2020/04/19')
 		return template('graph.html',
 			daily_num_x=[day.strftime('%Y/%m/%d') for day in daily_num],
 			daily_num_y=list(daily_num.values()),
