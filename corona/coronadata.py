@@ -1,18 +1,29 @@
 import sys
 import csv
 import datetime
+import MySQLdb
+
+def query(sql):
+    conn = MySQLdb.connect(user='iariro', passwd='abc123', host='localhost', db='iariro', charset='utf8')
+    cur = conn.cursor()
+    cur.execute(sql)
+    rows = cur.fetchall()
+    cur.close()
+    conn.close()
+    return rows
+
+def add(date, infect_num ):
+	query('insert into cr_infect values ('%s', %s)' % (date, infect_num))
 
 def read_data(start_date, end_date):
+	start_date = datetime.datetime.strptime(start_date, '%Y/%m/%d')
+	end_date = datetime.datetime.strptime(end_date, '%Y/%m/%d')
 	daily_data = {}
-	with open('corona.csv') as file:
-		reader = csv.reader(open('corona.csv')) 
-		header = None
-		for row in reader:
-			if header is None:
-				header = row
-				continue
-			if start_date <= row[0] <= end_date:
-				daily_data[datetime.datetime.strptime(row[0], '%Y/%m/%d')] = int(row[1])
+	rows = query('select date, infect_num from cr_infect')
+	for row in rows:
+		date = datetime.datetime.combine(row[0], datetime.time())
+		if start_date <= date <= end_date:
+			daily_data[date] = int(row[1])
 	return daily_data
 
 def statistic_weekly(daily_data):

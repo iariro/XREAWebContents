@@ -8,7 +8,18 @@
 	</head>
 
 	<body>
-		<li><a href="graph">グラフ</a>
-		<li><a href="input">入力</a>
+		<div class=hatena-body>
+		<div class=main>
+		<div class=day>
+
+		<form action="input2" method="POST">
+		日：<input type="text" name="date" value="{{ date }}"><br>
+		感染者数：<input type="text" name="infect_num" value=""><br>
+		<input type="submit" name="追加">
+		</form>
+
+		</div>
+		</div>
+		</div>
 	</body>
 </html>
