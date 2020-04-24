@@ -30,11 +30,17 @@ def input2():
 @route('/graph')
 def graph():
 	try:
+		end_date = coronadata.last_complete_week_start(datetime.datetime.today())
 		daily_num = coronadata.read_data()
-		weeks, weekly_num = coronadata.statistic_weekly(daily_num, '2020/03/02', '2020/04/19')
+		weeks, weekly_num = coronadata.statistic_weekly(daily_num, datetime.datetime(2020, 3, 2), end_date)
+		weekly_sum = coronadata.sum_weekly(daily_num)
 		return template('graph.html',
 			daily_num_x=[day.strftime('%Y/%m/%d') for day in daily_num],
 			daily_num_y=list(daily_num.values()),
+
+			weekly_sum_x=[day.strftime('%Y/%m/%d') for day in weekly_sum.keys()],
+			weekly_sum_y=list(weekly_sum.values()),
+
 			weekly_num_x=weeks,
 			weekly_num_y=[{'name': day.strftime('%Y/%m/%d'), 'data': values} for day, values in weekly_num.items()],
 			weekly_num=weekly_num)
