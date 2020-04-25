@@ -15,7 +15,7 @@
 		{
 			$('#daily_num').highcharts(
 			{
-				chart : {type: 'column'},
+				chart : {type: 'column', plotBackgroundColor: 'lightgray'},
 				title : {text: '日本の日ごとの感染者数'},
 				xAxis : {categories: {{ !daily_num_x }}, title: {text: null}},
 				yAxis : {title: {text: '人数'}},
@@ -26,7 +26,7 @@
 		{
 			$('#weekly_sum').highcharts(
 			{
-				chart : {type: 'column'},
+				chart : {type: 'column', plotBackgroundColor: 'lightgray'},
 				title : {text: '週ごとの感染数合計'},
 				xAxis : {categories: {{ !weekly_sum_x }}, title: {text: '週'}},
 				yAxis : { title: {text: '人数'}},
@@ -37,7 +37,7 @@
 		{
 			$('#weekly_num').highcharts(
 			{
-				chart : {type: 'column'},
+				chart : {type: 'column', plotBackgroundColor: 'lightgray'},
 				title : {text: '曜日ごとの感染数比'},
 				xAxis : {categories: ['月曜', '火曜', '水曜', '木曜', '金曜', '土曜', '日曜'], title: {text: '曜日'}},
 				yAxis : { title: {text: '比率(%)'}},
