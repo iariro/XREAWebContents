@@ -70,7 +70,7 @@ class CoronaDBTest(unittest.TestCase):
     def test_statistic_weekly(self):
         daily_data = read_data()
         weeks, weekly_data = statistic_weekly(daily_data, datetime.datetime(2020, 3, 2), datetime.datetime(2020, 4, 13))
-        self.assertTrue(len([{'name': day.strftime('%Y/%m/%d'), 'data': values} for day, values in weekly_data.items()]) > 0)
+        self.assertTrue(len(weekly_data) > 0)
 
     def test_sum_weekly(self):
         daily_data = read_data()
@@ -78,7 +78,8 @@ class CoronaDBTest(unittest.TestCase):
 
     def test_last_complete_week_start(self):
         for day, start in {19: 19, 20: 19, 25: 19, 26: 26, 27: 26, 28: 26}.items():
-            self.assertEqual(datetime.datetime(2020, 4, start), last_complete_week_start(datetime.datetime(2020, 4, day)))
+            self.assertEqual(datetime.datetime(2020, 4, start),
+                             last_complete_week_start(datetime.datetime(2020, 4, day)))
 
 def test_last_complete_week_start():
     for day, start in {19: 19, 20: 19, 25: 19, 26: 26, 27: 26, 28: 26}.items():
