@@ -49,9 +49,9 @@ def statistic_weekly(daily_data, start_date, end_date):
     return weeks, weekly_data
 
 def last_complete_week_start(date):
-	date += datetime.timedelta(days=1)
-	date -= datetime.timedelta(days=date.weekday())
-	return date - datetime.timedelta(days=1)
+    date += datetime.timedelta(days=1)
+    date -= datetime.timedelta(days=date.weekday())
+    return date - datetime.timedelta(days=1)
 
 ######################################################################
 # test code
@@ -72,6 +72,10 @@ class CoronaDBTest(unittest.TestCase):
     def test_last_complete_week_start(self):
         for day, start in {19: 19, 20: 19, 25: 19, 26: 26, 27: 26, 28: 26}.items():
             self.assertEqual(datetime.datetime(2020, 4, start), last_complete_week_start(datetime.datetime(2020, 4, day)))
+
+def test_last_complete_week_start():
+    for day, start in {19: 19, 20: 19, 25: 19, 26: 26, 27: 26, 28: 26}.items():
+        assert datetime.datetime(2020, 4, start) == last_complete_week_start(datetime.datetime(2020, 4, day))
 
 if __name__ == '__main__':
     unittest.main()
