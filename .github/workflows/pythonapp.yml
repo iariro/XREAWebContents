@@ -25,4 +25,4 @@ jobs:
       run: |
         pip install flake8
         # stop the build if there are Python syntax errors or undefined names
-        flake8 corona/*.cgi corona/*.py ipmiutil/*.py movielist/*.py ondotori/*.py --count --show-source --statistics --ignore=E402
+        flake8 corona/*.py --count --show-source --statistics --ignore=E402
