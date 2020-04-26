@@ -1,10 +1,14 @@
-import sys
-import csv
+'''
+database access
+'''
 import datetime
 import MySQLdb
 import unittest
 
 def query(sql):
+    '''
+    :param sql: SQL string
+    '''
     conn = MySQLdb.connect(user='iariro', passwd='abc123', host='localhost', db='iariro', charset='utf8')
     cur = conn.cursor()
     cur.execute(sql)
@@ -62,13 +66,16 @@ class CoronaDBTest(unittest.TestCase):
         daily_data = read_data()
         self.assertTrue(len([day.strftime('%Y/%m/%d') for day in daily_data]))
         self.assertTrue(len(list(daily_data.values())) > 0)
+
     def test_statistic_weekly(self):
         daily_data = read_data()
         weeks, weekly_data = statistic_weekly(daily_data, datetime.datetime(2020, 3, 2), datetime.datetime(2020, 4, 13))
         self.assertTrue(len([{'name': day.strftime('%Y/%m/%d'), 'data': values} for day, values in weekly_data.items()]) > 0)
+
     def test_sum_weekly(self):
         daily_data = read_data()
         self.assertTrue(len(sum_weekly(daily_data)) > 0)
+
     def test_last_complete_week_start(self):
         for day, start in {19: 19, 20: 19, 25: 19, 26: 26, 27: 26, 28: 26}.items():
             self.assertEqual(datetime.datetime(2020, 4, start), last_complete_week_start(datetime.datetime(2020, 4, day)))
