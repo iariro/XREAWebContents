@@ -54,8 +54,8 @@ def scatter():
     return titles
 
 def read_watched_title():
-    rows = query('select id, release_year, youga_houga, chrome_type, acquisition_type, watch_date, title, target " \
-                 'from mv_title " \
+    rows = query('select id, release_year, youga_houga, chrome_type, acquisition_type, watch_date, title, target ' \
+                 'from mv_title ' \
                  'where watch_date is not null;')
     titles = []
     for row in rows:
