@@ -1,6 +1,15 @@
-﻿import datetime
+#!/usr/local/bin/python3
+import datetime
 import re
 import urllib.request
+from bottle import route, template
+
+@route('/')
+def index():
+    try:
+        return template('index.html', versions=getIpmiutilVersion()[0:10])
+    except Exception as e:
+        return str(e)
 
 def getIpmiutilVersion():
     today = datetime.date.today()

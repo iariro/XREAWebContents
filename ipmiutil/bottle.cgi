@@ -1,23 +1,15 @@
-#!/usr/bin/python3
-
+#!/usr/local/bin/python3
 import os
 import sys
-import io
-from bottle import route, template
+from bottle import run
 dirpath = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(dirpath)
 os.chdir(dirpath)
 import ipmiutilcheck
 
-# sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-
-@route('/')
-def index():
-    try:
-        return template('index.html', versions=ipmiutilcheck.getIpmiutilVersion()[0:10])
-    except Exception as e:
-        return str(e)
-
-
-if __name__ == '__main__':
-    print(index())
+if __name__=='__main__':
+    DEBUG = os.path.exists(os.path.expanduser('~/debug'))
+    if DEBUG:
+        run(host='localhost', port=8080, debug=True)
+    else:
+        run(host='0.0.0.0', port=80, server="cgi")
