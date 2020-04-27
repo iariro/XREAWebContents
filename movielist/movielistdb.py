@@ -81,8 +81,8 @@ def read_watched_title():
     return titles
 
 def read_unwatched_title(target):
-    rows = query('select id, release_year, youga_houga, chrome_type, acquisition_type, watch_date, title, target " \
-                 'from mv_title " \
+    rows = query('select id, release_year, youga_houga, chrome_type, acquisition_type, watch_date, title, target ' \
+                 'from mv_title ' \
                  'where watch_date is null %s' % ('and target=1' if target else ''))
     titles = []
     for row in rows:
