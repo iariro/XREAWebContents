@@ -1,0 +1,18 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>ipmiutil version check</title>
+</head>
+<body>
+<table>
+	<tr><th>日付</th><th>開発者</th><th>バージョン</th><th>間隔</th></tr>
+	% for version in versions:
+	<tr><td>{{ version.date }}</td><td>{{ version.author }}</td><td>{{ version.version }}</td><td align="right">{{ version.diff }}
+	% if version.diff_to_today < 30:
+	<td><img src="http://sozai.akuseru-design.com/img_new/new025/new025_06.gif"></td>
+	% end
+	% end
+	</td></tr>
+</table>
+</body></html>

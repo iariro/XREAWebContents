@@ -1,6 +1,11 @@
 ﻿import datetime
 import re
 import urllib.request
+from bottle import route, template
+
+@route('/')
+def index():
+    return template('index.html', versions=getIpmiutilVersion()[0:10])
 
 def getIpmiutilVersion():
     versions = []
