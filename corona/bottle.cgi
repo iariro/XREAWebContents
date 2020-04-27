@@ -1,13 +1,13 @@
 #!/usr/local/bin/python3
 import os
 import sys
-from bottle import route, run, template, static_file, get
+from bottle import run, static_file, get
 dirpath = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(dirpath)
 os.chdir(dirpath)
 import corona
 
-@get('/static/css/<filename:re:.*\.css>')
+@get(r'/static/css/<filename:re:.*\.css>')
 def css(filename):
     return static_file(filename, root="views")
 
