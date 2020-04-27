@@ -1,5 +1,6 @@
 # coding: utf-8
-import sys, io
+import sys
+import io
 import datetime
 import MySQLdb
 
@@ -44,7 +45,7 @@ def scatter():
                 item = item2
                 break
         if item is None:
-            item = {'name': acquisition_type, 'data':[]}
+            item = {'name': acquisition_type, 'data': []}
             titles.append(item)
         item['data'].append({
             'x': int(datetime.datetime.combine(row[1], datetime.time()).timestamp()) * 1000,
@@ -53,7 +54,9 @@ def scatter():
     return titles
 
 def read_watched_title():
-    rows = query('select id, release_year, youga_houga, chrome_type, acquisition_type, watch_date, title, target from mv_title where watch_date is not null;')
+    rows = query('select id, release_year, youga_houga, chrome_type, acquisition_type, watch_date, title, target " \
+                 'from mv_title " \
+                 'where watch_date is not null;')
     titles = []
     for row in rows:
         if row[5]:
@@ -66,14 +69,21 @@ def read_watched_title():
                 if titles_year['year'] == year:
                     titles_target_year = titles_year
                     break
-            if titles_target_year == None:
+            if titles_target_year is None:
                 titles_target_year = {'year': year, 'titles': []}
                 titles.append(titles_target_year)
-            titles_target_year['titles'].append({'release_year': row[1], 'youga_houga': youga_houga, 'chrome_type': extend_chrome_type(row[3]), 'acquisition_type': extend_acquisition_type(row[4]), 'watch_date': str(row[5]), 'title': row[6]})
+            titles_target_year['titles'].append({'release_year': row[1],
+                                                 'youga_houga': youga_houga,
+                                                 'chrome_type': extend_chrome_type(row[3]),
+                                                 'acquisition_type': extend_acquisition_type(row[4]),
+                                                 'watch_date': str(row[5]),
+                                                 'title': row[6]})
     return titles
 
 def read_unwatched_title(target):
-    rows = query('select id, release_year, youga_houga, chrome_type, acquisition_type, watch_date, title, target from mv_title where watch_date is null %s' % ('and target=1' if target else ''))
+    rows = query('select id, release_year, youga_houga, chrome_type, acquisition_type, watch_date, title, target " \
+                 'from mv_title " \
+                 'where watch_date is null %s' % ('and target=1' if target else ''))
     titles = []
     for row in rows:
         if row[7] is None:
@@ -85,7 +95,14 @@ def read_unwatched_title(target):
         youga_houga = row[2]
         if youga_houga:
             youga_houga += '画'
-        titles.append({'id': row[0], 'release_year': row[1], 'youga_houga': youga_houga, 'chrome_type': row[3], 'acquisition_type': row[4], 'watch_date': str(row[5]), 'title': row[6], 'target': target})
+        titles.append({'id': row[0],
+                       'release_year': row[1],
+                       'youga_houga': youga_houga,
+                       'chrome_type': row[3],
+                       'acquisition_type': row[4],
+                       'watch_date': str(row[5]),
+                       'title': row[6],
+                       'target': target})
     return titles
 
 def get_monthly_count(years, get_key):
@@ -101,14 +118,14 @@ def get_monthly_count(years, get_key):
     month_labels = []
     monthly_count = {}
     for year in years:
-        month_labels = ['%d/%02d' % (year['year'], i+1) for i in range(0, 12)] + month_labels
+        month_labels = ['%d/%02d' % (year['year'], i + 1) for i in range(0, 12)] + month_labels
         for key in keys:
             monthly_count[key] = [0] * 12 + (monthly_count[key] if key in monthly_count else [])
         for title in year['titles']:
             total += 1
             key = get_key(title)
             sum[key]['count'] += 1
-            monthly_count[key][int(title['watch_date'][5:7])-1] += 1
+            monthly_count[key][int(title['watch_date'][5:7]) - 1] += 1
     for key, value in sum.items():
         value['ratio'] = '%2.2f' % (value['count'] * 100 / total)
 
@@ -147,21 +164,32 @@ def string_or_null(value):
         return "'%s'" % value
 
 def update(id, release_year, youga_houga, chrome_type, acquisition_type, watch_date, title, target):
-    sql = "SET SQL_SAFE_UPDATES=0; update iariro.mv_title set release_year={}, youga_houga={}, chrome_type={}, acquisition_type={}, watch_date={}, title={}, target={} where id={};".format(release_year, string_or_null(youga_houga), string_or_null(chrome_type), string_or_null(acquisition_type), string_or_null(watch_date), string_or_null(title), target, id)
+    sql = "SET SQL_SAFE_UPDATES=0; " \
+          "update iariro.mv_title " \
+          "set release_year={}, youga_houga={}, chrome_type={}, acquisition_type={}, watch_date={}, title={}, " \
+          "target={} " \
+          "where id={};".format(release_year,
+                                string_or_null(youga_houga),
+                                string_or_null(chrome_type),
+                                string_or_null(acquisition_type),
+                                string_or_null(watch_date),
+                                string_or_null(title),
+                                target,
+                                id)
     rows = query(sql)
     return sql, rows
 
+
 if __name__ == '__main__':
-    #print(scatter()[0])
-    #print(read_watched_title())
+    # print(scatter()[0])
+    # print(read_watched_title())
     years = read_watched_title()
     print(read_unwatched_title(True))
-    #month_labels, monthly = get_monthly_count(years, lambda title: '月ごと視聴数')
-    #month_labels, sum, monthly_count = get_monthly_count(years, lambda title: title['chrome_type'])
-    #print(month_labels)
-    #print(monthly_count)
-    #year_labels, sum, year_count = get_annual_count(years, lambda title: '年ごと視聴数')
-    #print(year_labels)
-    #print(year_count)
-    #print(update(191, '2008', 'youga', 'color', 'NR', 'happening', 1))
-
+    # month_labels, monthly = get_monthly_count(years, lambda title: '月ごと視聴数')
+    # month_labels, sum, monthly_count = get_monthly_count(years, lambda title: title['chrome_type'])
+    # print(month_labels)
+    # print(monthly_count)
+    # year_labels, sum, year_count = get_annual_count(years, lambda title: '年ごと視聴数')
+    # print(year_labels)
+    # print(year_count)
+    # print(update(191, '2008', 'youga', 'color', 'NR', 'happening', 1))

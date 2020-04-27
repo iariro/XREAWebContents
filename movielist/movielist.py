@@ -3,7 +3,7 @@
 import datetime
 import os
 import sys
-from bottle import route, run, template, static_file, get, request
+from bottle import route, template, request
 dirpath = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(dirpath)
 os.chdir(dirpath)
@@ -48,14 +48,14 @@ def edittitle():
                 status = 'unwatched'
 
         return template('edittitle.html',
-        id=request.POST.getunicode('id'),
-        release_year=request.POST.getunicode('release_year'),
-        chrome_type=request.POST.getunicode('chrome_type'),
-        youga_houga=request.POST.getunicode('youga_houga'),
-        acquisition_type=request.POST.getunicode('acquisition_type'),
-        title=request.POST.getunicode('title'),
-        target=target,
-        status=status)
+                        id=request.POST.getunicode('id'),
+                        release_year=request.POST.getunicode('release_year'),
+                        chrome_type=request.POST.getunicode('chrome_type'),
+                        youga_houga=request.POST.getunicode('youga_houga'),
+                        acquisition_type=request.POST.getunicode('acquisition_type'),
+                        title=request.POST.getunicode('title'),
+                        target=target,
+                        status=status)
     except Exception as e:
         return str(e)
 
@@ -101,14 +101,14 @@ def edittitle2():
             title=request.POST.getunicode('title'),
             target=target)
         return template('edittitle2.html',
-            id=request.POST.getunicode('id'),
-            release_year=request.POST.getunicode('release_year'),
-            youga_houga=youga_houga,
-            chrome_type=chrome_type,
-            acquisition_type=request.POST.getunicode('acquisition_type'),
-            watch_date=watch_date,
-            title=request.POST.getunicode('title'),
-            target=target)
+                        id=request.POST.getunicode('id'),
+                        release_year=request.POST.getunicode('release_year'),
+                        youga_houga=youga_houga,
+                        chrome_type=chrome_type,
+                        acquisition_type=request.POST.getunicode('acquisition_type'),
+                        watch_date=watch_date,
+                        title=request.POST.getunicode('title'),
+                        target=target)
     except Exception as e:
         return str(e)
 
