@@ -5,9 +5,9 @@ from bottle import run
 dirpath = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(dirpath)
 os.chdir(dirpath)
-import ipmiutilcheck
+import ipmiutilcheck  # noqa F401
 
-if __name__=='__main__':
+if __name__ == '__main__':
     DEBUG = os.path.exists(os.path.expanduser('~/debug'))
     if DEBUG:
         run(host='localhost', port=8080, debug=True)

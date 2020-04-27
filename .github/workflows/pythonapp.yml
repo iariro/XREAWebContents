@@ -25,4 +25,4 @@ jobs:
       run: |
         pip install flake8
         # stop the build if there are Python syntax errors or undefined names
-        flake8 corona/*.py movielist/movelist*.py ipmiutil/*.py --count --show-source --statistics --ignore=E265,E302,E402,E902 --max-line-length 120
+        flake8 corona/*.py movielist/movelist*.py ipmiutil/*.* --count --show-source --statistics --ignore=E265,E302,E402,E902 --max-line-length 120
