@@ -8,11 +8,11 @@
 <table>
 	<tr><th>日付</th><th>開発者</th><th>バージョン</th><th>間隔</th></tr>
 	% for version in versions:
-	<tr><td>{{ version.date }}</td><td>{{ version.author }}</td><td>{{ version.version }}</td><td align="right">{{ version.diff }}
-	% if version.diff_to_today < 30:
-	<td><img src="http://sozai.akuseru-design.com/img_new/new025/new025_06.gif"></td>
-	% end
+	<tr><td>{{ version['date'] }}</td><td>{{ version['author'] }}</td><td>{{ version['version'] }}</td><td align="right">{{ version['diff'] }}
+	% if version['diff'] < 30:
+	<img src="http://sozai.akuseru-design.com/img_new/new025/new025_06.gif">
 	% end
 	</td></tr>
+	% end
 </table>
 </body></html>
