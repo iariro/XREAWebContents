@@ -20,7 +20,10 @@ def extend_chrome_type(code):
     chrome_types = {
         "モ": "モノクロ",
         "カ": "カラー"}
-    return chrome_types[code]
+    if code in chrome_types:
+        return chrome_types[code]
+    else:
+        return ''
 
 def extend_acquisition_type(code):
     acquisition_types = {
@@ -32,7 +35,10 @@ def extend_acquisition_type(code):
         "VA": "VHSオークション",
         "LP": "LD購入",
         "DB": "ひとのDVD"}
-    return acquisition_types[code]
+    if code in acquisition_types:
+        return acquisition_types[code]
+    else:
+        return ''
 
 def scatter():
     rows = query('select release_year, watch_date, acquisition_type, title from mv_title where watch_date is not null;')
@@ -56,7 +62,8 @@ def scatter():
 def read_watched_title():
     rows = query('select id, release_year, youga_houga, chrome_type, acquisition_type, watch_date, title, target ' \
                  'from mv_title ' \
-                 'where watch_date is not null;')
+                 'where watch_date is not null ' \
+                 'order by watch_date desc;')
     titles = []
     for row in rows:
         if row[5]:
