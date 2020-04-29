@@ -14,6 +14,13 @@
 	<br>
 
 	<table>
+	<tr><td>全部</td><td>{{ count['total'] }}</td></tr>
+	<tr><td>鑑賞対象</td><td>{{ count['target'] }}</td></tr>
+	</table>
+
+	<br>
+
+	<table>
 		<tr><th>年</th><th>洋／邦</th><th>タイトル</th><th>鑑賞対象</th><th>操作</th></tr>
 		% for title in movielist:
 			<tr>
@@ -40,8 +47,6 @@
 			</tr>
 		% end
 	</table>
-
-	<br>
 
 	</div>
 	</div>

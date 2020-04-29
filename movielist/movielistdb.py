@@ -92,13 +92,17 @@ def read_unwatched_title(target):
                  'from mv_title ' \
                  'where watch_date is null %s order by release_year' % ('and target=1' if target else ''))
     titles = []
+    count = {'total': 0, 'target': 0}
     for row in rows:
+        count['total'] += 1
         if row[7] is None:
             target = None
         else:
             target = int.from_bytes(row[7].encode(), 'little')
             if target == 0:
                 target = None
+            else:
+                count['target'] += 1
         youga_houga = row[2]
         if youga_houga:
             youga_houga += '画'
@@ -110,7 +114,7 @@ def read_unwatched_title(target):
                        'watch_date': str(row[5]),
                        'title': row[6],
                        'target': target})
-    return titles
+    return titles, count
 
 def get_monthly_count(years, get_key):
     keys = []
