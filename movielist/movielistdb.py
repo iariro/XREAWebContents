@@ -20,7 +20,10 @@ def extend_chrome_type(code):
     chrome_types = {
         "モ": "モノクロ",
         "カ": "カラー"}
-    return chrome_types[code]
+    if code in chrome_types:
+        return chrome_types[code]
+    else:
+        return ''
 
 def extend_acquisition_type(code):
     acquisition_types = {
@@ -32,7 +35,10 @@ def extend_acquisition_type(code):
         "VA": "VHSオークション",
         "LP": "LD購入",
         "DB": "ひとのDVD"}
-    return acquisition_types[code]
+    if code in acquisition_types:
+        return acquisition_types[code]
+    else:
+        return ''
 
 def scatter():
     rows = query('select release_year, watch_date, acquisition_type, title from mv_title where watch_date is not null;')
@@ -56,7 +62,8 @@ def scatter():
 def read_watched_title():
     rows = query('select id, release_year, youga_houga, chrome_type, acquisition_type, watch_date, title, target ' \
                  'from mv_title ' \
-                 'where watch_date is not null;')
+                 'where watch_date is not null ' \
+                 'order by watch_date desc, release_year desc;')
     titles = []
     for row in rows:
         if row[5]:
@@ -85,13 +92,17 @@ def read_unwatched_title(target):
                  'from mv_title ' \
                  'where watch_date is null %s order by release_year' % ('and target=1' if target else ''))
     titles = []
+    count = {'total': 0, 'target': 0}
     for row in rows:
+        count['total'] += 1
         if row[7] is None:
             target = None
         else:
             target = int.from_bytes(row[7].encode(), 'little')
             if target == 0:
                 target = None
+            else:
+                count['target'] += 1
         youga_houga = row[2]
         if youga_houga:
             youga_houga += '画'
@@ -103,7 +114,7 @@ def read_unwatched_title(target):
                        'watch_date': str(row[5]),
                        'title': row[6],
                        'target': target})
-    return titles
+    return titles, count
 
 def get_monthly_count(years, get_key):
     keys = []

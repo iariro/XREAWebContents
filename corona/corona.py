@@ -10,7 +10,11 @@ import coronadata
 
 @route('/')
 def index():
-    return template('index.html')
+    try:
+        daily_num = coronadata.read_last_data(5)
+        return template('index.html', daily_num=daily_num)
+    except Exception as e:
+        return str(e)
 
 @route('/input')
 def input():

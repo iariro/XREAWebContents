@@ -16,14 +16,16 @@ def index():
 @route('/targetlist')
 def targetlist():
     try:
-        return template('simplelist.html', movielist=movielistdb.read_unwatched_title(True))
+        movielist, count = movielistdb.read_unwatched_title(True)
+        return template('simplelist.html', movielist=movielist, count=count)
     except Exception as e:
         return str(e)
 
 @route('/unwatchedlist')
 def unwatchedlist():
     try:
-        return template('simplelist.html', movielist=movielistdb.read_unwatched_title(False))
+        movielist, count = movielistdb.read_unwatched_title(False)
+        return template('simplelist.html', movielist=movielist, count=count)
     except Exception as e:
         return str(e)
 

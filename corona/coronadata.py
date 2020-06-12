@@ -23,10 +23,19 @@ def add(date, infect_num):
 
 def read_data():
     daily_data = {}
-    rows = query('select date, infect_num from cr_infect')
+    sql = 'select date, infect_num from cr_infect'
+    rows = query(sql)
     for row in rows:
         date = datetime.datetime.combine(row[0], datetime.time())
         daily_data[date] = int(row[1])
+    return daily_data
+
+def read_last_data(limit):
+    daily_data = {}
+    sql = 'select date, infect_num from cr_infect order by date desc limit %d;' % limit
+    rows = query(sql)
+    for row in rows:
+        daily_data[row[0]] = int(row[1])
     return daily_data
 
 def sum_weekly(daily_data):
@@ -66,6 +75,10 @@ class CoronaDBTest(unittest.TestCase):
         daily_data = read_data()
         self.assertTrue(len([day.strftime('%Y/%m/%d') for day in daily_data]))
         self.assertTrue(len(list(daily_data.values())) > 0)
+
+    def test_read_data_limit(self):
+        daily_data = read_last_data(5)
+        self.assertTrue(len(list(daily_data.values())) == 5)
 
     def test_statistic_weekly(self):
         daily_data = read_data()
