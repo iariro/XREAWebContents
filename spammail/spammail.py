@@ -6,7 +6,7 @@ from bottle import route, template, request
 dirpath = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(dirpath)
 os.chdir(dirpath)
-import smammaildata
+import spammaildata
 
 @route('/')
 def index():
@@ -14,7 +14,9 @@ def index():
 
 @route('/input')
 def input():
-    return template('input.html', date=datetime.datetime.now().strftime('%Y/%m/%d'))
+    date = datetime.datetime.now()
+    date -= datetime.timedelta(days=1)
+    return template('input.html', date=date.strftime('%Y/%m/%d'))
 
 @route('/input2', method="POST")
 def input2():
@@ -29,9 +31,8 @@ def input2():
 @route('/graph')
 def graph():
     try:
-        daily_num = smammaildata.read_data()
+        daily_num = spammaildata.read_data()
         return template('graph.html',
-                        daily_num_x=[day.strftime('%Y/%m/%d') for day in daily_num],
-                        daily_num_y=list(daily_num.values()))
+                        daily_num=[[day.timestamp() * 1000, count] for day, count in daily_num.items()])
     except Exception as e:
         return str(e)

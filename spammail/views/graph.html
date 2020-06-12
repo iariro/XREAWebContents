@@ -3,45 +3,21 @@
 		<meta charset='UTF-8' />
 		<script src='http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js'></script>
 		<script src='http://code.highcharts.com/highcharts.js'></script>
-		<title>corona</title>
+		<title>spam mail</title>
 	</head>
 
 	<body>
 		<div id='daily_num' style='width: 900px; height: 500px;'></div>
-		<div id='weekly_sum' style='width: 900px; height: 500px;'></div>
-		<div id='weekly_num' style='width: 900px; height: 500px;'></div>
 		<script>
 		$(document).ready(function()
 		{
 			$('#daily_num').highcharts(
 			{
 				chart : {type: 'column', plotBackgroundColor: 'lightgray'},
-				title : {text: '日本の日ごとの感染者数'},
-				xAxis : {categories: {{ !daily_num_x }}, title: {text: null}},
-				yAxis : {title: {text: '人数'}},
-				series : [{'name': '日ごとの感染者数', 'data': {{ !daily_num_y }} }]
-			});
-		});
-		$(document).ready(function()
-		{
-			$('#weekly_sum').highcharts(
-			{
-				chart : {type: 'column', plotBackgroundColor: 'lightgray'},
-				title : {text: '週ごとの感染数合計'},
-				xAxis : {categories: {{ !weekly_sum_x }}, title: {text: '週'}},
-				yAxis : { title: {text: '人数'}},
-				series : [{'name': '週ごとの感染数合計', 'data': {{ !weekly_sum_y }} }]
-			});
-		});
-		$(document).ready(function()
-		{
-			$('#weekly_num').highcharts(
-			{
-				chart : {type: 'column', plotBackgroundColor: 'lightgray'},
-				title : {text: '曜日ごとの感染数比'},
-				xAxis : {categories: ['月曜', '火曜', '水曜', '木曜', '金曜', '土曜', '日曜'], title: {text: '曜日'}},
-				yAxis : { title: {text: '比率(%)'}},
-				series : {{ !weekly_num_y }}
+				title : {text: 'スパムメール件数'},
+				xAxis : {title: null, type: 'datetime'},
+				yAxis : {title: {text: '件数'}},
+				series : [{'name': '件数', 'data': {{ !daily_num }} }]
 			});
 		});
 		</script>
