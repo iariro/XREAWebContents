@@ -21,7 +21,7 @@ def query(sql):
 def add(date, mail_count):
     query("insert into sm_count values ('%s', %s)" % (date, mail_count))
 
-def read_data():
+def read_data_daily():
     daily_data = {}
     rows = query('select date, count from sm_count')
     for row in rows:
@@ -29,16 +29,40 @@ def read_data():
         daily_data[date] = int(row[1])
     return daily_data
 
+def read_data_monthly():
+    monthly_data = {}
+    rows = query("select DATE_FORMAT(date, '%Y/%m'), sum(count) from sm_count group by DATE_FORMAT(date, '%Y/%m')")
+    for row in rows:
+        date = datetime.datetime.strptime(row[0], '%Y/%m')
+        if date.year not in monthly_data:
+            monthly_data[date.year] = [0] * 12
+        monthly_data[date.year][date.month - 1] = int(row[1])
+    return monthly_data
+
+def read_data_annually():
+    annually_data = {}
+    rows = query("select DATE_FORMAT(date, '%Y'), sum(count) from sm_count group by DATE_FORMAT(date, '%Y')")
+    for row in rows:
+        annually_data[int(row[0])] = int(row[1])
+    return annually_data
+
 ######################################################################
 # test code
 ######################################################################
 
 class CoronaDBTest(unittest.TestCase):
     def test_read_data(self):
-        daily_data = read_data()
+        daily_data = read_data_daily()
         self.assertTrue(len([day.strftime('%Y/%m/%d') for day in daily_data]) >= 0)
         self.assertTrue(len(list(daily_data.values())) >= 0)
 
+    def test_read_data_monthly(self):
+        monthly_data = read_data_monthly()
+        print(monthly_data)
+
+    def test_read_data_annually(self):
+        annually_data = read_data_annually()
+        print(list(annually_data.keys()))
 
 if __name__ == '__main__':
     unittest.main()

@@ -31,8 +31,13 @@ def input2():
 @route('/graph')
 def graph():
     try:
-        daily_num = spammaildata.read_data()
+        daily_num = spammaildata.read_data_daily()
+        monthly_num = spammaildata.read_data_monthly()
+        annually_num = spammaildata.read_data_annually()
         return template('graph.html',
-                        daily_num=[[day.timestamp() * 1000, count] for day, count in daily_num.items()])
+                        daily_num=[[day.timestamp() * 1000, count] for day, count in daily_num.items()],
+                        monthly_num=[{'name': '%d年' % year, 'data': count} for year, count in monthly_num.items()],
+                        annually_num_x=['%d年' % year for year in annually_num],
+                        annually_num_y=list(annually_num.values()))
     except Exception as e:
         return str(e)

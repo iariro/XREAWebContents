@@ -7,17 +7,41 @@
 	</head>
 
 	<body>
-		<div id='daily_num' style='width: 900px; height: 500px;'></div>
+		<div id='daily_num' style='width: 900px; height: 400px;'></div>
+		<div id='monthly_num' style='width: 900px; height: 400px;'></div>
+		<div id='annually_num' style='width: 900px; height: 400px;'></div>
 		<script>
 		$(document).ready(function()
 		{
 			$('#daily_num').highcharts(
 			{
 				chart : {type: 'column', plotBackgroundColor: 'lightgray'},
-				title : {text: 'スパムメール件数'},
+				title : {text: '日ごと件数'},
 				xAxis : {title: null, type: 'datetime'},
 				yAxis : {title: {text: '件数'}},
 				series : [{'name': '件数', 'data': {{ !daily_num }} }]
+			});
+		});
+		$(document).ready(function()
+		{
+			$('#monthly_num').highcharts(
+			{
+				chart : {type: 'column', plotBackgroundColor: 'lightgray'},
+				title : {text: '月ごと件数'},
+				xAxis : {title: null, categories: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], crosshair: true},
+				yAxis : {title: {text: '件数'}},
+				series : {{ !monthly_num }}
+			});
+		});
+		$(document).ready(function()
+		{
+			$('#annually_num').highcharts(
+			{
+				chart : {type: 'column', plotBackgroundColor: 'lightgray'},
+				title : {text: '年ごと件数'},
+				xAxis : {title: null, categories: {{ !annually_num_x }} },
+				yAxis : {title: {text: '件数'}},
+				series : [{name: '件数', data: {{ !annually_num_y }}}]
 			});
 		});
 		</script>
