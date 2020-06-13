@@ -11,6 +11,11 @@
 		<div id='monthly_num' style='width: 900px; height: 400px;'></div>
 		<div id='annually_num' style='width: 900px; height: 400px;'></div>
 		<script>
+		Highcharts.setOptions({
+			global: {
+				useUTC: false
+			}
+		});
 		$(document).ready(function()
 		{
 			$('#daily_num').highcharts(
