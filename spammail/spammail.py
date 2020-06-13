@@ -22,9 +22,9 @@ def input():
 def input2():
     try:
         date = request.POST.getunicode('date')
-        sm_count = request.POST.getunicode('sm_count')
-        smammaildata.add(date, sm_count)
-        return template('input2.html', date=date, sm_count=sm_count)
+        mail_count = request.POST.getunicode('mail_count')
+        spammaildata.add(date, mail_count)
+        return template('input2.html', date=date, mail_count=mail_count)
     except Exception as e:
         return str(e)
 
