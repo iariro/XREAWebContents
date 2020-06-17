@@ -15,7 +15,7 @@
 		{
 			$('#daily_num').highcharts(
 			{
-				chart : {type: 'column', plotBackgroundColor: 'lightgray'},
+				chart : {type: 'column', zoomType:'xy', plotBackgroundColor: 'lightgray'},
 				title : {text: '日本の日ごとの感染者数'},
 				xAxis : {categories: {{ !daily_num_x }}, title: {text: null}},
 				yAxis : {title: {text: '人数'}},
