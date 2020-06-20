@@ -7,6 +7,7 @@
 	</head>
 
 	<body>
+		<div id='daily_num_recent' style='width: 900px; height: 400px;'></div>
 		<div id='daily_num' style='width: 900px; height: 400px;'></div>
 		<div id='monthly_num' style='width: 900px; height: 400px;'></div>
 		<div id='annually_num' style='width: 900px; height: 400px;'></div>
@@ -15,6 +16,17 @@
 			global: {
 				useUTC: false
 			}
+		});
+		$(document).ready(function()
+		{
+			$('#daily_num_recent').highcharts(
+			{
+				chart : {type: 'column', zoomType:'xy', plotBackgroundColor: 'lightgray'},
+				title : {text: '日ごと件数（直近10件）'},
+				xAxis : {title: null, type: 'datetime'},
+				yAxis : {title: {text: '件数'}},
+				series : [{'name': '件数', 'data': {{ !daily_num_recent }} }]
+			});
 		});
 		$(document).ready(function()
 		{
