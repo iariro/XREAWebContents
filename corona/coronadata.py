@@ -21,6 +21,9 @@ def query(sql):
 def add(date, infect_num):
     query("insert into cr_infect values ('%s', %s)" % (date, infect_num))
 
+def update(date, infect_num):
+    query("update cr_infect set infect_num=%d where date='%s';" % (infect_num, date))
+
 def read_data():
     daily_data = {}
     sql = 'select date, infect_num from cr_infect'

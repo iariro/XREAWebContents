@@ -30,6 +30,21 @@ def input2():
     except Exception as e:
         return str(e)
 
+@route('/update')
+def update():
+    date = datetime.datetime.now() + datetime.timedelta(days=-2)
+    return template('update.html', date=date.strftime('%Y/%m/%d'))
+
+@route('/update2', method="POST")
+def update2():
+    try:
+        date = request.POST.getunicode('date')
+        infect_num = request.POST.getunicode('infect_num')
+        coronadata.update(date, infect_num)
+        return template('input2.html', date=date, infect_num=infect_num)
+    except Exception as e:
+        return str(e)
+
 @route('/graph')
 def graph():
     try:
