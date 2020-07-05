@@ -106,7 +106,7 @@ class CoronaDBTest(unittest.TestCase):
 def test_last_complete_week_start():
     for day, start in {19: 19, 20: 19, 25: 19, 26: 26, 27: 26, 28: 26}.items():
         assert datetime.datetime(2020, 4, start) == \
-               last_complete_week_start(datetime.datetime(2020, 4, day))
+            last_complete_week_start(datetime.datetime(2020, 4, day))
 
 if __name__ == '__main__':
     unittest.main()
