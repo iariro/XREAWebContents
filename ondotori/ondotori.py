@@ -11,7 +11,7 @@ def getCurrentDataFromWebStorage(login_id, login_pass):
         'Content-Type': 'application/json',
         'X-HTTP-Method-Override': 'GET'
     }
-    req_data = {"api-key":apikey,"login-id": login_id,"login-pass": login_pass}
+    req_data = {"api-key": apikey, "login-id": login_id, "login-pass": login_pass}
     req = urllib.request.Request(url, json.dumps(req_data).encode(), headers)
     with urllib.request.urlopen(req) as res:
         body = res.read()
@@ -26,7 +26,10 @@ def getAllDataFromWebStorage(login_id, login_pass, remote_serial):
         'Content-Type': 'application/json',
         'X-HTTP-Method-Override': 'GET'
     }
-    req_data = {"api-key":apikey,"login-id": login_id,"login-pass": login_pass, "remote-serial": remote_serial}
+    req_data = {"api-key": apikey,
+                "login-id": login_id,
+                "login-pass": login_pass,
+                "remote-serial": remote_serial}
 
     monthly = {}
     weekly = {}
@@ -36,7 +39,6 @@ def getAllDataFromWebStorage(login_id, login_pass, remote_serial):
         js = json.loads(body.decode())
         for row in js['data']:
             dt = datetime.datetime.fromtimestamp(int(row['unixtime']))
-            date = dt.strftime('%Y/%m/%d')
             temp = float(row['ch1'])
 
             week = (dt - datetime.timedelta(days=dt.weekday())).strftime('%Y/%m/%d')
@@ -56,7 +58,10 @@ def getLatestDataFromWebStorage(login_id, login_pass, remote_serial):
         'Content-Type': 'application/json',
         'X-HTTP-Method-Override': 'GET'
     }
-    req_data = {"api-key":apikey,"login-id": login_id,"login-pass": login_pass, "remote-serial": remote_serial}
+    req_data = {"api-key": apikey,
+                "login-id": login_id,
+                "login-pass": login_pass,
+                "remote-serial": remote_serial}
 
     daily = {}
     req = urllib.request.Request(url, json.dumps(req_data).encode(), headers)
@@ -73,7 +78,8 @@ def getLatestDataFromWebStorage(login_id, login_pass, remote_serial):
     return daily
 
 def getDaysSeries(days):
-    return ','.join(["{name:'%s', data:%s}" % (date[5:], [temp for temp in temps if temp]) for date, temps in sorted(days.items())[-5:]])
+    return ','.join(["{name:'%s', data:%s}" % (date[5:], [temp for temp in temps if temp])
+                    for date, temps in sorted(days.items())[-5:]])
 
 def getMeanOfDaySeries(days):
     return ','.join(["[%d, %.2f]" % (datetime.datetime.strptime(date, '%Y/%m/%d').timestamp() * 1000, mean([temp for temp in temps if temp])) for date, temps in sorted(days.items())])
