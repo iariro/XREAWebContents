@@ -1,1 +1,1 @@
-flake8 ipmiutil/*.py --ignore=E302 --max-line-length 100
+flake8 ipmiutil/*.py corona/*.py --ignore=E302,E402 --max-line-length 100

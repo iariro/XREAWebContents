@@ -9,7 +9,11 @@ def query(sql):
     '''
     :param sql: SQL string
     '''
-    conn = MySQLdb.connect(user='iariro', passwd='abc123', host='localhost', db='iariro', charset='utf8')
+    conn = MySQLdb.connect(user='iariro',
+                           passwd='abc123',
+                           host='localhost',
+                           db='iariro',
+                           charset='utf8')
     cur = conn.cursor()
     cur.execute(sql)
     rows = cur.fetchall()
@@ -85,7 +89,9 @@ class CoronaDBTest(unittest.TestCase):
 
     def test_statistic_weekly(self):
         daily_data = read_data()
-        weeks, weekly_data = statistic_weekly(daily_data, datetime.datetime(2020, 3, 2), datetime.datetime(2020, 4, 13))
+        weeks, weekly_data = statistic_weekly(daily_data,
+                                              datetime.datetime(2020, 3, 2),
+                                              datetime.datetime(2020, 4, 13))
         self.assertTrue(len(weekly_data) > 0)
 
     def test_sum_weekly(self):
