@@ -6,6 +6,7 @@ import json
 import urllib.request
 import ondotori
 import sys, io
+from statistics import mean
 
 try:
 	sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding = 'utf-8')
@@ -14,7 +15,7 @@ try:
 	login_pass = form['login_pass'].value
 	remote_serial = form['remote_serial'].value
 
-	(monthly, weekly) = ondotori.getAllDataFromWebStorage(login_id, login_pass, remote_serial)
+	(monthly, weekly, daily) = ondotori.getAllDataFromWebStorage(login_id, login_pass, remote_serial)
 
 	print('Content-Type: text/html')
 	print()
@@ -32,6 +33,7 @@ try:
 	<body>
 	<div id="chart_weekly" style="width:900px; height:400px; display:table;margin: 0 auto;"></div>
 	<div id="chart_monthly" style="width:900px; height:400px; display:table;margin: 0 auto;"></div>
+	<div id="chart_year" style="width:900px; height:400px; display:table;margin: 0 auto;"></div>
 	<script type="text/javascript">
 	function draw()
 	{
@@ -51,12 +53,22 @@ try:
 	                yAxis: {title: {text:'℃'}},
 	                series: [ {name:'温度', data:[%s]} ]
 	        });
+	        new Highcharts.Chart(
+	        {
+	                chart: {renderTo: 'chart_year', zoomType:'xy', plotBackgroundColor: 'lightgray'},
+	                title: {text: '年毎比較'},
+	                xAxis: {title: '日', type: 'datetime'},
+	                yAxis: {title: {text:'℃'}},
+	                series: %s
+	        });
 	};
 	document.body.onload = draw();
 	</script>
 	<br>
 	</body>
-	</html>''' % (ondotori.getMeanOfDaySeries(weekly), ondotori.getMeanOfDaySeries(monthly)))
+	</html>''' % (ondotori.getMeanOfDaySeries(weekly),
+                  ondotori.getMeanOfDaySeries(monthly),
+                  ondotori.getMeanOfDaySeriesPerYear(daily)))
 except Exception as e:
 	print('Content-Type: text/html')
 	print()

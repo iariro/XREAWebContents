@@ -34,6 +34,7 @@ def getAllDataFromWebStorage(login_id, login_pass, remote_serial):
 
     monthly = {}
     weekly = {}
+    daily = {}
     req = urllib.request.Request(url, json.dumps(req_data).encode(), headers)
     with urllib.request.urlopen(req) as res:
         body = res.read()
@@ -41,6 +42,11 @@ def getAllDataFromWebStorage(login_id, login_pass, remote_serial):
         for row in js['data']:
             dt = datetime.datetime.fromtimestamp(int(row['unixtime']))
             temp = float(row['ch1'])
+
+            day = dt.date().strftime('%Y/%m/%d')
+            if day not in daily:
+                daily[day] = []
+            daily[day].append(temp)
 
             week = (dt - datetime.timedelta(days=dt.weekday())).strftime('%Y/%m/%d')
             if week not in weekly:
@@ -51,7 +57,7 @@ def getAllDataFromWebStorage(login_id, login_pass, remote_serial):
             if month not in monthly:
                 monthly[month] = []
             monthly[month].append(temp)
-    return (monthly, weekly)
+    return (monthly, weekly, daily)
 
 def getLatestDataFromWebStorage(login_id, login_pass, remote_serial):
     url = 'https://api.webstorage.jp/v1/devices/latest-data'
@@ -91,23 +97,39 @@ def getMaxOfDaySeries(days):
 def getMinOfDaySeries(days):
     return ','.join(["[%d, %.2f]" % (datetime.datetime.strptime(date, '%Y/%m/%d').timestamp() * 1000, min([temp for temp in temps if temp])) for date, temps in sorted(days.items())])
 
+def getMeanOfDaySeriesPerYear(daily):
+    years = {}
+    for day, values in daily.items():
+        if day[:4] not in years:
+            years[day[:4]] = {}
+        years[day[:4]][day[5:]] = mean(values)
+    series = []
+    for year in years:
+        series.append({'name': year,
+                       'data': [[datetime.datetime.strptime('2020/' + date, '%Y/%m/%d').timestamp() * 1000, value] for date, value in years[year].items()]})
+    return series
+
+####################################################################################################
+
 class TestOndotoriData(unittest.TestCase):
     def test_getCurrentDataFromWebStorage(self):
-        print(getCurrentDataFromWebStorage('tbac0004', 'bukkuden'))
+        # print(getCurrentDataFromWebStorage('tbac0004', 'bukkuden'))
+        pass
 
-    def test_getAllDataFromWebStorage(self):
-        (monthly, weekly) = getAllDataFromWebStorage('tbac0004', 'bukkuden', '5214C18D')
-        # print(monthly, weekly)
+    def test_getAllDataFromWebStorage_dump(self):
+        (monthly, weekly, daily) = getAllDataFromWebStorage('tbac0004', 'bukkuden', '5214C18D')
+        with open('monthly.json', 'w') as file:
+            json.dump(monthly, file)
         with open('weekly.json', 'w') as file:
             json.dump(weekly, file)
-        # print(getMaxOfDaySeries(json.load(open('weekly.json'))))
-        print(monthly)
+        with open('daily.json', 'w') as file:
+            json.dump(daily, file)
+
+    def test_getAllDataFromWebStorage_load(self):
+        print(getMeanOfDaySeriesPerYear(json.load(open('daily.json'))))
 
     def test_getLatestDataFromWebStorage(self):
         daily = getLatestDataFromWebStorage('tbac0004', 'bukkuden', '5214C18D')
         with open('daily.json', 'w') as file:
             json.dump(daily, file)
         # print(getDaysSeries(json.load(open('daily.json'))))
-
-if __name__ == '__main__':
-    unittest.main()
