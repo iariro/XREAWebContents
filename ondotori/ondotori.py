@@ -2,6 +2,7 @@
 import json
 import urllib.request
 from statistics import mean
+import unittest
 
 apikey = "j8j04n070kccokm8c7odoa89m6tjbi0qt69o4k8dac1n1"
 
@@ -90,17 +91,23 @@ def getMaxOfDaySeries(days):
 def getMinOfDaySeries(days):
     return ','.join(["[%d, %.2f]" % (datetime.datetime.strptime(date, '%Y/%m/%d').timestamp() * 1000, min([temp for temp in temps if temp])) for date, temps in sorted(days.items())])
 
+class TestOndotoriData(unittest.TestCase):
+    def test_getCurrentDataFromWebStorage(self):
+        print(getCurrentDataFromWebStorage('tbac0004', 'bukkuden'))
+
+    def test_getAllDataFromWebStorage(self):
+        (monthly, weekly) = getAllDataFromWebStorage('tbac0004', 'bukkuden', '5214C18D')
+        # print(monthly, weekly)
+        with open('weekly.json', 'w') as file:
+            json.dump(weekly, file)
+        # print(getMaxOfDaySeries(json.load(open('weekly.json'))))
+        print(monthly)
+
+    def test_getLatestDataFromWebStorage(self):
+        daily = getLatestDataFromWebStorage('tbac0004', 'bukkuden', '5214C18D')
+        with open('daily.json', 'w') as file:
+            json.dump(daily, file)
+        # print(getDaysSeries(json.load(open('daily.json'))))
+
 if __name__ == '__main__':
-    json.dump(getCurrentDataFromWebStorage(), open('current.json', 'w'))
-#   (monthly, weekly) = getAllDataFromWebStorage()
-#   print(monthly, weekly)
-#   with open('weekly.json', 'w') as file:
-#       json.dump(weekly, file)
-
-#   daily = getLatestDataFromWebStorage()
-#   with open('daily.json', 'w') as file:
-#       json.dump(daily, file)
-
-#   print(getDaysSeries(json.load(open('daily.json'))))
-
-#   print(getMaxOfDaySeries(json.load(open('weekly.json'))))
+    unittest.main()
