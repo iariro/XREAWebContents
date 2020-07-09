@@ -10,7 +10,11 @@ import spammaildata
 
 @route('/')
 def index():
-    return template('index.html')
+    try:
+        recent_data = spammaildata.read_data_recent()
+        return template('index.html', recent_data=recent_data)
+    except Exception as e:
+        return str(e)
 
 @route('/input')
 def input():

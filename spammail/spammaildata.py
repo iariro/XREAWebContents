@@ -21,6 +21,10 @@ def query(sql):
 def add(date, mail_count):
     query("insert into sm_count values ('%s', %s)" % (date, mail_count))
 
+def read_data_recent():
+    rows = query('select * from sm_count order by date desc limit 5;')
+    return [(date.strftime('%Y/%m/%d'), count) for date, count in rows]
+
 def read_data_daily():
     daily_data = {}
     rows = query('select date, count from sm_count')
@@ -51,6 +55,9 @@ def read_data_annually():
 ######################################################################
 
 class CoronaDBTest(unittest.TestCase):
+    def test_read_data_recent(self):
+        print(read_data_recent())
+
     def test_read_data(self):
         daily_data = read_data_daily()
         self.assertTrue(len([day.strftime('%Y/%m/%d') for day in daily_data]) >= 0)
@@ -64,5 +71,4 @@ class CoronaDBTest(unittest.TestCase):
         annually_data = read_data_annually()
         print(list(annually_data.keys()))
 
-if __name__ == '__main__':
-    unittest.main()
+# python3 -m unittest spammaildata.CoronaDBTest.test_read_data_recent
