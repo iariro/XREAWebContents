@@ -68,7 +68,7 @@ try:
 	</body>
 	</html>''' % (ondotori.getMeanOfDaySeries(weekly),
                   ondotori.getMeanOfDaySeries(monthly),
-                  ondotori.getMeanOfDaySeriesPerYear(daily, 9)))
+                  ondotori.getMeanOfDaySeriesPerYear(daily, start_date='2019/07/01', mean_range=9)))
 except Exception as e:
 	print('Content-Type: text/html')
 	print()

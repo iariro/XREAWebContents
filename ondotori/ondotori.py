@@ -97,11 +97,12 @@ def getMaxOfDaySeries(days):
 def getMinOfDaySeries(days):
     return ','.join(["[%d, %.2f]" % (datetime.datetime.strptime(date, '%Y/%m/%d').timestamp() * 1000, min([temp for temp in temps if temp])) for date, temps in sorted(days.items())])
 
-def getMeanOfDaySeriesPerYear(daily, mean_range):
+def getMeanOfDaySeriesPerYear(daily, start_date=None, mean_range=9):
     ''' 年ごとの推移を取得。推移は移動平均する。
 
         Args:
             daily: { date: [temp] }
+            start_date: データ取得開始日
             mean_range: 移動平均する日数
 
         Returns:
@@ -126,7 +127,8 @@ def getMeanOfDaySeriesPerYear(daily, mean_range):
     for day, value in daily.items():
         if day[:4] not in years:
             years[day[:4]] = {}
-        years[day[:4]][day[5:]] = value
+        if start_date is None or day >= start_date:
+            years[day[:4]][day[5:]] = value
     series = []
     for year in years:
         series.append({'name': year,
@@ -150,7 +152,9 @@ class TestOndotoriData(unittest.TestCase):
             json.dump(daily, file)
 
     def test_getAllDataFromWebStorage_load(self):
-        print(getMeanOfDaySeriesPerYear(json.load(open('daily.json')), 9))
+        print(getMeanOfDaySeriesPerYear(json.load(open('daily.json')),
+                                        start_date='2019/07/01',
+                                        mean_range=9))
 
     def test_getLatestDataFromWebStorage(self):
         daily = getLatestDataFromWebStorage('tbac0004', 'bukkuden', '5214C18D')
