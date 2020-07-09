@@ -91,7 +91,7 @@ def getDaysSeries(days):
 def to_unixtime(date):
     return datetime.datetime.strptime(date, '%Y/%m/%d').timestamp() * 1000
 
-def getMeanOfDaySeries(days, proc):
+def getProcessedDaySeries(days, proc):
     arr = [(date, proc([temp for temp in temps if temp])) for date, temps in sorted(days.items())]
     return ','.join(["[%d, %.2f]" % (to_unixtime(date), temp) for date, temp in arr])
 

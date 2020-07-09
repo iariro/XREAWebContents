@@ -6,6 +6,7 @@ import json
 import urllib.request
 import ondotori
 import sys, io
+from statistics import mean
 
 try:
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding = 'utf-8')
@@ -16,9 +17,9 @@ try:
 
     daily = ondotori.getLatestDataFromWebStorage(login_id, login_pass, remote_serial)
     data_hours = ondotori.getDaysSeries(daily)
-    data_mean = ondotori.getMeanOfDaySeries(daily, mean)
-    data_max = ondotori.getMaxOfDaySeries(daily, max)
-    data_min = ondotori.getMinOfDaySeries(daily, min)
+    data_mean = ondotori.getProcessedDaySeries(daily, mean)
+    data_max = ondotori.getProcessedDaySeries(daily, max)
+    data_min = ondotori.getProcessedDaySeries(daily, min)
 
     print('Content-Type: text/html')
     print()

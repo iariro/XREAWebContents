@@ -31,9 +31,9 @@ try:
 	</head>
 
 	<body>
-	<div id="chart_weekly" style="width:900px; height:400px; display:table;margin: 0 auto;"></div>
-	<div id="chart_monthly" style="width:900px; height:400px; display:table;margin: 0 auto;"></div>
-	<div id="chart_year" style="width:900px; height:500px; display:table;margin: 0 auto;"></div>
+	<div id="chart_weekly" style="width:900px; height:400px;margin: 0 auto;"></div>
+	<div id="chart_monthly" style="width:900px; height:400px;margin: 0 auto;"></div>
+	<div id="chart_year" style="width:900px; height:500px;margin: 0 auto;"></div>
 	<script type="text/javascript">
 	function draw()
 	{
@@ -66,8 +66,8 @@ try:
 	</script>
 	<br>
 	</body>
-	</html>''' % (ondotori.getMeanOfDaySeries(weekly, mean),
-                  ondotori.getMeanOfDaySeries(monthly, mean),
+	</html>''' % (ondotori.getProcessedDaySeries(weekly, mean),
+                  ondotori.getProcessedDaySeries(monthly, mean),
                   ondotori.getMeanOfDaySeriesPerYear(daily, start_date='2019/07/01', mean_range=9)))
 except Exception as e:
 	print('Content-Type: text/html')
