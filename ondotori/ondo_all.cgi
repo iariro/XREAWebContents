@@ -33,7 +33,7 @@ try:
 	<body>
 	<div id="chart_weekly" style="width:900px; height:400px; display:table;margin: 0 auto;"></div>
 	<div id="chart_monthly" style="width:900px; height:400px; display:table;margin: 0 auto;"></div>
-	<div id="chart_year" style="width:900px; height:400px; display:table;margin: 0 auto;"></div>
+	<div id="chart_year" style="width:900px; height:500px; display:table;margin: 0 auto;"></div>
 	<script type="text/javascript">
 	function draw()
 	{
@@ -68,7 +68,7 @@ try:
 	</body>
 	</html>''' % (ondotori.getMeanOfDaySeries(weekly),
                   ondotori.getMeanOfDaySeries(monthly),
-                  ondotori.getMeanOfDaySeriesPerYear(daily)))
+                  ondotori.getMeanOfDaySeriesPerYear(daily, 9)))
 except Exception as e:
 	print('Content-Type: text/html')
 	print()
