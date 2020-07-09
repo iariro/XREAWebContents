@@ -66,8 +66,8 @@ try:
 	</script>
 	<br>
 	</body>
-	</html>''' % (ondotori.getMeanOfDaySeries(weekly),
-                  ondotori.getMeanOfDaySeries(monthly),
+	</html>''' % (ondotori.getMeanOfDaySeries(weekly, mean),
+                  ondotori.getMeanOfDaySeries(monthly, mean),
                   ondotori.getMeanOfDaySeriesPerYear(daily, start_date='2019/07/01', mean_range=9)))
 except Exception as e:
 	print('Content-Type: text/html')

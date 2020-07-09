@@ -88,14 +88,12 @@ def getDaysSeries(days):
     return ','.join(["{name:'%s', data:%s}" % (date[5:], [temp for temp in temps if temp])
                     for date, temps in sorted(days.items())[-5:]])
 
-def getMeanOfDaySeries(days):
-    return ','.join(["[%d, %.2f]" % (datetime.datetime.strptime(date, '%Y/%m/%d').timestamp() * 1000, mean([temp for temp in temps if temp])) for date, temps in sorted(days.items())])
+def to_unixtime(date):
+    return datetime.datetime.strptime(date, '%Y/%m/%d').timestamp() * 1000
 
-def getMaxOfDaySeries(days):
-    return ','.join(["[%d, %.2f]" % (datetime.datetime.strptime(date, '%Y/%m/%d').timestamp() * 1000, max([temp for temp in temps if temp])) for date, temps in sorted(days.items())])
-
-def getMinOfDaySeries(days):
-    return ','.join(["[%d, %.2f]" % (datetime.datetime.strptime(date, '%Y/%m/%d').timestamp() * 1000, min([temp for temp in temps if temp])) for date, temps in sorted(days.items())])
+def getMeanOfDaySeries(days, proc):
+    arr = [(date, proc([temp for temp in temps if temp])) for date, temps in sorted(days.items())]
+    return ','.join(["[%d, %.2f]" % (to_unixtime(date), temp) for date, temp in arr])
 
 def getMeanOfDaySeriesPerYear(daily, start_date=None, mean_range=9):
     ''' 年ごとの推移を取得。推移は移動平均する。
@@ -131,8 +129,9 @@ def getMeanOfDaySeriesPerYear(daily, start_date=None, mean_range=9):
             years[day[:4]][day[5:]] = value
     series = []
     for year in years:
+        data = [[to_unixtime('2020/' + date), value] for date, value in years[year].items()]
         series.append({'name': '%s年' % year,
-                       'data': [[datetime.datetime.strptime('2020/' + date, '%Y/%m/%d').timestamp() * 1000, value] for date, value in years[year].items()]})
+                       'data': data})
     return series
 
 ####################################################################################################

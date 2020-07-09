@@ -16,9 +16,9 @@ try:
 
     daily = ondotori.getLatestDataFromWebStorage(login_id, login_pass, remote_serial)
     data_hours = ondotori.getDaysSeries(daily)
-    data_mean = ondotori.getMeanOfDaySeries(daily)
-    data_max = ondotori.getMaxOfDaySeries(daily)
-    data_min = ondotori.getMinOfDaySeries(daily)
+    data_mean = ondotori.getMeanOfDaySeries(daily, mean)
+    data_max = ondotori.getMaxOfDaySeries(daily, max)
+    data_min = ondotori.getMinOfDaySeries(daily, min)
 
     print('Content-Type: text/html')
     print()
