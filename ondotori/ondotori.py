@@ -131,7 +131,7 @@ def getMeanOfDaySeriesPerYear(daily, start_date=None, mean_range=9):
             years[day[:4]][day[5:]] = value
     series = []
     for year in years:
-        series.append({'name': year,
+        series.append({'name': '%s年' % year,
                        'data': [[datetime.datetime.strptime('2020/' + date, '%Y/%m/%d').timestamp() * 1000, value] for date, value in years[year].items()]})
     return series
 
