@@ -1,0 +1,27 @@
+<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>おんどとり - デバイスリスト</title>
+	</head>
+	<body>
+
+	<table border><tr><th>モデル</th><th>シリアルNo</th><th>電池残量</th>
+	<th>取得日時</th><th>温度</th><th>湿度</th><th>グラフ</th></tr>
+	% for device in devices['devices']:
+		<tr><td><img src="{{ image_url }}"><br>{{ device['model'] }}</td><td>{{ device['serial'] }}</td><td align="right">{{ device['battery'] }}</td>
+		<td align="right">{{ device['datetime'] }}</td><td align="right">{{ device['channel'][0]['value'] }} {{ device['channel'][0]['unit'] }}</td><td align="right">{{ device['channel'][1]['value'] }} {{ device['channel'][1]['unit'] }}</td>
+
+		<td><form action="graph_latest" method="post">
+			<input type="hidden" name="login_id" value="{{ login_id }}" />
+			<input type="hidden" name="login_pass" value="{{ login_pass }}" />
+			<input type="hidden" name="remote_serial" value="{{ device['serial'] }}" />
+			<input type="submit" value="短期グラフ" /></form>
+		<form action="graph_all" method="post">
+			<input type="hidden" name="login_id" value="{{ login_id }}" />
+			<input type="hidden" name="login_pass" value="{{ login_pass }}" />
+			<input type="hidden" name="remote_serial" value="{{ device['serial'] }}" />
+			<input type="submit" value="長期グラフ" /></form></td>
+		</tr>
+	% end
+	</table>
+</body></html>

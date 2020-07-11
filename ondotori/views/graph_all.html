@@ -1,26 +1,4 @@
-#!/usr/bin/python3
-
-import cgi
-import datetime
-import json
-import urllib.request
-import ondotori
-import sys, io
-from statistics import mean
-
-try:
-	sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding = 'utf-8')
-	form = cgi.FieldStorage()
-	login_id = form['login_id'].value
-	login_pass = form['login_pass'].value
-	remote_serial = form['remote_serial'].value
-
-	(monthly, weekly, daily) = ondotori.getAllDataFromWebStorage(login_id, login_pass, remote_serial)
-
-	print('Content-Type: text/html')
-	print()
-	print(
-	'''<html>
+<html>
 	<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta http-equiv=Content-Style-Type content=text/css>
@@ -43,7 +21,7 @@ try:
 	                title: {text: '週ごと平均'},
 	                xAxis: {title: '日', type: 'datetime'},
 	                yAxis: {title: {text:'℃'}},
-	                series: [ {name:'温度', data:[%s]} ]
+	                series: [ {name:'温度', data:[{{ weekly }}]} ]
 	        });
 	        new Highcharts.Chart(
 	        {
@@ -51,7 +29,7 @@ try:
 	                title: {text: '月ごと平均'},
 	                xAxis: {title: '日', type: 'datetime'},
 	                yAxis: {title: {text:'℃'}},
-	                series: [ {name:'温度', data:[%s]} ]
+	                series: [ {name:'温度', data:[{{ monthly }}]} ]
 	        });
 	        new Highcharts.Chart(
 	        {
@@ -59,24 +37,11 @@ try:
 	                title: {text: '年毎比較'},
 	                xAxis: {title: '日', type: 'datetime'},
 	                yAxis: {title: {text:'℃'}},
-	                series: %s
+	                series: {{ !annual }}
 	        });
 	};
 	document.body.onload = draw();
 	</script>
 	<br>
 	</body>
-	</html>''' % (ondotori.getProcessedDaySeries(weekly, mean),
-                  ondotori.getProcessedDaySeries(monthly, mean),
-                  ondotori.getMeanOfDaySeriesPerYear(daily, start_date='2019/07/01', mean_range=9)))
-except Exception as e:
-	print('Content-Type: text/html')
-	print()
-	print(
-	'''<html>
-	<head>
-	<meta http-equiv="Content-Type" content="text/html">
-	</head>
-	<body>
-	<pre>%s</pre>
-	</body></html>''' % e)
+</html>
