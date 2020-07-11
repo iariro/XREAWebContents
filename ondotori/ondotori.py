@@ -58,8 +58,9 @@ def graph_all():
                                                                          remote_serial)
         weekly = ondotoridata.getProcessedDaySeries(weekly, mean)
         monthly = ondotoridata.getProcessedDaySeries(monthly, mean)
-        annual = ondotoridata.getMeanOfDaySeriesPerYear(daily, start_date='2019/07/01', mean_range=9)
-
+        annual = ondotoridata.getMeanOfDaySeriesPerYear(daily,
+                                                        start_date='2019/07/01',
+                                                        mean_range=9)
         return template('graph_all.html', weekly=weekly, monthly=monthly, annual=annual)
     except Exception as e:
         return str(e)
