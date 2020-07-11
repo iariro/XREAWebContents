@@ -143,20 +143,20 @@ class TestOndotoriData(unittest.TestCase):
 
     def test_getAllDataFromWebStorage_dump(self):
         (monthly, weekly, daily) = getAllDataFromWebStorage('tbac0004', 'bukkuden', '5214C18D')
-        with open('monthly.json', 'w') as file:
+        with open('data/monthly.json', 'w') as file:
             json.dump(monthly, file)
-        with open('weekly.json', 'w') as file:
+        with open('data/weekly.json', 'w') as file:
             json.dump(weekly, file)
-        with open('daily.json', 'w') as file:
+        with open('data/daily.json', 'w') as file:
             json.dump(daily, file)
 
     def test_getAllDataFromWebStorage_load(self):
-        print(getMeanOfDaySeriesPerYear(json.load(open('daily.json')),
+        print(getMeanOfDaySeriesPerYear(json.load(open('data/daily.json')),
                                         start_date='2019/07/01',
                                         mean_range=9))
 
     def test_getLatestDataFromWebStorage(self):
         daily = getLatestDataFromWebStorage('tbac0004', 'bukkuden', '5214C18D')
-        with open('daily.json', 'w') as file:
+        with open('data/daily.json', 'w') as file:
             json.dump(daily, file)
-        # print(getDaysSeries(json.load(open('daily.json'))))
+        # print(getDaysSeries(json.load(open('data/daily.json'))))

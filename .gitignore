@@ -1,3 +1,5 @@
 *.un~
 __pycache__
 */bottle.py
+*/*.pyc
+ondotori/data
