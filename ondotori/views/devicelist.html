@@ -2,11 +2,22 @@
 	<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>おんどとり - デバイスリスト</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 	</head>
 	<body>
 
-	<table border><tr><th>モデル</th><th>シリアルNo</th><th>電池残量</th>
-	<th>取得日時</th><th>温度</th><th>湿度</th><th>グラフ</th></tr>
+	<div class="container">
+	<table class='table-sm table-bordered'>
+	<thead class="thead-light"><tr>
+		<th>モデル</th>
+		<th>シリアルNo</th>
+		<th>電池残量</th>
+		<th>取得日時</th>
+		<th>温度</th>
+		<th>湿度</th>
+		<th>グラフ</th>
+	</tr></thead>
 	% for device in devices['devices']:
 		<tr><td><img src="{{ image_url }}"><br>{{ device['model'] }}</td><td>{{ device['serial'] }}</td><td align="right">{{ device['battery'] }}</td>
 		<td align="right">{{ device['datetime'] }}</td><td align="right">{{ device['channel'][0]['value'] }} {{ device['channel'][0]['unit'] }}</td><td align="right">{{ device['channel'][1]['value'] }} {{ device['channel'][1]['unit'] }}</td>
@@ -24,4 +35,6 @@
 		</tr>
 	% end
 	</table>
+	</div>
+
 </body></html>
