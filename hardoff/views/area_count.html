@@ -1,0 +1,29 @@
+﻿<html>
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://code.highcharts.com/highcharts.js"></script>
+<title>ハードオフ来店管理</title>
+</head>
+<body>
+<div id="chart_area" style="width:900px; height:600px;"></div>
+<script type="text/javascript">
+function draw()
+{
+	new Highcharts.Chart(
+	{
+		chart: {renderTo: 'chart_area', type: 'column', zoomType:'xy', plotBackgroundColor: 'lightgray'},
+		plotOptions: {column: {stacking: 'normal'}},
+		title: {text: '都道府県別開拓店舗数'},
+		xAxis: {title: '都道府県', categories: [ {{ !prefectures }} ]},
+		yAxis: {title: {text:'店舗数'}},
+		series: [
+			{name:'来店済み', data:[ {{ visited }} ], index:1},
+			{name:'未来店', data:[ {{ unvisited }} ], index:0}
+		]
+	});
+};
+document.body.onload = draw();
+</script>
+</body>
+</html>

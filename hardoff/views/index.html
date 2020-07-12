@@ -1,0 +1,24 @@
+<html>
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+<meta name="viewport" content="width=device-width">
+<meta http-equiv=Content-Style-Type content=text/css>
+<title>ハードオフ来店管理</title>
+<link rel="stylesheet" type="text/css" href="hatena.css">
+</head>
+<body>
+<img src='https://www.hardoff.co.jp/wp/wp-content/themes/hardoff/images/logo/logo_hardoff.png'><br>
+<ul>
+<li>店舗一覧
+<ul>
+<li><form action='store_list' method='POST'><input type='hidden' name='where' value='all'><input type='submit' value='全部'></form>
+<li><form action='store_list' method='POST'><input type='hidden' name='where' value='visited'><input type='submit' value='来店済み'></form>
+<li><form action='store_list' method='POST'><input type='hidden' name='where' value='visited_day'><input type='submit' value='来店済み 来店日ごと'></form>
+<li><form action='store_list' method='POST'><input type='hidden' name='where' value='unvisited'><input type='submit' value='未来店'></form>
+<li><form action='store_list' method='POST'><input type='hidden' name='where' value='target'><input type='submit' value='来店予定'></form>
+</ul>
+<li><form action='area_count'><input type='submit' value='都道府県別集計'></form>
+<li><form action='completion_history'><input type='submit' value='開拓店舗数'></form>
+</ul>
+</body>
+</html>

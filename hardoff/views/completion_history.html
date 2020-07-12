@@ -1,0 +1,35 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv=Content-Style-Type content=text/css>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://code.highcharts.com/highcharts.js"></script>
+<title>ハードオフ来店管理 - コンプリート率推移</title>
+</head>
+
+<body>
+<div id="chart_monthly" style="width:900px; height:600px;"></div>
+<script type="text/javascript">
+function draw()
+{
+	Highcharts.setOptions({
+	    global: {
+	        useUTC: false
+	    }
+	});
+	new Highcharts.Chart(
+	{
+		chart: {renderTo: 'chart_monthly', zoomType:'xy', plotBackgroundColor: 'lightgray'},
+		title: {text: '開拓店舗数'},
+		xAxis: {title: '月', type: 'datetime'},
+		yAxis: [{title: {text:'月ごと店舗数'}},{title: {text:'累計店舗数'}, opposite: true}],
+		series: [
+			{name:'月ごと店舗数', type:'column', data:[ {{ bardata }} ], yAxis: 0},
+			{name:'累計店舗数', data:[ {{ linedata }} ], yAxis: 1}
+		]
+	});
+};
+document.body.onload = draw();
+</script>
+</body>
+</html>
