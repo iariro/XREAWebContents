@@ -220,28 +220,28 @@ class MovielistdbTest(unittest.TestCase):
         self.assertEqual("ひとのDVD", extend_acquisition_type("DB"))
 
     def test_scatter(self):
-        self.assertIsTrue(len(scatter()) > 0)
+        self.assertTrue(len(scatter()) > 0)
 
     def test_read_watched_title(self):
-        self.assertIsTrue(len(read_watched_title()) > 0)
+        self.assertTrue(len(read_watched_title()) > 0)
 
     def test_read_unwatched_title(self):
         titles, count = read_unwatched_title(False)
-        self.assertIsTrue(len(titles) > 0)
+        self.assertTrue(len(titles) > 0)
 
     def test_get_monthly_count(self):
         years = read_watched_title()
         month_labels, sum, arr = get_monthly_count(years, lambda title: title['youga_houga'])
-        self.assertIsTrue(len(month_labels) > 0)
+        self.assertTrue(len(month_labels) > 0)
         self.assertIsNotNone(sum)
-        self.assertIsTrue(len(arr) > 0)
+        self.assertTrue(len(arr) > 0)
 
     def test_get_annual_count(self):
-        years = movielistdb.read_watched_title()
+        years = read_watched_title()
         year_labels, sum, arr = get_annual_count(years, lambda title: title['youga_houga'])
-        self.assertIsTrue(len(year_labels) > 0)
+        self.assertTrue(len(year_labels) > 0)
         self.assertIsNotNone(sum)
-        self.assertIsTrue(len(arr) > 0)
+        self.assertTrue(len(arr) > 0)
 
     def test_string_or_null(self):
         self.assertEqual('null', string_or_null(None))
