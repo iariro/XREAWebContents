@@ -36,7 +36,7 @@ def get_area_count():
     for row in rows:
         prefectures.append(row['prefecture'])
         visited.append(row['count_visit_date'])
-        unvisited.append(row['count_all'])
+        unvisited.append(row['count_all'] - row['count_visit_date'])
     return (prefectures, visited, unvisited)
 
 def get_completion_history():

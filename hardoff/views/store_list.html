@@ -12,9 +12,9 @@ $(function() { $('#sorter').tablesorter({sortInitialOrder:"desc",headers:{5:{sor
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 </head>
 <body>
-	{{ count }}件<br>
 
 	<div class="container">
+	{{ count }}件<br>
 	% for day in days:
 	<table id='sorter' class='tablesorter table-sm table-hover table-bordered'>
 	<thead><tr><th>店舗名</th><th>住所</th><th>最寄り駅</th><th>徒歩</th><th>来店日</th><th>編集</th><th>ターゲット</th></tr></thead><tbody>
@@ -52,6 +52,7 @@ $(function() { $('#sorter').tablesorter({sortInitialOrder:"desc",headers:{5:{sor
 		% end
 
 	    </tbody></table>
+	    <br>
 
 	% end
 	</div>
