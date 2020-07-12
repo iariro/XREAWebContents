@@ -248,5 +248,4 @@ class MovielistdbTest(unittest.TestCase):
         self.assertEqual("'abc'", string_or_null('abc'))
 
 #   def test_update(self):
-#       update(id, release_year, youga_houga, chrome_type, acquisition_type, watch_date, title, target):
-
+#       update(id, release_year, youga_houga, chrome_type, acq_type, watch_date, title, target)

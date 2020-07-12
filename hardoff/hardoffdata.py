@@ -9,7 +9,11 @@ def query(sql):
     '''
     :param sql: SQL string
     '''
-    conn = MySQLdb.connect(user='iariro', passwd='abc123', host='localhost', db='iariro', charset='utf8')
+    conn = MySQLdb.connect(user='iariro',
+                           passwd='abc123',
+                           host='localhost',
+                           db='iariro',
+                           charset='utf8')
     cur = conn.cursor(MySQLdb.cursors.DictCursor)
     cur.execute(sql)
     rows = cur.fetchall()
@@ -19,7 +23,12 @@ def query(sql):
     return rows
 
 def get_area_count():
-    rows = query("SELECT SUBSTRING(address,1, CASE WHEN locate('県',address)<>0 THEN locate('県',address) WHEN locate('府',address)<>0 THEN locate('府',address) WHEN locate('都',address)<>0 THEN locate('都',address) END) as prefecture, count(visit_date) as count_visit_date, count(*) as count_all FROM iariro.ho_store group by prefecture;")
+    rows = query("SELECT SUBSTRING(address,1, CASE "
+                 "WHEN locate('県',address)<>0 THEN locate('県',address) "
+                 "WHEN locate('府',address)<>0 THEN locate('府',address) "
+                 "WHEN locate('都',address)<>0 THEN locate('都',address) END) as prefecture, "
+                 "count(visit_date) as count_visit_date, count(*) as count_all "
+                 "FROM iariro.ho_store group by prefecture;")
 
     prefectures = []
     visited = []
@@ -86,9 +95,9 @@ def update_store(store_id, near_station, minutes_from_near_station, visit_date, 
 
 def get_store_list(where):
     where_clause = {'visited': ' where visit_date is not null',
-             'visited_day': ' where visit_date is not null',
-             'unvisited': ' where visit_date is null',
-             'target': ' where visit_date is null and targeting is not null'}
+                    'visited_day': ' where visit_date is not null',
+                    'unvisited': ' where visit_date is null',
+                    'target': ' where visit_date is null and targeting is not null'}
 
     sql = "SELECT * FROM ho_store"
     if where in where_clause:
@@ -101,7 +110,8 @@ def get_store_list(where):
     days = []
     day = None
     for row in rows:
-        if day is None or (where == 'visited_day' and pday != None and pday != row["visit_date"]):
+        if day is None or \
+           (where == 'visited_day' and pday is not None and pday != row["visit_date"]):
             day = {'date': row["visit_date"], 'values': []}
             days.append(day)
         day['values'].append(row)
@@ -128,7 +138,6 @@ class HardoffDBTest(unittest.TestCase):
 
     def test_update_store(self):
         print(update_store('1', None, None, '2020/07/12', None, None))
-#       update_store(store_id, near_station, minutes_from_near_station, visit_date, address, targeting):
 
     def test_get_store_list_visited(self):
         count, days = get_store_list('visited')

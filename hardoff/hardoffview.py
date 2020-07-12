@@ -12,13 +12,16 @@ def area_count():
     prefectures = ','.join(["'%s'" % v for v in prefectures])
     visited = ','.join([str(v) for v in visited])
     unvisited = ','.join([str(v) for v in unvisited])
-    return template('area_count.html', prefectures=prefectures, visited=visited, unvisited=unvisited)
+    return template('area_count.html',
+                    prefectures=prefectures,
+                    visited=visited,
+                    unvisited=unvisited)
 
 @route('/completion_history')
 def completion_history():
     (bardata, linedata) = hardoffdata.get_completion_history()
     bardata = ','.join([str(v) for v in bardata])
-    linedata =','.join( [str(v) for v in linedata])
+    linedata = ','.join([str(v) for v in linedata])
     return template('completion_history.html', bardata=bardata, linedata=linedata)
 
 @route('/store_edit1', method='POST')
@@ -48,9 +51,14 @@ def store_edit2():
     address = request.POST.getunicode('address')
     targeting = request.POST.getunicode('targeting')
     try:
-        sql = hardoffdata.update_store(store_id, near_station, minutes_from_near_station, visit_date, address, targeting)
+        sql = hardoffdata.update_store(store_id,
+                                       near_station,
+                                       minutes_from_near_station,
+                                       visit_date,
+                                       address,
+                                       targeting)
         return template('store_edit2.html', success=True, sql=sql)
-    except:
+    except Exception:
         return template('store_edit2.html', success=False, sql=sql)
 
 @route('/store_list', method='POST')
