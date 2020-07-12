@@ -3,11 +3,16 @@ import sys
 import io
 import datetime
 import MySQLdb
+import unittest
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 def query(sql):
-    conn = MySQLdb.connect(user='iariro', passwd='abc123', host='localhost', db='iariro', charset='utf8')
+    conn = MySQLdb.connect(user='iariro',
+                           passwd='abc123',
+                           host='localhost',
+                           db='iariro',
+                           charset='utf8')
     cur = conn.cursor()
     cur.execute(sql)
     rows = cur.fetchall()
@@ -41,7 +46,8 @@ def extend_acquisition_type(code):
         return ''
 
 def scatter():
-    rows = query('select release_year, watch_date, acquisition_type, title from mv_title where watch_date is not null;')
+    rows = query('select release_year, watch_date, acquisition_type, title '
+                 'from mv_title where watch_date is not null;')
     titles = []
     for row in rows:
         acquisition_type = extend_acquisition_type(row[2])
@@ -60,9 +66,10 @@ def scatter():
     return titles
 
 def read_watched_title():
-    rows = query('select id, release_year, youga_houga, chrome_type, acquisition_type, watch_date, title, target ' \
-                 'from mv_title ' \
-                 'where watch_date is not null ' \
+    rows = query('select id, release_year, youga_houga, chrome_type, acquisition_type, '
+                 'watch_date, title, target '
+                 'from mv_title '
+                 'where watch_date is not null '
                  'order by watch_date desc, release_year desc;')
     titles = []
     for row in rows:
@@ -79,18 +86,22 @@ def read_watched_title():
             if titles_target_year is None:
                 titles_target_year = {'year': year, 'titles': []}
                 titles.append(titles_target_year)
+            chrome_type = extend_chrome_type(row[3])
+            acquisition_type = extend_acquisition_type(row[4])
             titles_target_year['titles'].append({'release_year': row[1],
                                                  'youga_houga': youga_houga,
-                                                 'chrome_type': extend_chrome_type(row[3]),
-                                                 'acquisition_type': extend_acquisition_type(row[4]),
+                                                 'chrome_type': chrome_type,
+                                                 'acquisition_type': acquisition_type,
                                                  'watch_date': str(row[5]),
                                                  'title': row[6]})
     return titles
 
 def read_unwatched_title(target):
-    rows = query('select id, release_year, youga_houga, chrome_type, acquisition_type, watch_date, title, target ' \
-                 'from mv_title ' \
-                 'where watch_date is null %s order by release_year' % ('and target=1' if target else ''))
+    rows = query('select id, release_year, youga_houga, chrome_type, acquisition_type, watch_date, '
+                 'title, target '
+                 'from mv_title '
+                 'where watch_date is null '
+                 '%s order by release_year' % ('and target=1' if target else ''))
     titles = []
     count = {'total': 0, 'target': 0}
     for row in rows:
@@ -177,7 +188,8 @@ def string_or_null(value):
 def update(id, release_year, youga_houga, chrome_type, acquisition_type, watch_date, title, target):
     sql = "SET SQL_SAFE_UPDATES=0; " \
           "update iariro.mv_title " \
-          "set release_year={}, youga_houga={}, chrome_type={}, acquisition_type={}, watch_date={}, title={}, " \
+          "set release_year={}, youga_houga={}, chrome_type={}, acquisition_type={}, " \
+          "watch_date={}, title={}, " \
           "target={} " \
           "where id={};".format(release_year,
                                 string_or_null(youga_houga),
@@ -190,17 +202,51 @@ def update(id, release_year, youga_houga, chrome_type, acquisition_type, watch_d
     rows = query(sql)
     return sql, rows
 
+################################################################################
 
-if __name__ == '__main__':
-    # print(scatter()[0])
-    # print(read_watched_title())
-    years = read_watched_title()
-    print(read_unwatched_title(True))
-    # month_labels, monthly = get_monthly_count(years, lambda title: '月ごと視聴数')
-    # month_labels, sum, monthly_count = get_monthly_count(years, lambda title: title['chrome_type'])
-    # print(month_labels)
-    # print(monthly_count)
-    # year_labels, sum, year_count = get_annual_count(years, lambda title: '年ごと視聴数')
-    # print(year_labels)
-    # print(year_count)
-    # print(update(191, '2008', 'youga', 'color', 'NR', 'happening', 1))
+class MovielistdbTest(unittest.TestCase):
+    def test_extend_chrome_type(self):
+        self.assertEqual("モノクロ", extend_chrome_type("モ"))
+        self.assertEqual("カラー", extend_chrome_type("カ"))
+
+    def test_extend_acquisition_type(self):
+        self.assertEqual("DVDレンタル", extend_acquisition_type("DR"))
+        self.assertEqual("DVD購入", extend_acquisition_type("DP"))
+        self.assertEqual("DVDオークション", extend_acquisition_type("DA"))
+        self.assertEqual("ネットレンタル", extend_acquisition_type("NR"))
+        self.assertEqual("TV視聴", extend_acquisition_type("TV"))
+        self.assertEqual("VHSオークション", extend_acquisition_type("VA"))
+        self.assertEqual("LD購入", extend_acquisition_type("LP"))
+        self.assertEqual("ひとのDVD", extend_acquisition_type("DB"))
+
+    def test_scatter(self):
+        self.assertIsTrue(len(scatter()) > 0)
+
+    def test_read_watched_title(self):
+        self.assertIsTrue(len(read_watched_title()) > 0)
+
+    def test_read_unwatched_title(self):
+        titles, count = read_unwatched_title(False)
+        self.assertIsTrue(len(titles) > 0)
+
+    def test_get_monthly_count(self):
+        years = read_watched_title()
+        month_labels, sum, arr = get_monthly_count(years, lambda title: title['youga_houga'])
+        self.assertIsTrue(len(month_labels) > 0)
+        self.assertIsNotNone(sum)
+        self.assertIsTrue(len(arr) > 0)
+
+    def test_get_annual_count(self):
+        years = movielistdb.read_watched_title()
+        year_labels, sum, arr = get_annual_count(years, lambda title: title['youga_houga'])
+        self.assertIsTrue(len(year_labels) > 0)
+        self.assertIsNotNone(sum)
+        self.assertIsTrue(len(arr) > 0)
+
+    def test_string_or_null(self):
+        self.assertEqual('null', string_or_null(None))
+        self.assertEqual("'abc'", string_or_null('abc'))
+
+#   def test_update(self):
+#       update(id, release_year, youga_houga, chrome_type, acquisition_type, watch_date, title, target):
+
