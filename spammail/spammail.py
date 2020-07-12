@@ -47,10 +47,10 @@ def graph():
         annually_num_y = list(annually_num.values())
 
         return template('graph.html',
-                        daily_num_recent = daily_num_recent,
-                        daily_num = daily_num,
-                        monthly_num = monthly_num,
-                        annually_num_x = annually_num_x,
-                        annually_num_y = annually_num_y)
+                        daily_num_recent=daily_num_recent,
+                        daily_num=daily_num,
+                        monthly_num=monthly_num,
+                        annually_num_x=annually_num_x,
+                        annually_num_y=annually_num_y)
     except Exception as e:
         return str(e)
