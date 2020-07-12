@@ -9,7 +9,11 @@ def query(sql):
     '''
     :param sql: SQL string
     '''
-    conn = MySQLdb.connect(user='iariro', passwd='abc123', host='localhost', db='iariro', charset='utf8')
+    conn = MySQLdb.connect(user='iariro',
+                           passwd='abc123',
+                           host='localhost',
+                           db='iariro',
+                           charset='utf8')
     cur = conn.cursor()
     cur.execute(sql)
     rows = cur.fetchall()
@@ -35,7 +39,8 @@ def read_data_daily():
 
 def read_data_monthly():
     monthly_data = {}
-    rows = query("select DATE_FORMAT(date, '%Y/%m'), sum(count) from sm_count group by DATE_FORMAT(date, '%Y/%m')")
+    rows = query("select DATE_FORMAT(date, '%Y/%m') as yearmonth, sum(count) "
+                 "from sm_count group by yearmonth")
     for row in rows:
         date = datetime.datetime.strptime(row[0], '%Y/%m')
         if date.year not in monthly_data:
@@ -45,7 +50,7 @@ def read_data_monthly():
 
 def read_data_annually():
     annually_data = {}
-    rows = query("select DATE_FORMAT(date, '%Y'), sum(count) from sm_count group by DATE_FORMAT(date, '%Y')")
+    rows = query("select DATE_FORMAT(date, '%Y') as year, sum(count) from sm_count group by year")
     for row in rows:
         annually_data[int(row[0])] = int(row[1])
     return annually_data

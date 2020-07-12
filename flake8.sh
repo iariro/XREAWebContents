@@ -1,1 +1,1 @@
-flake8 ipmiutil/*.py corona/*.py ondotori/*.py --ignore=E302,E305,E402 --max-line-length 100
+flake8 corona/*.py hardoff/*.py ipmiutil/*.py movielist/*.py ondotori/*.py spammail/*.py --ignore=E302,E305,E402 --max-line-length 100

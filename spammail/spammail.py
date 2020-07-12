@@ -38,11 +38,19 @@ def graph():
         daily_num = spammaildata.read_data_daily()
         monthly_num = spammaildata.read_data_monthly()
         annually_num = spammaildata.read_data_annually()
+
+        day_recent = sorted(daily_num, reverse=True)[0:10]
+        daily_num_recent = [[day.timestamp() * 1000, daily_num[day]] for day in day_recent]
+        daily_num = [[day.timestamp() * 1000, count] for day, count in daily_num.items()]
+        monthly_num = [{'name': '%d年' % year, 'data': cnt} for year, cnt in monthly_num.items()]
+        annually_num_x = ['%d年' % year for year in annually_num]
+        annually_num_y = list(annually_num.values())
+
         return template('graph.html',
-                        daily_num_recent=[[day.timestamp() * 1000, daily_num[day]] for day in sorted(daily_num, reverse=True)[0:10]],
-                        daily_num=[[day.timestamp() * 1000, count] for day, count in daily_num.items()],
-                        monthly_num=[{'name': '%d年' % year, 'data': count} for year, count in monthly_num.items()],
-                        annually_num_x=['%d年' % year for year in annually_num],
-                        annually_num_y=list(annually_num.values()))
+                        daily_num_recent = daily_num_recent,
+                        daily_num = daily_num,
+                        monthly_num = monthly_num,
+                        annually_num_x = annually_num_x,
+                        annually_num_y = annually_num_y)
     except Exception as e:
         return str(e)
