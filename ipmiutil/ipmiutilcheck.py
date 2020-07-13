@@ -26,7 +26,7 @@ def getIpmiutilVersion():
                     dt = datetime.datetime.strptime(m.group(1), '%m/%d/%y').date()
                 elif len(m.group(1)) == 10:
                     dt = datetime.datetime.strptime(m.group(1), '%m/%d/%Y').date()
-                versions.insert(0, {'date': dt,
+                versions.insert(0, {'date': dt.strftime('%Y/%m/%d'),
                                     'author': m.group(2),
                                     'version': m.group(3),
                                     'diff': (dt - dt2).days if dt2 else 0,

@@ -14,7 +14,7 @@
 <table class='table-sm table-hover table-bordered'>
 	<tr><th>日付</th><th>開発者</th><th>バージョン</th><th>間隔</th><th>経過日数</th></tr>
 	% for i, version in enumerate(versions):
-	<tr><td>{{ version['date'] }}</td><td>{{ version['author'] }}</td><td>{{ version['version'] }}</td><td>{{ version['diff'] }}</td><td>{{ version['ago'] }}
+	<tr><td>{{ version['date'] }}</td><td>{{ version['author'] }}</td><td>{{ version['version'] }}</td><td align='right'>{{ version['diff'] }}</td><td align='right'>{{ version['ago'] }}
 	% if i == 0 and version['ago'] < 30:
 	<img src="http://sozai.akuseru-design.com/img_new/new025/new025_06.gif">
 	% end
