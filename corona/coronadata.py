@@ -42,7 +42,7 @@ def read_last_data(limit):
     sql = 'select date, infect_num from cr_infect order by date desc limit %d;' % limit
     rows = query(sql)
     for row in rows:
-        daily_data[row[0]] = int(row[1])
+        daily_data[row[0].strftime('%Y/%m/%d')] = int(row[1])
     return daily_data
 
 def sum_weekly(daily_data):
