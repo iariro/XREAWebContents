@@ -92,7 +92,7 @@ def read_watched_title():
                                                  'youga_houga': youga_houga,
                                                  'chrome_type': chrome_type,
                                                  'acquisition_type': acquisition_type,
-                                                 'watch_date': str(row[5]),
+                                                 'watch_date': row[5].strftime('%Y/%m/%d'),
                                                  'title': row[6]})
     return titles
 
@@ -122,7 +122,7 @@ def read_unwatched_title(target):
                        'youga_houga': youga_houga,
                        'chrome_type': row[3],
                        'acquisition_type': row[4],
-                       'watch_date': str(row[5]),
+                       'watch_date': row[5].strftime('%Y/%m/%d'),
                        'title': row[6],
                        'target': target})
     return titles, count
