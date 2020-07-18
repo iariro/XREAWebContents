@@ -97,8 +97,8 @@ def read_watched_title():
     return titles
 
 def read_unwatched_title(target):
-    rows = query('select id, release_year, youga_houga, chrome_type, acquisition_type, watch_date, '
-                 'title, target '
+    rows = query('select id, release_year, youga_houga, chrome_type, acquisition_type, title, '
+                 'target '
                  'from mv_title '
                  'where watch_date is null '
                  '%s order by release_year' % ('and target=1' if target else ''))
@@ -106,10 +106,10 @@ def read_unwatched_title(target):
     count = {'total': 0, 'target': 0}
     for row in rows:
         count['total'] += 1
-        if row[7] is None:
+        if row[6] is None:
             target = None
         else:
-            target = int.from_bytes(row[7].encode(), 'little')
+            target = int.from_bytes(row[6].encode(), 'little')
             if target == 0:
                 target = None
             else:
@@ -122,8 +122,7 @@ def read_unwatched_title(target):
                        'youga_houga': youga_houga,
                        'chrome_type': row[3],
                        'acquisition_type': row[4],
-                       'watch_date': row[5].strftime('%Y/%m/%d'),
-                       'title': row[6],
+                       'title': row[5],
                        'target': target})
     return titles, count
 
