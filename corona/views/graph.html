@@ -2,14 +2,15 @@
 	<head>
 		<meta charset='UTF-8' />
 		<script src='http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js'></script>
-		<script src='http://code.highcharts.com/highcharts.js'></script>
+		<script src="https://code.highcharts.com/stock/highstock.js"></script>
+		<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
 		<title>corona</title>
 	</head>
 
 	<body>
-		<div id='daily_num' style='width: 900px; height: 500px;'></div>
-		<div id='weekly_sum' style='width: 900px; height: 500px;'></div>
-		<div id='weekly_num' style='width: 900px; height: 500px;'></div>
+		<div id='daily_num' style='width: 900px; height: 500px; margin: 0 auto;'></div>
+		<div id='weekly_sum' style='width: 900px; height: 500px; margin: 0 auto;'></div>
+		<div id='weekly_num' style='width: 900px; height: 500px; margin: 0 auto;'></div>
 		<script>
 		$(document).ready(function()
 		{
@@ -17,7 +18,7 @@
 			{
 				chart : {type: 'column', zoomType:'xy', plotBackgroundColor: 'lightgray'},
 				title : {text: '日本の日ごとの感染者数'},
-				xAxis : {categories: {{ !daily_num_x }}, title: {text: null}},
+				xAxis : {categories: {{ !daily_num_x }}, title: {text: null}, min:{{ len(daily_num_x)-50 }}, max: {{ len(daily_num_x)-1 }}, scrollbar: { enabled: true }},
 				yAxis : {title: {text: '人数'}},
 				series : [{'name': '日ごとの感染者数', 'data': {{ !daily_num_y }} }]
 			});
