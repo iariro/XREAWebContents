@@ -41,8 +41,7 @@ def read_data():
 
 def read_mhlw_data():
     ''' 厚労省のデータを取得'''
-    rows = []
-    with urllib.request.urlopen('https://www.mhlw.go.jp/content/pcr_positive_daily.csv') as res: 
+    with urllib.request.urlopen('https://www.mhlw.go.jp/content/pcr_positive_daily.csv') as res:
         body = res.read()
         daily_data = {}
         for row in csv.reader(body.decode().splitlines()[1:]):
