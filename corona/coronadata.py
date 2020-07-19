@@ -4,6 +4,8 @@ database access
 import datetime
 import MySQLdb
 import unittest
+import urllib.request
+import csv
 
 def query(sql):
     '''
@@ -35,6 +37,16 @@ def read_data():
     for row in rows:
         date = datetime.datetime.combine(row[0], datetime.time())
         daily_data[date] = int(row[1])
+    return daily_data
+
+def read_mhlw_data():
+    ''' 厚労省のデータを取得'''
+    rows = []
+    with urllib.request.urlopen('https://www.mhlw.go.jp/content/pcr_positive_daily.csv') as res: 
+        body = res.read()
+        daily_data = {}
+        for row in csv.reader(body.decode().splitlines()[1:]):
+            daily_data[datetime.datetime.strptime(row[0], '%Y/%m/%d')] = int(row[1])
     return daily_data
 
 def read_last_data(limit):
@@ -103,10 +115,12 @@ class CoronaDBTest(unittest.TestCase):
             self.assertEqual(datetime.datetime(2020, 4, start),
                              last_complete_week_start(datetime.datetime(2020, 4, day)))
 
+    def test_read_mhlw_data(self):
+        print(read_mhlw_data())
+
 def test_last_complete_week_start():
     for day, start in {19: 19, 20: 19, 25: 19, 26: 26, 27: 26, 28: 26}.items():
         assert datetime.datetime(2020, 4, start) == \
             last_complete_week_start(datetime.datetime(2020, 4, day))
 
-if __name__ == '__main__':
-    unittest.main()
+# python3 -m unittest coronadata.CoronaDBTest.test_read_mhlw_data

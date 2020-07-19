@@ -49,7 +49,7 @@ def update2():
 def graph():
     try:
         end_date = coronadata.last_complete_week_start(datetime.datetime.today())
-        daily_num = coronadata.read_data()
+        daily_num = coronadata.read_mhlw_data()
         weeks, weekly_num = coronadata.statistic_weekly(daily_num,
                                                         datetime.datetime(2020, 3, 2),
                                                         end_date)
