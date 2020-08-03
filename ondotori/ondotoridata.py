@@ -160,9 +160,15 @@ def getMeanOfDaySeriesPerYear(daily, start_date=None, mean_range=9):
         Returns:
             { 'name': year, 'data': [[datetime, temp]] }
     '''
+    today = datetime.datetime.today().strftime('%Y/%m/%d')
+    if today in daily:
+        if len(daily[today]) < 24:
+            del daily[today]
+
     # 平均気温
     for day in daily:
-        daily[day] = mean(daily[day])
+        if day != today or len(daily[today]) == 24:
+            daily[day] = mean(daily[day])
 
     # 移動平均
     mean_range_center = mean_range // 2
