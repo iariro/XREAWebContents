@@ -47,12 +47,17 @@ def update2():
 
 @route('/graph')
 def graph():
+    jpweek = {'Mon': '月曜', 'Tue': '火曜', 'Wed': '水曜', 'Thu': '木曜', 'Fri': '金曜', 'Sat': '土曜', 'Sun': '日曜'}
     try:
         end_date = coronadata.last_complete_week_start(datetime.datetime.today())
         daily_num = coronadata.read_mhlw_data()
         weeks, weekly_num = coronadata.statistic_weekly(daily_num,
                                                         datetime.datetime(2020, 3, 2),
                                                         end_date)
+        weekday_date, weekday_num = coronadata.statistic_weekday(daily_num,
+                                                   datetime.datetime(2020, 3, 2),
+                                                   end_date)
+        weekday_num = [{'name': jpweek[weekday], 'data': nums} for weekday, nums in weekday_num.items()]
         weekly_sum = coronadata.sum_weekly(daily_num)
         weekly_num_y = [{'name': day.strftime('%Y/%m/%d'), 'data': values}
                         for day, values in weekly_num.items()]
@@ -63,6 +68,8 @@ def graph():
                         weekly_sum_y=list(weekly_sum.values()),
                         weekly_num_x=weeks,
                         weekly_num_y=weekly_num_y,
-                        weekly_num=weekly_num)
+                        weekly_num=weekly_num,
+                        weekday_date=weekday_date,
+                        weekday_num=weekday_num)
     except Exception as e:
         return str(e)

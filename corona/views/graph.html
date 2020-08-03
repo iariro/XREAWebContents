@@ -10,6 +10,7 @@
 	<body>
 		<div id='daily_num' style='width: 900px; height: 500px; margin: 0 auto;'></div>
 		<div id='weekly_sum' style='width: 900px; height: 500px; margin: 0 auto;'></div>
+		<div id='weekday_num' style='width: 900px; height: 500px; margin: 0 auto;'></div>
 		<div id='weekly_num' style='width: 900px; height: 500px; margin: 0 auto;'></div>
 		<script>
 		$(document).ready(function()
@@ -32,6 +33,17 @@
 				xAxis : {categories: {{ !weekly_sum_x }}, title: {text: '週'}},
 				yAxis : { title: {text: '人数'}},
 				series : [{'name': '週ごとの感染数合計', 'data': {{ !weekly_sum_y }} }]
+			});
+		});
+		$(document).ready(function()
+		{
+			$('#weekday_num').highcharts(
+			{
+				chart : {plotBackgroundColor: 'lightgray'},
+				title : {text: '曜日ごとの感染数'},
+				xAxis : {categories: {{ !weekday_date }}, title: {text: '週'}},
+				yAxis : { title: {text: '人数'}},
+				series : {{ !weekday_num }}
 			});
 		});
 		$(document).ready(function()

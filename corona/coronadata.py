@@ -79,6 +79,23 @@ def statistic_weekly(daily_data, start_date, end_date):
         weekly_data[week] = [value * 100 / sum(values) for value in values]
     return weeks, weekly_data
 
+def statistic_weekday(daily_data, start_date, end_date):
+    d = datetime.datetime.today()
+    while d.weekday() > 0:
+        d += datetime.timedelta(days=1)
+    weeks = {}
+    weekday_date = []
+    for i in range(7):
+        weeks[d.strftime('%a')] = []
+        d += datetime.timedelta(days=1)
+    for day, num in daily_data.items():
+        if start_date <= day <= end_date:
+            week_start = (day - datetime.timedelta(days=day.weekday())).strftime('%Y/%m/%d')
+            if week_start not in weekday_date:
+                weekday_date.append(week_start)
+            weeks[day.strftime('%a')].append(num)
+    return weekday_date, weeks
+
 def last_complete_week_start(date):
     date += datetime.timedelta(days=1)
     date -= datetime.timedelta(days=date.weekday())
@@ -116,6 +133,12 @@ class CoronaDBTest(unittest.TestCase):
 
     def test_read_mhlw_data(self):
         print(read_mhlw_data())
+
+    def test_statistic_weekday(self):
+        daily_data = read_data()
+        print(statistic_weekday(daily_data,
+                                datetime.datetime(2020, 3, 2),
+                                datetime.datetime(2020, 8, 3)))
 
 def test_last_complete_week_start():
     for day, start in {19: 19, 20: 19, 25: 19, 26: 26, 27: 26, 28: 26}.items():
