@@ -57,7 +57,7 @@ def graph():
                                                         end_date)
         weekday_date, weekday_num = coronadata.statistic_weekday(daily_num,
                                                                  datetime.datetime(2020, 3, 2),
-                                                                 end_date)
+                                                                 datetime.datetime.today())
         weekday_num = [{'name': jpweek[weekday], 'data': nums}
                        for weekday, nums in weekday_num.items()]
         weekly_sum = coronadata.sum_weekly(daily_num)
