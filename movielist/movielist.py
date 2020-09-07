@@ -92,6 +92,9 @@ def edittitle2():
             target = 0
             watch_date = datetime.datetime.today().strftime('%Y-%m-%d')
 
+        if watch_date is not None and chrome_type is None:
+            return 'chrome_type is None'
+
         movielistdb.update(
             id=request.POST.getunicode('id'),
             release_year=request.POST.getunicode('release_year'),
