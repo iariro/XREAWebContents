@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import ipmiutilchangelog
 import ambient
+import requests
 
 def line_notify(last, now):
     token = "nPQEoC190nfvydJRbQmY75SY00Ygvt0CxsaXWoLTUUH"
