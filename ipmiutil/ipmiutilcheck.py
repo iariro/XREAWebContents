@@ -1,7 +1,4 @@
 #!/usr/local/bin/python3
-import datetime
-import re
-import urllib.request
 from bottle import route, template
 import ipmiutilchangelog
 
