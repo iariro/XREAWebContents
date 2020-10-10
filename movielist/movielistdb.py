@@ -201,9 +201,9 @@ def get_annual_count(years, get_key):
     year_count = [{'name': key, 'data': value} for key, value in year_count.items()]
     total = get_all_count()
     year_count.append({'name': 'コンプリート率',
-                          'data': [round(n * 100 / total, 3) for n in annual_accum],
-                          'type': 'line',
-                          'yAxis': 1})
+                       'data': [round(n * 100 / total, 3) for n in annual_accum],
+                       'type': 'line',
+                       'yAxis': 1})
 
     return year_labels, sum, year_count
 
