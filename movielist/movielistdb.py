@@ -138,19 +138,34 @@ def get_monthly_count(years, get_key):
     sum = {key: {'count': 0, 'ratio': 0} for key in keys}
     month_labels = []
     monthly_count = {}
+    monthly_accum = []
     for year in years:
         month_labels = ['%d/%02d' % (year['year'], i + 1) for i in range(0, 12)] + month_labels
         for key in keys:
             monthly_count[key] = [0] * 12 + (monthly_count[key] if key in monthly_count else [])
+        monthly_accum_1year = [0] * 12
         for title in year['titles']:
             total += 1
             key = get_key(title)
             sum[key]['count'] += 1
-            monthly_count[key][int(title['watch_date'][5:7]) - 1] += 1
+            month = int(title['watch_date'][5:7])
+            monthly_count[key][month - 1] += 1
+            monthly_accum_1year[month - 1] += 1
+        monthly_accum = monthly_accum_1year + monthly_accum
     for key, value in sum.items():
         value['ratio'] = '%2.2f' % (value['count'] * 100 / total)
+    accum = 0
+    for i, n in enumerate(monthly_accum):
+        monthly_accum[i] = accum + monthly_accum[i]
+        accum = monthly_accum[i]
+    monthly_count = [{'name': key, 'data': value, 'yAxis': 0} for key, value in monthly_count.items()]
+    total = get_all_count()
+    monthly_count.append({'name': 'コンプリート率',
+                          'data': [round(n * 100 / total, 3) for n in monthly_accum],
+                          'type': 'line',
+                          'yAxis': 1})
 
-    return month_labels, sum, [{'name': key, 'data': value} for key, value in monthly_count.items()]
+    return month_labels, sum, monthly_count
 
 def get_annual_count(years, get_key):
     keys = []
@@ -164,6 +179,7 @@ def get_annual_count(years, get_key):
     sum = {key: {'count': 0, 'ratio': 0} for key in keys}
     year_labels = []
     year_count = {}
+    annual_accum = []
     for year in years:
         year_labels = [year['year']] + year_labels
         for key in keys:
@@ -173,10 +189,23 @@ def get_annual_count(years, get_key):
             key = get_key(title)
             sum[key]['count'] += 1
             year_count[key][0] += 1
+        annual_accum.insert(0, len(year['titles']))
     for key, value in sum.items():
         value['ratio'] = '%2.2f' % (value['count'] * 100 / total)
 
-    return year_labels, sum, [{'name': key, 'data': value} for key, value in year_count.items()]
+    accum = 0
+    for i, n in enumerate(annual_accum):
+        annual_accum[i] = accum + annual_accum[i]
+        accum = annual_accum[i]
+
+    year_count = [{'name': key, 'data': value} for key, value in year_count.items()]
+    total = get_all_count()
+    year_count.append({'name': 'コンプリート率',
+                          'data': [round(n * 100 / total, 3) for n in annual_accum],
+                          'type': 'line',
+                          'yAxis': 1})
+
+    return year_labels, sum, year_count
 
 def string_or_null(value):
     if value is None:
@@ -200,6 +229,10 @@ def update(id, release_year, youga_houga, chrome_type, acquisition_type, watch_d
                                 id)
     rows = query(sql)
     return sql, rows
+
+def get_all_count():
+    rows = query('select count(*) from mv_title;')
+    return rows[0][0]
 
 ################################################################################
 
@@ -231,6 +264,7 @@ class MovielistdbTest(unittest.TestCase):
     def test_get_monthly_count(self):
         years = read_watched_title()
         month_labels, sum, arr = get_monthly_count(years, lambda title: title['youga_houga'])
+        print(arr)
         self.assertTrue(len(month_labels) > 0)
         self.assertIsNotNone(sum)
         self.assertTrue(len(arr) > 0)
@@ -238,6 +272,7 @@ class MovielistdbTest(unittest.TestCase):
     def test_get_annual_count(self):
         years = read_watched_title()
         year_labels, sum, arr = get_annual_count(years, lambda title: title['youga_houga'])
+        print(arr)
         self.assertTrue(len(year_labels) > 0)
         self.assertIsNotNone(sum)
         self.assertTrue(len(arr) > 0)
@@ -248,3 +283,9 @@ class MovielistdbTest(unittest.TestCase):
 
 #   def test_update(self):
 #       update(id, release_year, youga_houga, chrome_type, acq_type, watch_date, title, target)
+
+    def test_get_all_count(self):
+        print('test_get_all_count')
+        print(get_all_count())
+
+# python3 -m unittest movielistdb.py movielistdb.MovielistdbTest.test_get_all_count

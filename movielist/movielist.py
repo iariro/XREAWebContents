@@ -151,7 +151,11 @@ def annual_graph_by_acquisition_type():
     year_labels, sum, year_count = \
         movielistdb.get_annual_count(years,
                                      lambda title: title['acquisition_type'])
-    return template('histgram.html', x_labels=year_labels, count=year_count, title='鑑賞方法', sum=sum)
+    return template('histgram.html',
+                    x_labels=year_labels,
+                    count=year_count,
+                    title='鑑賞方法',
+                    sum=sum)
 
 @route('/annual_graph_by_chrome_type')
 def annual_graph_by_chrome_type():
