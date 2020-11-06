@@ -45,7 +45,10 @@ def read_mhlw_data():
         body = res.read()
         daily_data = {}
         for row in csv.reader(body.decode().splitlines()[1:]):
-            daily_data[datetime.datetime.strptime(row[0], '%Y/%m/%d')] = int(row[1])
+            try:
+                daily_data[datetime.datetime.strptime(row[0], '%Y/%m/%d')] = int(row[1])
+            except ValueError as error:
+                pass
     return daily_data
 
 def read_last_data(limit):
