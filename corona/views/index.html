@@ -13,21 +13,8 @@
 	<h3>感染者数</h3>
 
 	<ul>
-		<li><a href="graph">グラフ</a>
-		<li><a href="input">入力</a>
-		<li><a href="update">更新</a>
+		<li><a href="graph">厚労省のデータによるグラフ</a>
 	</ul>
-
-	最新データ
-    <table class='table-sm table-hover table-bordered'>
-	<tr>
-	<th>日</th>
-	<th>人数</th>
-	</tr>
-	% for date, num in daily_num.items():
-	<tr><td>{{ date }}</td><td align='right'>{{ num }}<br></td></tr>
-	% end
-	</table>
 
 	</div>
 
