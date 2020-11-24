@@ -44,11 +44,21 @@ def read_mhlw_data():
     with urllib.request.urlopen('https://www.mhlw.go.jp/content/pcr_positive_daily.csv') as res:
         body = res.read()
         daily_data = {}
-        for row in csv.reader(body.decode('sjis').splitlines()[1:]):
+        lines = None
+        for encode in ('utf-8', 'sjis'):
             try:
-                daily_data[datetime.datetime.strptime(row[0], '%Y/%m/%d')] = int(row[1])
-            except ValueError:
+                lines = body.decode(encode)
+                break
+            except UnicodeDecodeError:
                 pass
+
+        if lines:
+            for row in csv.reader(lines.splitlines()[1:]):
+                try:
+                    daily_data[datetime.datetime.strptime(row[0], '%Y/%m/%d')] = int(row[1])
+                except ValueError:
+                    pass
+
     return daily_data
 
 def read_last_data(limit):
