@@ -234,7 +234,8 @@ def get_all_count():
     rows = query('select count(*) from mv_title;')
     return rows[0][0]
 
-def add_title(release_year=None, youga_houga=None, chrome_type=None, acquisition_type=None, watch_date=None, title=None, target=None):
+def add_title(release_year=None, youga_houga=None, chrome_type=None, acquisition_type=None, \
+              watch_date=None, title=None, target=None):
     values = []
     values.append(str(release_year) if release_year else 'null')
     values.append("'{}'".format(youga_houga) if youga_houga else 'null')
