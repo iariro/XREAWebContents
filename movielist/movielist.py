@@ -57,10 +57,10 @@ def add_title2():
             title=title)
 
         return template('addtitle2.html',
-            id='?',
-            release_year=release_year,
-            youga_houga=youga_houga,
-            title=title)
+                        id='?',
+                        release_year=release_year,
+                        youga_houga=youga_houga,
+                        title=title)
 
     except Exception as e:
         return str(e)
