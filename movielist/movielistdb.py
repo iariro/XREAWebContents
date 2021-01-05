@@ -234,9 +234,24 @@ def get_all_count():
     rows = query('select count(*) from mv_title;')
     return rows[0][0]
 
+def add_title(release_year=None, youga_houga=None, chrome_type=None, acquisition_type=None, watch_date=None, title=None, target=None):
+    values = []
+    values.append(str(release_year) if release_year else 'null')
+    values.append("'{}'".format(youga_houga) if youga_houga else 'null')
+    values.append("'{}'".format(chrome_type) if chrome_type else 'null')
+    values.append("'{}'".format(acquisition_type) if acquisition_type else 'null')
+    values.append("'{}'".format(watch_date) if watch_date else 'null')
+    values.append("'{}'".format(title) if title else 'null')
+    values.append(str(target) if target else 'null')
+    sql = "insert into mv_title " \
+          "(release_year, youga_houga, chrome_type, acquisition_type, watch_date, title, target) " \
+          "values ({});".format(','.join(values))
+    query(sql)
+
 ################################################################################
 
 class MovielistdbTest(unittest.TestCase):
+
     def test_extend_chrome_type(self):
         self.assertEqual("モノクロ", extend_chrome_type("モ"))
         self.assertEqual("カラー", extend_chrome_type("カ"))
@@ -287,5 +302,11 @@ class MovielistdbTest(unittest.TestCase):
     def test_get_all_count(self):
         print('test_get_all_count')
         print(get_all_count())
+
+    def test_add_title(self):
+        add_title(release_year=2000,
+                  youga_houga='洋',
+                  title='test')
+
 
 # python3 -m unittest movielistdb.py movielistdb.MovielistdbTest.test_get_all_count

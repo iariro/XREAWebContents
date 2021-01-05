@@ -35,6 +35,36 @@ def titlelist():
     except Exception as e:
         return str(e)
 
+@route('/add_title')
+def add_title():
+    return template('addtitle.html')
+
+@route('/add_title2', method="POST")
+def add_title2():
+    try:
+        release_year = request.POST.getunicode('release_year')
+        youga_houga = request.POST.getunicode('youga_houga')
+        title = request.POST.getunicode('title')
+
+        if youga_houga == 'youga':
+            youga_houga = '洋'
+        elif youga_houga == 'houga':
+            youga_houga = '邦'
+
+        movielistdb.add_title(
+            release_year=release_year,
+            youga_houga=youga_houga,
+            title=title)
+
+        return template('addtitle2.html',
+            id='?',
+            release_year=release_year,
+            youga_houga=youga_houga,
+            title=title)
+
+    except Exception as e:
+        return str(e)
+
 @route('/edittitle', method="POST")
 def edittitle():
     try:
