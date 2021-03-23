@@ -45,6 +45,13 @@ def extend_acquisition_type(code):
     else:
         return ''
 
+def read_all():
+    titles = []
+    rows = query('select * from mv_title;')
+    for row in rows:
+        titles.append(row)
+    return titles
+
 def scatter():
     rows = query('select release_year, watch_date, acquisition_type, title '
                  'from mv_title where watch_date is not null;')
@@ -267,6 +274,11 @@ class MovielistdbTest(unittest.TestCase):
         self.assertEqual("LD購入", extend_acquisition_type("LP"))
         self.assertEqual("ひとのDVD", extend_acquisition_type("DB"))
 
+    def test_read_all(self):
+        titles = read_all()
+        for title in titles:
+            print('{} {} {}'.format(title[1], title[2], title[6]))
+
     def test_scatter(self):
         self.assertTrue(len(scatter()) > 0)
 
@@ -310,4 +322,4 @@ class MovielistdbTest(unittest.TestCase):
                   title='test')
 
 
-# python3 -m unittest movielistdb.py movielistdb.MovielistdbTest.test_get_all_count
+# python3 -m unittest movielistdb.MovielistdbTest.test_get_all_count
