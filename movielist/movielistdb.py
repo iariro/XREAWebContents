@@ -47,7 +47,7 @@ def extend_acquisition_type(code):
 
 def read_all():
     titles = []
-    rows = query('select * from mv_title;')
+    rows = query('select * from mv_title order by watch_date desc, release_year;')
     for row in rows:
         titles.append(row)
     return titles
@@ -277,7 +277,17 @@ class MovielistdbTest(unittest.TestCase):
     def test_read_all(self):
         titles = read_all()
         for title in titles:
-            print('{} {} {}'.format(title[1], title[2], title[6]))
+            id, release_year, yh, chrome, acquisition, watch_date, title, target, insert = title
+            if watch_date is None:
+                print('\t'.join([str(id), str(release_year), yh, title]))
+        for title in titles:
+            id, release_year, yh, chrome, acquisition, watch_date, title, target, insert = title
+            if watch_date is None:
+                continue
+            chrome2 = chrome if chrome else '-'
+            acquisition2 = acquisition if chrome else '-'
+            watch_date2 = watch_date.strftime('%m/%d') if watch_date else '-'
+            print('\t'.join([str(id), str(release_year), yh, chrome2, acquisition2, watch_date2, title]))
 
     def test_scatter(self):
         self.assertTrue(len(scatter()) > 0)
