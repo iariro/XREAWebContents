@@ -20,11 +20,11 @@ def get_titles(file_path):
 titles1 = get_titles('titlelist.txt')
 titles2 = get_titles('titlelist_2021.txt')
 
-#for id, title in titles1:
-#    if title not in [title2 for id2, title2 in titles2]:
-#        print("'{}',".format(title))
+for id, title in titles1:
+    if title not in [title2 for id2, title2 in titles2]:
+        print("'{}',".format(title))
 
-#print('-' * 40)
+print('-' * 40)
 
 for id, title in titles2:
     if title not in [title2 for id2, title2 in titles1]:
