@@ -16,7 +16,7 @@
 	% for year in movielist:
 	<h2>{{ year['year'] }}年</h2>
 	<table>
-		<tr><th>年</th><th>洋／邦</th><th>カラー／白黒</th><th>視聴方法</th><th>鑑賞日</th><th>タイトル</th></tr>
+		<tr><th>年</th><th>洋／邦</th><th>カラー／白黒</th><th>視聴方法</th><th>鑑賞日</th><th>タイトル</th><th>登録日</th></tr>
 		% for title in year['titles']:
 			<tr>
 				<td>{{ title['release_year'] }}</td>
@@ -25,6 +25,7 @@
 				<td>{{ title['acquisition_type'] }}</td>
 				<td>{{ title['watch_date'] }}</td>
 				<td>{{ title['title'] }}</td>
+				<td>{{ title['insert_date'] }}</td>
 			</tr>
 		% end
 	</table>

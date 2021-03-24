@@ -74,7 +74,7 @@ def scatter():
 
 def read_watched_title():
     rows = query('select id, release_year, youga_houga, chrome_type, acquisition_type, '
-                 'watch_date, title, target '
+                 'watch_date, title, target, insert_date '
                  'from mv_title '
                  'where watch_date is not null '
                  'order by watch_date desc, release_year desc;')
@@ -100,12 +100,13 @@ def read_watched_title():
                                                  'chrome_type': chrome_type,
                                                  'acquisition_type': acquisition_type,
                                                  'watch_date': row[5].strftime('%Y/%m/%d'),
-                                                 'title': row[6]})
+                                                 'title': row[6],
+                                                 'insert_date': row[8].strftime('%Y/%m/%d')})
     return titles
 
 def read_unwatched_title(target):
     rows = query('select id, release_year, youga_houga, chrome_type, acquisition_type, title, '
-                 'target '
+                 'target, insert_date '
                  'from mv_title '
                  'where watch_date is null '
                  '%s order by release_year' % ('and target=1' if target else ''))
@@ -130,7 +131,8 @@ def read_unwatched_title(target):
                        'chrome_type': row[3],
                        'acquisition_type': row[4],
                        'title': row[5],
-                       'target': target})
+                       'target': target,
+                       'insert_date': row[7].strftime('%Y/%m/%d')})
     return titles, count
 
 def get_monthly_count(years, get_key):
@@ -251,8 +253,9 @@ def add_title(release_year=None, youga_houga=None, chrome_type=None, acquisition
     values.append("'{}'".format(watch_date) if watch_date else 'null')
     values.append("'{}'".format(title) if title else 'null')
     values.append(str(target) if target else 'null')
+    values.append('now()')
     sql = "insert into mv_title " \
-          "(release_year, youga_houga, chrome_type, acquisition_type, watch_date, title, target) " \
+          "(release_year, youga_houga, chrome_type, acquisition_type, watch_date, title, target, insert_date) " \
           "values ({});".format(','.join(values))
     query(sql)
 
@@ -293,7 +296,7 @@ class MovielistdbTest(unittest.TestCase):
         self.assertTrue(len(scatter()) > 0)
 
     def test_read_watched_title(self):
-        self.assertTrue(len(read_watched_title()) > 0)
+        print(read_watched_title())
 
     def test_read_unwatched_title(self):
         titles, count = read_unwatched_title(False)

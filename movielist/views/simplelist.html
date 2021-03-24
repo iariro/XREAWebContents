@@ -21,7 +21,7 @@
 	<br>
 
 	<table>
-		<tr><th>年</th><th>洋／邦</th><th>タイトル</th><th>鑑賞対象</th><th>操作</th></tr>
+		<tr><th>年</th><th>洋／邦</th><th>タイトル</th><th>鑑賞対象</th><th>登録日</th><th>操作</th></tr>
 		% for title in movielist:
 			<tr>
 				<td>{{ title['release_year'] }}</td>
@@ -32,6 +32,7 @@
 				〇
 				% end
 				</td>
+				<td>{{ title['insert_date'] }}</td>
 				<td>
 				<form action="edittitle" method="POST">
 				<input type="hidden" name="id" value="{{ title['id'] }}">
