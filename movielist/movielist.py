@@ -65,6 +65,30 @@ def add_title2():
     except Exception as e:
         return str(e)
 
+@route('/add_title3', method="POST")
+def add_title3():
+    '''
+    一括登録
+    '''
+    try:
+        title_list_line = request.POST.getunicode('title_list').split('\n')
+        title_list = []
+        for title in title_list_line:
+            if len(title) > 0:
+                release_year, youga_houga, title = title[0:4], title[5:6], title[7:]
+
+                movielistdb.add_title(
+                    release_year=release_year,
+                    youga_houga=youga_houga,
+                    title=title)
+
+                title_list.append((release_year, youga_houga, title))
+
+        return template('addtitle3.html',
+                        title_list=title_list)
+    except Exception as e:
+        return str(e)
+
 @route('/edittitle', method="POST")
 def edittitle():
     try:

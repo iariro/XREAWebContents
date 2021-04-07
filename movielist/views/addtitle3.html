@@ -1,0 +1,32 @@
+<html>
+<head>
+<title>映画鑑賞情報</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="static/css/hatena.css">
+</head>
+<body>
+	<h1>タイトル追加</h1>
+
+	<div class=hatena-body>
+	<div class=main>
+	<div class=day>
+
+	以下のタイトルを追加しました<br>
+
+	<table>
+		<tr><th>年</th><th>洋／邦</th><th>タイトル</th></tr>
+		% for title in title_list:
+			<tr>
+				<td>{{ title[0] }}</td>
+				<td>{{ title[1] }}</td>
+				<td>{{ title[2] }}</td>
+			</tr>
+		% end
+	</table>
+
+	</div>
+	</div>
+	</div>
+
+</body>
+</html>
