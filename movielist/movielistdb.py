@@ -243,6 +243,69 @@ def get_all_count():
     rows = query('select count(*) from mv_title;')
     return rows[0][0]
 
+def get_balance_count():
+    rows = query('select substr(watch_date, 1, 7), substr(insert_date, 1, 7) from mv_title;')
+    start_date = None
+    end_date = None
+    watch_count = {}
+    insert_count = {}
+    for row in rows:
+        if row[0]:
+            if start_date is None or start_date > row[0]:
+                start_date = row[0]
+            if end_date is None or end_date < row[0]:
+                end_date = row[0]
+
+            d = datetime.datetime.strptime(row[0], '%Y-%m')
+            d = '{}-{:02}'.format(d.year, d.month - (d.month - 1) % 3)
+            if d not in watch_count:
+                watch_count[d] = 0
+            watch_count[d] += 1
+
+        if row[1]:
+            if start_date is None or start_date > row[1]:
+                start_date = row[1]
+            if end_date is None or end_date < row[1]:
+                end_date = row[1]
+
+            d = datetime.datetime.strptime(row[1], '%Y-%m')
+            d = '{}-{:02}'.format(d.year, d.month - (d.month - 1) % 3)
+            if d not in insert_count:
+                insert_count[d] = 0
+            insert_count[d] += 1
+
+    start_date = datetime.datetime.strptime(start_date + '-01', '%Y-%m-%d')
+    start_date = datetime.datetime(start_date.year,
+                                   start_date.month - (start_date.month - 1) % 3,
+                                   1)
+    end_date = datetime.datetime.strptime(end_date + '-01', '%Y-%m-%d')
+    label = []
+    watch_count2 = []
+    insert_count2 = []
+    balance_count = 0
+    balance_count2 = []
+    d = start_date
+    while d <= end_date:
+        if d.month % 3 == 1 and d.day == 1:
+            label.append(d.strftime('%Y/%m'))
+
+            watch_count3 = 0
+            if d.strftime('%Y-%m') in watch_count:
+                watch_count3 = watch_count[d.strftime('%Y-%m')]
+            watch_count2.append(watch_count3)
+
+            insert_count3 = 0
+            if d.strftime('%Y-%m') in insert_count:
+                insert_count3 = insert_count[d.strftime('%Y-%m')]
+            insert_count2.append(-insert_count3)
+
+            balance_count += watch_count3 - insert_count3
+            balance_count2.append(balance_count)
+
+        d += datetime.timedelta(days=1)
+
+    return label, watch_count2, insert_count2, balance_count2
+
 def add_title(release_year=None, youga_houga=None, chrome_type=None, acquisition_type=None,
               watch_date=None, title=None, target=None):
     values = []
@@ -334,5 +397,7 @@ class MovielistdbTest(unittest.TestCase):
                   youga_houga='洋',
                   title='test')
 
+    def test_get_balance_count(self):
+        print(get_balance_count())
 
 # python3 -m unittest movielistdb.MovielistdbTest.test_get_all_count

@@ -174,6 +174,15 @@ def edittitle2():
 def scatter():
     return template('scatter.html', scatter=movielistdb.scatter())
 
+@route('/balance_graph')
+def balance_graph():
+    x_labels, watch_count, insert_count, balance_count = movielistdb.get_balance_count()
+    return template('balance_graph.html',
+                    x_labels=x_labels,
+                    watch_count=watch_count,
+                    insert_count=insert_count,
+                    balance_count=balance_count)
+
 @route('/annual_graph_all')
 def annual_graph_all():
     try:

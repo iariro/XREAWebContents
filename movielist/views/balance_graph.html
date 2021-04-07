@@ -1,0 +1,31 @@
+<html>
+	<head>
+		<meta charset='UTF-8' />
+		<script src='http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js'></script>
+		<script src='http://code.highcharts.com/highcharts.js'></script>
+		<link rel="stylesheet" type="text/css" href="static/css/hatena.css">
+		<title>映画鑑賞情報</title>
+	</head>
+
+	<body>
+		<h3>映画鑑賞情報</h3>
+		<div id='balance_graph' style='width: 1200px; height: 600px;'></div>
+		<script>
+		$(document).ready(function()
+		{
+			$('#balance_graph').highcharts(
+			{
+				chart : {type: 'column'},
+				title : {text: '鑑賞数と追加タイトル数'},
+				xAxis : {categories: {{ !x_labels }}},
+				yAxis : [{min:-600, max:100, title: {text: '件数'}},
+                         {min:-600, max:100, title: {text: '件数'}, opposite: true}],
+				series : [ {name: '鑑賞数', data: {{ !watch_count }} },
+				           {name: '追加タイトル数', data: {{ !insert_count }} },
+				           {name: '累計', data: {{ !balance_count }}, type: 'line', yAxis: 1 } ]
+			});
+		});
+		</script>
+
+	</body>
+</html>
