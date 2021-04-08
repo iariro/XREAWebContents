@@ -1,5 +1,6 @@
 import urllib.request
-import io,sys
+import io
+import sys
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 def get_all_title(year, month):
@@ -33,7 +34,7 @@ if __name__ == '__main__':
                             print(sql.format(year, month, title))
                         else:
                             print('-- ' + sql.format(year, month, title))
-                        all_insert_titles.append(title )
+                        all_insert_titles.append(title)
                 titles2 = titles
-            except urllib.error.HTTPError as e:
+            except urllib.error.HTTPError:
                 pass
