@@ -9,13 +9,29 @@
 
 	<body>
 		<h3>映画鑑賞情報</h3>
+		<div id='total_count_graph' style='width: 1200px; height: 600px;'></div>
+		<script>
+		$(document).ready(function()
+		{
+			$('#total_count_graph').highcharts(
+			{
+				chart : {plotBackgroundColor: 'lightgray'},
+				title : {text: '鑑賞数と追加タイトル数'},
+				xAxis : {categories: {{ !x_labels }}},
+				yAxis : [{title: {text: '件数'}}],
+				series : [ {name: '鑑賞数', data: {{ !total_watch_count }} },
+				           {name: '追加タイトル数', data: {{ !total_insert_count }} }]
+			});
+		});
+		</script>
+
 		<div id='balance_graph' style='width: 1200px; height: 600px;'></div>
 		<script>
 		$(document).ready(function()
 		{
 			$('#balance_graph').highcharts(
 			{
-				chart : {type: 'column'},
+				chart : {type: 'column', plotBackgroundColor: 'lightgray'},
 				title : {text: '鑑賞数と追加タイトル数'},
 				xAxis : {categories: {{ !x_labels }}},
 				yAxis : [{min:-600, max:100, title: {text: '件数'}},

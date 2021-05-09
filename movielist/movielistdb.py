@@ -281,9 +281,14 @@ def get_balance_count():
     end_date = datetime.datetime.strptime(end_date + '-01', '%Y-%m-%d')
     label = []
     watch_count2 = []
+    watch_count2 = []
     insert_count2 = []
     balance_count = 0
     balance_count2 = []
+    total_insert_count = 0
+    total_watch_count = 0
+    total_insert_count2 = []
+    total_watch_count2 = []
     d = start_date
     while d <= end_date:
         if d.month % 3 == 1 and d.day == 1:
@@ -293,18 +298,22 @@ def get_balance_count():
             if d.strftime('%Y-%m') in watch_count:
                 watch_count3 = watch_count[d.strftime('%Y-%m')]
             watch_count2.append(watch_count3)
+            total_watch_count += watch_count3
+            total_watch_count2.append(total_watch_count)
 
             insert_count3 = 0
             if d.strftime('%Y-%m') in insert_count:
                 insert_count3 = insert_count[d.strftime('%Y-%m')]
             insert_count2.append(-insert_count3)
+            total_insert_count += insert_count3
+            total_insert_count2.append(total_insert_count)
 
             balance_count += watch_count3 - insert_count3
             balance_count2.append(balance_count)
 
         d += datetime.timedelta(days=1)
 
-    return label, watch_count2, insert_count2, balance_count2
+    return label, watch_count2, insert_count2, total_insert_count2, total_watch_count2, balance_count2
 
 def add_title(release_year=None, youga_houga=None, chrome_type=None, acquisition_type=None,
               watch_date=None, title=None, target=None):
