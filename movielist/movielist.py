@@ -176,7 +176,8 @@ def scatter():
 
 @route('/balance_graph')
 def balance_graph():
-    x_labels, watch_count, insert_count, total_watch_count, total_insert_count, balance_count = movielistdb.get_balance_count()
+    x_labels, watch_count, insert_count, total_watch_count, total_insert_count, balance_count = \
+        movielistdb.get_balance_count()
     return template('balance_graph.html',
                     x_labels=x_labels,
                     watch_count=watch_count,
