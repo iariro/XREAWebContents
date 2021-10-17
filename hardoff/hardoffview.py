@@ -1,6 +1,8 @@
-﻿from bottle import route, template, request
+﻿from bottle import route, template, request, debug
 import datetime
 import hardoffdata
+
+debug(True)
 
 @route('/')
 def index():
@@ -50,16 +52,13 @@ def store_edit2():
     visit_date = request.POST.getunicode('visit_date')
     address = request.POST.getunicode('address')
     targeting = request.POST.getunicode('targeting')
-    try:
-        sql = hardoffdata.update_store(store_id,
-                                       near_station,
-                                       minutes_from_near_station,
-                                       visit_date,
-                                       address,
-                                       targeting)
-        return template('store_edit2.html', success=True, sql=sql)
-    except Exception:
-        return template('store_edit2.html', success=False, sql=sql)
+    sql = hardoffdata.update_store(store_id,
+                                   near_station,
+                                   minutes_from_near_station,
+                                   visit_date,
+                                   address,
+                                   targeting)
+    return template('store_edit2.html', success=True, sql=sql)
 
 @route('/store_list', method='POST')
 def store_list():

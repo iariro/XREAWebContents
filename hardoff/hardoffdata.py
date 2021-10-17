@@ -78,7 +78,7 @@ def update_store(store_id, near_station, minutes_from_near_station, visit_date, 
     values = []
     if near_station is not None and minutes_from_near_station is not None:
         values.append("near_station='%s'" % near_station)
-        values.append("minutes_from_near_station=%d" % minutes_from_near_station)
+        values.append("minutes_from_near_station=%s" % minutes_from_near_station)
 
     if visit_date is not None:
         values.append("visit_date='%s'" % visit_date)
@@ -161,3 +161,5 @@ class HardoffDBTest(unittest.TestCase):
 
     def test_update_visit_date(self):
         update_visit_date('1', datetime.date.today())
+
+# python3 -m unittest hardoffdata.HardoffDBTest.
