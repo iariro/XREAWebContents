@@ -1,4 +1,4 @@
-﻿from bottle import route, template, request, debug
+﻿from bottle import route, template, request, debug, static_file
 import datetime
 import hardoffdata
 
@@ -7,6 +7,10 @@ debug(True)
 @route('/')
 def index():
     return template('index.html')
+
+@route('/views/<file_path:path>')
+def static(file_path):
+    return static_file(file_path, root='./views')
 
 @route('/area_count')
 def area_count():
