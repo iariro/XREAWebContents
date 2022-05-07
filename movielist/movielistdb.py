@@ -52,22 +52,36 @@ def read_all():
         titles.append(row)
     return titles
 
-def scatter():
-    rows = query('select release_year, watch_date, acquisition_type, title '
-                 'from mv_title where watch_date is not null;')
+def scatter(watched):
+    sql = 'select release_year, watch_date, acquisition_type, title, insert_date from mv_title '
+    if watched:
+        sql += 'where watch_date is not null'
+    else:
+        sql += 'where watch_date is null'
+    sql += ' order by insert_date;'
+    rows = query(sql)
     titles = []
     for row in rows:
         acquisition_type = extend_acquisition_type(row[2])
         item = None
+        if watched:
+            name = acquisition_type
+        else:
+            name = '{}年'.format(row[4].year)
         for item2 in titles:
-            if item2['name'] == acquisition_type:
+            if item2['name'] == name:
                 item = item2
                 break
         if item is None:
-            item = {'name': acquisition_type, 'data': []}
+            item = {'name': name, 'data': []}
             titles.append(item)
+
+        if watched:
+            d = row[1]
+        else:
+            d = row[4]
         item['data'].append({
-            'x': int(datetime.datetime.combine(row[1], datetime.time()).timestamp()) * 1000,
+            'x': int(datetime.datetime.combine(d, datetime.time()).timestamp()) * 1000,
             'y': int(datetime.datetime(year=row[0], month=1, day=1).timestamp()) * 1000,
             'name': row[3]})
     return titles
@@ -365,7 +379,7 @@ class MovielistdbTest(unittest.TestCase):
             print('\t'.join([str(id), str(release_year), yh, chrome2, acquisition2, watch_date2, title]))
 
     def test_scatter(self):
-        self.assertTrue(len(scatter()) > 0)
+        print(scatter(False))
 
     def test_read_watched_title(self):
         print(read_watched_title())

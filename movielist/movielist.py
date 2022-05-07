@@ -170,9 +170,13 @@ def edittitle2():
     except Exception as e:
         return str(e)
 
-@route('/scatter')
-def scatter():
-    return template('scatter.html', scatter=movielistdb.scatter())
+@route('/scatter_watched')
+def scatter_watched():
+    return template('scatter.html', scatter=movielistdb.scatter(True))
+
+@route('/scatter_unwatched')
+def scatter_unwatched():
+    return template('scatter.html', scatter=movielistdb.scatter(False))
 
 @route('/balance_graph')
 def balance_graph():
