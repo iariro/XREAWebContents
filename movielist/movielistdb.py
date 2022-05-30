@@ -52,6 +52,22 @@ def read_all():
         titles.append(row)
     return titles
 
+def find_title(word):
+    titles = []
+    rows = query("select id, release_year, youga_houga, chrome_type, acquisition_type, title, "
+                 "target, insert_date "
+                 "from mv_title where title like '%{}%';".format(word))
+    for row in rows:
+        titles.append({'id': row[0],
+                       'release_year': row[1],
+                       'youga_houga': row[2],
+                       'chrome_type': row[3],
+                       'acquisition_type': row[4],
+                       'title': row[5],
+                       'target': row[6],
+                       'insert_date': row[7].strftime('%Y/%m/%d')})
+    return titles
+
 def scatter(watched):
     sql = 'select release_year, watch_date, acquisition_type, title, insert_date from mv_title '
     if watched:
@@ -377,6 +393,11 @@ class MovielistdbTest(unittest.TestCase):
             acquisition2 = acquisition if chrome else '-'
             watch_date2 = watch_date.strftime('%m/%d') if watch_date else '-'
             print('\t'.join([str(id), str(release_year), yh, chrome2, acquisition2, watch_date2, title]))
+
+    def test_find_title(self):
+        titles = find_title('東京')
+        for title in titles:
+            print(title)
 
     def test_scatter(self):
         print(scatter(False))

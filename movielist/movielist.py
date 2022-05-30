@@ -170,6 +170,11 @@ def edittitle2():
     except Exception as e:
         return str(e)
 
+@route('/find_title', method="POST")
+def find_title():
+    keyword = request.POST.getunicode('keyword')
+    return template('find_title.html', keyword=keyword, movielist=movielistdb.find_title(keyword))
+
 @route('/scatter_watched')
 def scatter_watched():
     return template('scatter.html', scatter=movielistdb.scatter(True))
