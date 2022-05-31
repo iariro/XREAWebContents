@@ -178,7 +178,10 @@ def find_title():
 @route('/release_year_histo')
 def release_year_histo():
     (x_labels, years_watched, years_unwatched) = movielistdb.get_release_year_count()
-    return template('release_year_histo.html', x_labels=x_labels, years_watched=years_watched, years_unwatched=years_unwatched)
+    return template('release_year_histo.html',
+                    x_labels=x_labels,
+                    years_watched=years_watched,
+                    years_unwatched=years_unwatched)
 
 @route('/scatter_watched')
 def scatter_watched():
