@@ -69,7 +69,8 @@ def find_title(word):
     return titles
 
 def get_release_year_count():
-    rows = query("select release_year, watch_date is not null, count(*) from mv_title group by release_year, watch_date is not null;")
+    rows = query("select release_year, watch_date is not null, count(*) from mv_title "
+                 "group by release_year, watch_date is not null;")
     first_year = (min([row[0] for row in rows]) // 10) * 10
     last_year = ((max([row[0] for row in rows]) + 9) // 10) * 10
     x_labels = []
