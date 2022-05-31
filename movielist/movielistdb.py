@@ -69,17 +69,22 @@ def find_title(word):
     return titles
 
 def get_release_year_count():
-    rows = query("select release_year, count(*) from mv_title group by release_year;")
+    rows = query("select release_year, watch_date is not null, count(*) from mv_title group by release_year, watch_date is not null;")
     first_year = (min([row[0] for row in rows]) // 10) * 10
     last_year = ((max([row[0] for row in rows]) + 9) // 10) * 10
     x_labels = []
-    years = []
+    years_watched = []
+    years_unwatched = []
     for i in range(last_year - first_year):
         x_labels.append(first_year + i)
-        years.append(0)
+        years_watched.append(0)
+        years_unwatched.append(0)
     for row in rows:
-        years[row[0] - first_year] = row[1]
-    return x_labels, years
+        if row[1]:
+            years_watched[row[0] - first_year] = row[2]
+        else:
+            years_unwatched[row[0] - first_year] = row[2]
+    return x_labels, years_watched, years_unwatched
 
 def scatter(watched):
     sql = 'select release_year, watch_date, acquisition_type, title, insert_date from mv_title '
