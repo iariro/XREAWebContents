@@ -175,6 +175,11 @@ def find_title():
     keyword = request.POST.getunicode('keyword')
     return template('find_title.html', keyword=keyword, movielist=movielistdb.find_title(keyword))
 
+@route('/release_year_histo')
+def release_year_histo():
+    (x_labels, counts) = movielistdb.get_release_year_count()
+    return template('release_year_histo.html', x_labels=x_labels, counts=counts)
+
 @route('/scatter_watched')
 def scatter_watched():
     return template('scatter.html', scatter=movielistdb.scatter(True))

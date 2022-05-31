@@ -68,6 +68,19 @@ def find_title(word):
                        'insert_date': row[7].strftime('%Y/%m/%d')})
     return titles
 
+def get_release_year_count():
+    rows = query("select release_year, count(*) from mv_title group by release_year;")
+    first_year = (min([row[0] for row in rows]) // 10) * 10
+    last_year = ((max([row[0] for row in rows]) + 9) // 10) * 10
+    x_labels = []
+    years = []
+    for i in range(last_year - first_year):
+        x_labels.append(first_year + i)
+        years.append(0)
+    for row in rows:
+        years[row[0] - first_year] = row[1]
+    return x_labels, years
+
 def scatter(watched):
     sql = 'select release_year, watch_date, acquisition_type, title, insert_date from mv_title '
     if watched:
@@ -398,6 +411,9 @@ class MovielistdbTest(unittest.TestCase):
         titles = find_title('東京')
         for title in titles:
             print(title)
+
+    def test_get_release_year_count(self):
+        print(get_release_year_count())
 
     def test_scatter(self):
         print(scatter(False))
