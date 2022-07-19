@@ -55,7 +55,7 @@ def read_all():
 def find_title(word):
     titles = []
     rows = query("select id, release_year, youga_houga, chrome_type, acquisition_type, title, "
-                 "target, insert_date "
+                 "target, insert_date, watch_date "
                  "from mv_title where title like '%{}%';".format(word))
     for row in rows:
         titles.append({'id': row[0],
@@ -65,7 +65,8 @@ def find_title(word):
                        'acquisition_type': row[4],
                        'title': row[5],
                        'target': row[6],
-                       'insert_date': row[7].strftime('%Y/%m/%d')})
+                       'insert_date': row[7].strftime('%Y/%m/%d'),
+                       'watch_date': row[8].strftime('%Y/%m/%d') if row[8] else None})
     return titles
 
 def get_release_year_count():
