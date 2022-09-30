@@ -2,11 +2,12 @@
 import datetime
 import os
 import sys
-from bottle import route, template, request
+from bottle import route, template, request, debug
 dirpath = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(dirpath)
 os.chdir(dirpath)
 import movielistdb
+debug(True)
 
 @route('/')
 def index():
@@ -22,11 +23,8 @@ def targetlist():
 
 @route('/unwatchedlist')
 def unwatchedlist():
-    try:
-        movielist, count = movielistdb.read_unwatched_title(False)
-        return template('simplelist.html', movielist=movielist, count=count)
-    except Exception as e:
-        return str(e)
+    movielist, count = movielistdb.read_unwatched_title(False)
+    return template('simplelist.html', movielist=movielist, count=count)
 
 @route('/watchedlist')
 def titlelist():
@@ -80,7 +78,7 @@ def add_title3():
                 movielistdb.add_title(
                     release_year=release_year,
                     youga_houga=youga_houga,
-                    title=title)
+                    title=title.strip())
 
                 title_list.append((release_year, youga_houga, title))
 

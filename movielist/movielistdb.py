@@ -2,13 +2,13 @@
 import sys
 import io
 import datetime
-import MySQLdb
+import pymysql
 import unittest
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 def query(sql):
-    conn = MySQLdb.connect(user='iariro',
+    conn = pymysql.connect(user='iariro',
                            passwd='abc123',
                            host='localhost',
                            db='iariro',
@@ -167,11 +167,8 @@ def read_unwatched_title(target):
         if row[6] is None:
             target = None
         else:
-            target = int.from_bytes(row[6].encode(), 'little')
-            if target == 0:
-                target = None
-            else:
-                count['target'] += 1
+            target = 1
+            count['target'] += 1
         youga_houga = row[2]
         if youga_houga:
             youga_houga += '画'
@@ -180,7 +177,7 @@ def read_unwatched_title(target):
                        'youga_houga': youga_houga,
                        'chrome_type': row[3],
                        'acquisition_type': row[4],
-                       'title': row[5],
+                       'title': str(row[5]),
                        'target': target,
                        'insert_date': row[7].strftime('%Y/%m/%d')})
     return titles, count
