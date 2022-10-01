@@ -114,59 +114,56 @@ def edittitle():
 
 @route('/edittitle2', method="POST")
 def edittitle2():
-    try:
-        youga_houga = request.POST.getunicode('youga_houga')
-        if youga_houga == 'youga':
-            youga_houga = '洋'
-        elif youga_houga == 'houga':
-            youga_houga = '邦'
+    youga_houga = request.POST.getunicode('youga_houga')
+    if youga_houga == 'youga':
+        youga_houga = '洋'
+    elif youga_houga == 'houga':
+        youga_houga = '邦'
 
-        chrome_type = request.POST.getunicode('chrome_type')
-        if chrome_type == 'color':
-            chrome_type = 'カ'
-        elif chrome_type == 'monochrome':
-            chrome_type = 'モ'
-        else:
-            chrome_type = None
+    chrome_type = request.POST.getunicode('chrome_type')
+    if chrome_type == 'color':
+        chrome_type = 'カ'
+    elif chrome_type == 'monochrome':
+        chrome_type = 'モ'
+    else:
+        chrome_type = None
 
-        acquisition_type = request.POST.getunicode('acquisition_type')
-        if acquisition_type == 'None':
-            acquisition_type = None
+    acquisition_type = request.POST.getunicode('acquisition_type')
+    if acquisition_type == 'None':
+        acquisition_type = None
 
-        target = request.POST.getunicode('status')
-        if target == 'target':
-            target = 1
-            watch_date = None
-        elif target == 'unwatched':
-            target = 0
-            watch_date = None
-        elif target == 'watched':
-            target = 0
-            watch_date = datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S')
+    target = request.POST.getunicode('status')
+    if target == 'target':
+        target = 1
+        watch_date = None
+    elif target == 'unwatched':
+        target = 0
+        watch_date = None
+    elif target == 'watched':
+        target = 0
+        watch_date = datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S')
 
-        if watch_date is not None and chrome_type is None:
-            return 'chrome_type is None'
+    if watch_date is not None and chrome_type is None:
+        return 'chrome_type is None'
 
-        movielistdb.update(
-            id=request.POST.getunicode('id'),
-            release_year=request.POST.getunicode('release_year'),
-            youga_houga=youga_houga,
-            chrome_type=chrome_type,
-            acquisition_type=request.POST.getunicode('acquisition_type'),
-            watch_date=watch_date,
-            title=request.POST.getunicode('title'),
-            target=target)
-        return template('edittitle2.html',
-                        id=request.POST.getunicode('id'),
-                        release_year=request.POST.getunicode('release_year'),
-                        youga_houga=youga_houga,
-                        chrome_type=chrome_type,
-                        acquisition_type=request.POST.getunicode('acquisition_type'),
-                        watch_date=watch_date,
-                        title=request.POST.getunicode('title'),
-                        target=target)
-    except Exception as e:
-        return str(e)
+    movielistdb.update(
+        id=request.POST.getunicode('id'),
+        release_year=request.POST.getunicode('release_year'),
+        youga_houga=youga_houga,
+        chrome_type=chrome_type,
+        acquisition_type=request.POST.getunicode('acquisition_type'),
+        watch_date=watch_date,
+        title=request.POST.getunicode('title'),
+        target=target)
+    return template('edittitle2.html',
+                    id=request.POST.getunicode('id'),
+                    release_year=request.POST.getunicode('release_year'),
+                    youga_houga=youga_houga,
+                    chrome_type=chrome_type,
+                    acquisition_type=request.POST.getunicode('acquisition_type'),
+                    watch_date=watch_date,
+                    title=request.POST.getunicode('title'),
+                    target=target)
 
 @route('/find_title', method="POST")
 def find_title():

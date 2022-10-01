@@ -270,8 +270,7 @@ def string_or_null(value):
         return "'%s'" % value
 
 def update(id, release_year, youga_houga, chrome_type, acquisition_type, watch_date, title, target):
-    sql = "SET SQL_SAFE_UPDATES=0; " \
-          "update iariro.mv_title " \
+    sql = "update iariro.mv_title " \
           "set release_year={}, youga_houga={}, chrome_type={}, acquisition_type={}, " \
           "watch_date={}, title={}, " \
           "target={} " \
