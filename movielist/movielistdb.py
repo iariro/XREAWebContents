@@ -280,7 +280,7 @@ def update(id, release_year, youga_houga, chrome_type, acquisition_type, watch_d
                                 string_or_null(acquisition_type),
                                 string_or_null(watch_date),
                                 string_or_null(title),
-                                target,
+                                target if target else 'null',
                                 id)
     rows = query(sql)
     return sql, rows

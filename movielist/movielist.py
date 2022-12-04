@@ -137,10 +137,10 @@ def edittitle2():
         target = 1
         watch_date = None
     elif target == 'unwatched':
-        target = 0
+        target = None
         watch_date = None
     elif target == 'watched':
-        target = 0
+        target = None
         watch_date = datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S')
 
     if watch_date is not None and chrome_type is None:
