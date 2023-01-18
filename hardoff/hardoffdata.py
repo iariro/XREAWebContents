@@ -2,19 +2,19 @@
 database access
 '''
 import datetime
-import MySQLdb
+import pymysql
 import unittest
 
 def query(sql):
     '''
     :param sql: SQL string
     '''
-    conn = MySQLdb.connect(user='iariro',
+    conn = pymysql.connect(user='iariro',
                            passwd='abc123',
                            host='localhost',
                            db='iariro',
                            charset='utf8')
-    cur = conn.cursor(MySQLdb.cursors.DictCursor)
+    cur = conn.cursor()
     cur.execute(sql)
     rows = cur.fetchall()
     cur.close()
