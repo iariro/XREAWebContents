@@ -34,9 +34,9 @@ def get_area_count():
     visited = []
     unvisited = []
     for row in rows:
-        prefectures.append(row['prefecture'])
-        visited.append(row['count_visit_date'])
-        unvisited.append(row['count_all'] - row['count_visit_date'])
+        prefectures.append(row[0])
+        visited.append(row[1])
+        unvisited.append(row[2] - row[1])
     return (prefectures, visited, unvisited)
 
 def get_completion_history():
@@ -44,7 +44,7 @@ def get_completion_history():
 
     dates = []
     for row in rows:
-        dates.append(row['visit_date'])
+        dates.append(row[5])
 
     monthlycount = {}
     monthlycount2 = {}
@@ -111,11 +111,11 @@ def get_store_list(where):
     day = None
     for row in rows:
         if day is None or \
-           (where == 'visited_day' and pday is not None and pday != row["visit_date"]):
-            day = {'date': row["visit_date"], 'values': []}
+           (where == 'visited_day' and pday is not None and pday != row[5]):
+            day = {'date': row[5], 'values': []}
             days.append(day)
         day['values'].append(row)
-        pday = row["visit_date"]
+        pday = row[5]
     return len(rows), days
 
 def update_visit_date(store_id, date):

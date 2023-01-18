@@ -21,29 +21,29 @@ $(function() { $('#sorter').tablesorter({sortInitialOrder:"desc",headers:{5:{sor
 
 		% for row in day['values']:
 
-            % if row["visit_date"] is not None:
+            % if row[5] is not None:
 				<tr style='background-color:powderblue;'>
 			% else:
 				<tr>
 			% end
 
-            <td>{{ row["name"] }}</td>
-            <td>{{ row["address"] }}</td>
-            <td>{{ row["near_station"] }}</td>
-            <td style='text-align:right;'>{{ row["minutes_from_near_station"] }}</td>
-            <td>{{ row["visit_date"] }}</td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+            <td>{{ row[3] }}</td>
+            <td style='text-align:right;'>{{ row[4] }}</td>
+            <td>{{ row[5] }}</td>
             <td>
             <form action='store_edit1' method='POST'>
-            <input type='hidden' name='store_id' value='{{ row["store_id"] }}'>
-            <input type='hidden' name='name' value='{{ row["name"] }}'>
-            <input type='hidden' name='address' value='{{ row["address"] }}'>
-            <input type='hidden' name='near_station' value='{{ row["near_station"] }}'>
-            <input type='hidden' name='minutes_from_near_station' value='{{ row["minutes_from_near_station"] }}'>
-            <input type='hidden' name='visit_date' value='{{ row["visit_date"] }}'>
-            <input type='hidden' name='targeting' value='{{ row["targeting"] }}'>
+            <input type='hidden' name='store_id' value='{{ row[0] }}'>
+            <input type='hidden' name='name' value='{{ row[1] }}'>
+            <input type='hidden' name='address' value='{{ row[2] }}'>
+            <input type='hidden' name='near_station' value='{{ row[3] }}'>
+            <input type='hidden' name='minutes_from_near_station' value='{{ row[4] }}'>
+            <input type='hidden' name='visit_date' value='{{ row[5] }}'>
+            <input type='hidden' name='targeting' value='{{ row[6] }}'>
             <input type='submit' value='編集'>
 			</form></td>
-            % if row["targeting"]:
+            % if row[6]:
             <td style='text-align:center;'>〇</td>
             % else:
             <td></td>
