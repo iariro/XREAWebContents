@@ -44,13 +44,14 @@ def get_completion_history():
 
     dates = []
     for row in rows:
-        dates.append(row[5])
+        if type(row[5]) is datetime.date:
+            dates.append(row[5])
 
     monthlycount = {}
     monthlycount2 = {}
     nowyear = datetime.datetime.now().year
     d2 = None
-    for year in range(2018, nowyear + 2):
+    for year in range(2018, nowyear + 1):
         for month in range(1, 12 + 1):
             if year == nowyear + 1 and month > 1:
                 break
@@ -58,11 +59,15 @@ def get_completion_history():
             count = 0
             count2 = 0
             for date in dates:
-                date = datetime.datetime.combine(date, datetime.time())
-                if date < d:
-                    count2 += 1
-                    if date >= d2:
-                        count += 1
+                try:
+                    date = datetime.datetime.strptime(str(date), '%Y-%m-%d')
+                    date = datetime.datetime.combine(date, datetime.time())
+                    if date < d:
+                        count2 += 1
+                        if date >= d2:
+                            count += 1
+                except ValueError:
+                    pass
 
             if d2 is not None:
                 monthlycount[d2] = count
