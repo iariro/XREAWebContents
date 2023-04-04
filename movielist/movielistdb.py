@@ -362,7 +362,7 @@ def get_balance_count():
     return label, watch_count2, insert_count2, total_insert_count2, total_watch_count2, balance_count2
 
 def add_title(release_year=None, youga_houga=None, chrome_type=None, acquisition_type=None,
-              watch_date=None, title=None, target=None):
+              watch_date=None, title=None, target=None, insert_date=None):
     values = []
     values.append(str(release_year) if release_year else 'null')
     values.append("'{}'".format(youga_houga) if youga_houga else 'null')
@@ -371,7 +371,7 @@ def add_title(release_year=None, youga_houga=None, chrome_type=None, acquisition
     values.append("'{}'".format(watch_date) if watch_date else 'null')
     values.append("'{}'".format(title) if title else 'null')
     values.append(str(target) if target else 'null')
-    values.append('now()')
+    values.append("'{}'".format(insert_date) if insert_date else 'now()')
     sql = "insert into mv_title " \
           "(release_year, youga_houga, chrome_type, acquisition_type, watch_date, title, target, insert_date) " \
           "values ({});".format(','.join(values))

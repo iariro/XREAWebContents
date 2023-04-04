@@ -35,7 +35,9 @@ def titlelist():
 
 @route('/add_title')
 def add_title():
-    return template('addtitle.html')
+    today = datetime.datetime.today()
+    last_day = today - datetime.timedelta(today.day)
+    return template('addtitle.html', insert_date=last_day.strftime('%Y/%m/%d'))
 
 @route('/add_title2', method="POST")
 def add_title2():
@@ -69,6 +71,7 @@ def add_title3():
     一括登録
     '''
     try:
+        insert_date = request.POST.getunicode('insert_date')
         title_list_line = request.POST.getunicode('title_list').split('\n')
         title_list = []
         for title in title_list_line:
@@ -78,7 +81,8 @@ def add_title3():
                 movielistdb.add_title(
                     release_year=release_year,
                     youga_houga=youga_houga,
-                    title=title.strip())
+                    title=title.strip(),
+                    insert_date=insert_date)
 
                 title_list.append((release_year, youga_houga, title))
 
