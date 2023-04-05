@@ -35,9 +35,11 @@ def titlelist():
 
 @route('/add_title')
 def add_title():
-    today = datetime.datetime.today()
-    last_day = today - datetime.timedelta(today.day)
-    return template('addtitle.html', insert_date=last_day.strftime('%Y/%m/%d'))
+    insert_date = datetime.datetime.today()
+    if insert_date.day >= 20:
+    else:
+        insert_date = insert_date - datetime.timedelta(insert_date.day)
+    return template('addtitle.html', insert_date=insert_date.strftime('%Y/%m/%d'))
 
 @route('/add_title2', method="POST")
 def add_title2():
