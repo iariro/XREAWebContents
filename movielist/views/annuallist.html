@@ -16,7 +16,7 @@
 	% for year in movielist:
 	<h2>{{ year['year'] }}年</h2>
 	<table>
-		<tr><th>年</th><th>洋／邦</th><th>カラー／白黒</th><th>視聴方法</th><th>鑑賞日</th><th>タイトル</th><th>登録日</th></tr>
+		<tr><th>年</th><th>洋／邦</th><th>カラー／白黒</th><th>視聴方法</th><th>鑑賞日</th><th>タイトル</th><th>登録日</th><th>操作</th></tr>
 		% for title in year['titles']:
 			<tr>
 				<td>{{ title['release_year'] }}</td>
@@ -26,6 +26,19 @@
 				<td>{{ title['watch_date'] }}</td>
 				<td>{{ title['title'] }}</td>
 				<td>{{ title['insert_date'] }}</td>
+				<td>
+				<form action="edittitle" method="POST">
+				<input type="hidden" name="id" value="{{ title['id'] }}">
+				<input type="hidden" name="release_year" value="{{ title['release_year'] }}">
+				<input type="hidden" name="chrome_type" value="{{ title['chrome_type'] }}">
+				<input type="hidden" name="youga_houga" value="{{ title['youga_houga'] }}">
+				<input type="hidden" name="acquisition_type" value="{{ title['acquisition_type'] }}">
+				<input type="hidden" name="title" value="{{ title['title'] }}">
+				<input type="hidden" name="status" value="{{ 'watched' }}">
+				<input type="hidden" name="watch_date" value="{{ title['watch_date'] }}">
+				<input type="submit" value="編集">
+				</form>
+				</td>
 			</tr>
 		% end
 	</table>

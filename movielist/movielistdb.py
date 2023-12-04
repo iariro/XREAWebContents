@@ -123,6 +123,9 @@ def scatter(watched):
     return titles
 
 def read_watched_title():
+    return read_watched_title_core(True)
+
+def read_watched_title_core(display_convert):
     rows = query('select id, release_year, youga_houga, chrome_type, acquisition_type, '
                  'watch_date, title, target, insert_date '
                  'from mv_title '
@@ -143,9 +146,14 @@ def read_watched_title():
             if titles_target_year is None:
                 titles_target_year = {'year': year, 'titles': []}
                 titles.append(titles_target_year)
-            chrome_type = extend_chrome_type(row[3])
-            acquisition_type = extend_acquisition_type(row[4])
-            titles_target_year['titles'].append({'release_year': row[1],
+            if display_convert:
+                chrome_type = extend_chrome_type(row[3])
+                acquisition_type = extend_acquisition_type(row[4])
+            else:
+                chrome_type = row[3]
+                acquisition_type = row[4]
+            titles_target_year['titles'].append({'id': row[0],
+                                                 'release_year': row[1],
                                                  'youga_houga': youga_houga,
                                                  'chrome_type': chrome_type,
                                                  'acquisition_type': acquisition_type,

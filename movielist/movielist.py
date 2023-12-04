@@ -29,15 +29,14 @@ def unwatchedlist():
 @route('/watchedlist')
 def titlelist():
     try:
-        return template('annuallist.html', movielist=movielistdb.read_watched_title())
+        return template('annuallist.html', movielist=movielistdb.read_watched_title_core(False))
     except Exception as e:
         return str(e)
 
 @route('/add_title')
 def add_title():
     insert_date = datetime.datetime.today()
-    if insert_date.day >= 20:
-    else:
+    if insert_date.day < 20:
         insert_date = insert_date - datetime.timedelta(insert_date.day)
     return template('addtitle.html', insert_date=insert_date.strftime('%Y/%m/%d'))
 
