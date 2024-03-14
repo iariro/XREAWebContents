@@ -1,0 +1,44 @@
+<html>
+	<head>
+		<meta charset='UTF-8' />
+		<script src='http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js'></script>
+		<script src='http://code.highcharts.com/highcharts.js'></script>
+		<link rel="stylesheet" type="text/css" href="static/css/hatena.css">
+		<title>映画鑑賞情報</title>
+	</head>
+
+	<body>
+		<div class=hatena-body>
+		<div class=main>
+		<div class=day>
+
+		<h3>映画鑑賞情報</h3>
+		<div id='histogram' style='width: 1200px; height: 500px;'></div>
+		<script>
+		$(document).ready(function()
+		{
+			$('#histogram').highcharts(
+			{
+				chart : {type: 'column'},
+				title : {text: '公開年ごと本数'},
+				xAxis : {categories: {{ !x_labels }}, title: {text: null}},
+				yAxis : { min: 0, title: {text: '本数'}, labels: {overflow: 'justify'}},
+				series : [
+					{name: '未鑑賞', data: {{ !years_unwatched }}},
+					{name: '鑑賞済み', data: {{ !years_watched }}} ],
+				plotOptions: {
+					column: {
+						stacking: 'normal',
+						dataLabels: { enabled: false, }
+					}
+				},
+			});
+		});
+		</script>
+
+		</div>
+		</div>
+		</div>
+
+	</body>
+</html>
