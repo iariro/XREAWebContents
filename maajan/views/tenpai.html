@@ -1,0 +1,30 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>麻雀待ち判定</title>
+</head>
+<body>
+
+手牌：<br>
+% for pai in tehai:
+  <img src="image/{{pai}}">
+% end
+<br>
+
+待ち牌：<br>
+% for pai in machi:
+  <img src="image/{{pai}}">
+% end
+<br>
+
+待ち牌内訳：<br>
+% for machi in machi_detail:
+  {{ machi['type'] }}
+  % for pai in machi['pai_list']:
+    <img src="image/{{pai}}">
+  % end
+  <br>
+% end
+</body>
+</html>
