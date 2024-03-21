@@ -32,7 +32,7 @@ def tenpai():
 
         machiPattern = MachiPattern(tehai, True)
         machi_detail = []
-        for element in machiPattern.machiElementCollection.machi_element_list:
+        for element in machiPattern.machiElementCollection.sort():
             machi_detail.append({'type': element.type_jp.name, 'pai_list': [pai_image_list[m] for m in element.pai_list]})
         machi = machiPattern.getMachi()
         machi_img = [pai_image_list[m] for m in machi]
