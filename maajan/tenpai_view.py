@@ -9,11 +9,14 @@ from maajanlib.logic.PaiKind import PaiKind, PaiKindShort
 from maajanlib.logic.MachiPattern import MachiPattern
 
 pai_image_list = []
-pai_image_list += ['man_{}.png'.format(i) for i in range(1, 10)]
-pai_image_list += ['pin_{}.png'.format(i) for i in range(1, 10)]
-pai_image_list += ['sou_{}.png'.format(i) for i in range(1, 10)]
-pai_image_list += ['kaze_ton.png', 'kaze_nan.png', 'kaze_sha.png', 'kaze_pei.png',
-                   'sangen_haku.png', 'sangen_hatu.png', 'sangen_chun.png',]
+pai_image_list += ['man_{}'.format(i) for i in range(1, 10)]
+pai_image_list += ['pin_{}'.format(i) for i in range(1, 10)]
+pai_image_list += ['sou_{}'.format(i) for i in range(1, 10)]
+pai_image_list += ['kaze_ton', 'kaze_nan', 'kaze_sha', 'kaze_pei',
+                   'sangen_haku', 'sangen_hatu', 'sangen_chun',]
+
+def get_image_file_name(m, valid=True):
+    return pai_image_list[m]+ ('_gray' if valid == False else '') + '.png'
 
 @route('/image/<filepath:path>', name='static_file')
 def static(filepath):
@@ -28,14 +31,21 @@ def tenpai():
     try:
         tehai_line = request.POST.getunicode('tehai')
         tehai = [Pai(PaiKindShort.value_of(p)) for p in tehai_line.split()]
-        tehai_img = [pai_image_list[PaiKindShort.value_of(p)] for p in tehai_line.split()]
+        tehai_img = [get_image_file_name(PaiKindShort.value_of(p)) for p in tehai_line.split()]
 
         machiPattern = MachiPattern(tehai, True)
         machi_detail = []
-        for element in machiPattern.machiElementCollection.sort():
-            machi_detail.append({'type': element.type_jp.name, 'pai_list': [pai_image_list[m] for m in element.pai_list]})
+        for i, element in enumerate(machiPattern.machiElementCollection.sort()):
+            pai_list = []
+            for j, m in enumerate(element.pai_list):
+                if j == 0:
+                    valid = element.over1 == False
+                elif j == 1:
+                    valid = element.over2 == False
+                pai_list.append(get_image_file_name(m, valid=valid))
+            machi_detail.append({'type': element.type_jp.name, 'pai_list': pai_list})
         machi = machiPattern.getMachi()
-        machi_img = [pai_image_list[m] for m in machi]
+        machi_img = [get_image_file_name(m) for m in machi]
 
         return template('tenpai.html', tehai=tehai_img, machi=machi_img, machi_detail=machi_detail)
     except Exception as e:
