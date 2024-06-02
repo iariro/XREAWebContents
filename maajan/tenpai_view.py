@@ -26,27 +26,43 @@ def static(filepath):
 def index():
     return template('index.html')
 
+def tenpai_core(tehai):
+    tehai_img = [get_image_file_name(p.kind) for p in tehai]
+
+    machiPattern = MachiPattern(tehai, True)
+    machi_detail = []
+    for i, element in enumerate(machiPattern.machiElementCollection.sort()):
+        pai_list = []
+        for j, m in enumerate(element.pai_list):
+            if j == 0:
+                valid = element.over1 == False
+            elif j == 1:
+                valid = element.over2 == False
+            pai_list.append(get_image_file_name(m, valid=valid))
+        machi_detail.append({'type': element.type_jp.name, 'pai_list': pai_list})
+    machi = machiPattern.getMachi()
+    machi_img = [get_image_file_name(m) for m in machi]
+
+    return template('tenpai.html', tehai=tehai_img, machi=machi_img, machi_detail=machi_detail)
+
 @route('/tenpai', method='POST')
 def tenpai():
     try:
         tehai_line = request.POST.getunicode('tehai')
         tehai = [Pai(PaiKindShort.value_of(p)) for p in tehai_line.split()]
-        tehai_img = [get_image_file_name(PaiKindShort.value_of(p)) for p in tehai_line.split()]
+        return tenpai_core(tehai)
+    except Exception as e:
+        return str(e)
 
-        machiPattern = MachiPattern(tehai, True)
-        machi_detail = []
-        for i, element in enumerate(machiPattern.machiElementCollection.sort()):
-            pai_list = []
-            for j, m in enumerate(element.pai_list):
-                if j == 0:
-                    valid = element.over1 == False
-                elif j == 1:
-                    valid = element.over2 == False
-                pai_list.append(get_image_file_name(m, valid=valid))
-            machi_detail.append({'type': element.type_jp.name, 'pai_list': pai_list})
-        machi = machiPattern.getMachi()
-        machi_img = [get_image_file_name(m) for m in machi]
-
-        return template('tenpai.html', tehai=tehai_img, machi=machi_img, machi_detail=machi_detail)
+@route('/tenpai2', method='POST')
+def tenpai2():
+    try:
+        tehai_line = request.POST.getunicode('tehai2')
+        start, line = tehai_line.split(':')
+        tehai = []
+        for i, n in enumerate(line):
+            for j in range(0, int(n)):
+                tehai.append(Pai(PaiKindShort.value_of('{}{}'.format(start[0], int(start[1]) + i))))
+        return tenpai_core(tehai)
     except Exception as e:
         return str(e)
