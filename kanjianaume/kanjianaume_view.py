@@ -14,6 +14,7 @@ def index():
 def makequestion():
     try:
         word_list = kanjianaume.read_word()
+        word_list = kanjianaume.delete_invalid_word(word_list)
         valid_chars = kanjianaume.read_valid_chars()
         qword, qc1, qc2, valid = kanjianaume.make_question(word_list, valid_chars)
         if qword and qc1 and qc2:
