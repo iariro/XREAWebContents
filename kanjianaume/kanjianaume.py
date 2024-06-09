@@ -73,12 +73,12 @@ def make_question(word_list, valid_chars):
         if word[1] == c:
             qword[1].append(word)
     if len(qword[0]) < 2 or len(qword[1]) < 2:
-        return None, None, None
+        return qword, None, None, False
     qc1 = random.sample(qword[0], 2)
     qc2 = random.sample(qword[1], 2)
     if qc2[0][0] == qc1[1][1] or qc2[1][0] == qc1[0][1]:
-        return None, None, None
-    return qword, qc1, qc2
+        return qword, qc1, qc2, False
+    return qword, qc1, qc2, True
 
 def solve(word_list, qc1, qc2):
     word1 = [word[0] for word in word_list if qc1[0][1] == word[1]]

@@ -8,9 +8,14 @@
           margin: 0 0 0 50;
       }
       table {
-        background-color: #eeeeee;
         border-collapse: collapse;
         font-size: 30px;
+      }
+      table.valid {
+        background-color: #eeeeee;
+      }
+      table.invalid {
+        background-color: #aaaaaa;
       }
       td {
         width: 50;
@@ -21,7 +26,7 @@
     </style>
 </head>
 <body>
-<table>
+<table class='{{valid}}'>
 <tr><td></td><td>{{chars[0]}}</td><td></td></td>
 <tr><td>{{chars[1]}}</td><td></td><td>{{chars[2]}}</td></td>
 <tr><td></td><td>{{chars[3]}}</td><td></td></td>
