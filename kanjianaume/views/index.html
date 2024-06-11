@@ -6,8 +6,15 @@
 </head>
 <body>
 単語数={{word_list_count}}<br>
+除外単語数={{black_list_count}}<br>
 有効な文字数={{valid_chars_count}}<br>
 <form action="makequestion" method="POST">
 <input value="問題生成" type="submit">
+</form>
+<br>
+除外リスト：
+<form action="blacklist" method="POST">
+<input type="text" name="word_list">
+<input type="submit">
 </form>
 </body></html>

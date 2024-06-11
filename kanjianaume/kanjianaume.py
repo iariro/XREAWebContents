@@ -1,18 +1,24 @@
 import json
 import os
 import random
- 
+
 def read_word():
     with open('2charwordlist.txt') as file:
         return [line.strip() for line in file]
- 
+
+def read_black_list():
+    with open('blacklist.txt') as file:
+        return [line.strip() for line in file]
+
 def read_valid_chars():
     with open('validchars.txt') as file:
         return [line.strip() for line in file]
 
-def delete_invalid_word(word_list):
+def delete_invalid_word(word_list, black_list):
     word_list2 = []
     for word in word_list:
+        if word in black_list:
+            continue
         if word[0] == word[1]:
             continue
         if len([word for ch in ['々', 'α', 'β', 'δ', 'θ', 'μ', '～', '-', '°', '2'] if ch in word]) > 0:
