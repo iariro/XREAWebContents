@@ -24,9 +24,10 @@
         });
         new Highcharts.Chart(
         {
+            time: { useUTC: false }, 
             chart: {renderTo: 'chart_mean', zoomType:'xy', plotBackgroundColor: 'lightgray'},
             title: {text: '日ごとの平均・最高・最低気温'},
-            xAxis: {title: 'Date', type: 'datetime'},
+            xAxis: {title: 'Date', type: 'datetime', dateTimeLabelFormats: { day: '%m/%d', week: '%m/%d', month: '%y/%m' }},
             yAxis: {title: {text:'℃'}},
             series: [ {name:'平均気温', type:'column', data:[{{ data_mean }}]}, {name:'最高気温', type:'line', data:[{{ data_max }}]}, {name:'最低気温', type:'line', data:[{{ data_min }}]} ]
         });

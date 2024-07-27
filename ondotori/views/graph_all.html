@@ -17,25 +17,28 @@
 	{
 	        new Highcharts.Chart(
 	        {
+	                time: { useUTC: false },
 	                chart: {renderTo: 'chart_weekly', type:'column', zoomType:'xy', plotBackgroundColor: 'lightgray'},
 	                title: {text: '週ごと平均'},
-	                xAxis: {title: '日', type: 'datetime'},
-	                yAxis: {title: {text:'℃'}},
+	                xAxis: {title: '日', type: 'datetime',dateTimeLabelFormats: { day: '%y/%m/%d', week: '%y/%m/%d', month: '%y/%m', }, tickInterval: 7 * 24 * 3600 * 1000 },
+	                yAxis: {title: {text:'℃'}, plotLines: [{ label: '基準', value: 25, width:2 , color: '#aaaaff' }] },
 	                series: [ {name:'温度', data:[{{ weekly }}]} ]
 	        });
 	        new Highcharts.Chart(
 	        {
+	                time: { useUTC: false },
 	                chart: {renderTo: 'chart_monthly', type:'column', zoomType:'xy', plotBackgroundColor: 'lightgray'},
 	                title: {text: '月ごと平均'},
-	                xAxis: {title: '日', type: 'datetime'},
-	                yAxis: {title: {text:'℃'}},
+	                xAxis: {title: '日', type: 'datetime',dateTimeLabelFormats: { day: '%y/%m/%d', week: '%y/%m/%d', month: '%y/%m', } },
+	                yAxis: {title: {text:'℃'}, plotLines: [{ label: '基準', value: 25, width:2 , color: '#aaaaff' }]},
 	                series: [ {name:'温度', data:[{{ monthly }}]} ]
 	        });
 	        new Highcharts.Chart(
 	        {
+	                time: { useUTC: false },
 	                chart: {renderTo: 'chart_year', zoomType:'xy', plotBackgroundColor: 'lightgray'},
 	                title: {text: '年毎比較'},
-	                xAxis: {title: '日', type: 'datetime'},
+	                xAxis: {title: '日', type: 'datetime',dateTimeLabelFormats: { day: '%y/%m/%d', week: '%y/%m/%d', month: '%y/%m', } },
 	                yAxis: {title: {text:'℃'}},
 	                series: {{ !annual }}
 	        });

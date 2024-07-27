@@ -1,6 +1,7 @@
 ﻿from statistics import mean
-from bottle import route, template, request
+from bottle import route, template, request, debug
 import ondotoridata
+debug(True)
 
 @route('/')
 def index():
@@ -49,18 +50,15 @@ def graph_latest():
 @route('/graph_all', method=["POST"])
 def graph_all():
     ''' 長期データグラフ '''
-    try:
-        login_id = request.POST.getunicode('login_id')
-        login_pass = request.POST.getunicode('login_pass')
-        remote_serial = request.POST.getunicode('remote_serial')
-        (monthly, weekly, daily) = ondotoridata.getAllDataFromWebStorage(login_id,
-                                                                         login_pass,
-                                                                         remote_serial)
-        weekly = ondotoridata.getProcessedDaySeries(weekly, mean)
-        monthly = ondotoridata.getProcessedDaySeries(monthly, mean)
-        annual = ondotoridata.getMeanOfDaySeriesPerYear(daily,
-                                                        start_date='2019/07/01',
-                                                        mean_range=9)
-        return template('graph_all.html', weekly=weekly, monthly=monthly, annual=annual)
-    except Exception as e:
-        return str(e)
+    login_id = request.POST.getunicode('login_id')
+    login_pass = request.POST.getunicode('login_pass')
+    remote_serial = request.POST.getunicode('remote_serial')
+    (monthly, weekly, daily) = ondotoridata.getAllDataFromWebStorage(login_id,
+                                                                     login_pass,
+                                                                     remote_serial)
+    weekly = ondotoridata.getProcessedDaySeries(weekly, mean)
+    monthly = ondotoridata.getProcessedDaySeries(monthly, mean)
+    annual = ondotoridata.getMeanOfDaySeriesPerYear(daily,
+                                                    start_date='2019/07/01',
+                                                    mean_range=9)
+    return template('graph_all.html', weekly=weekly, monthly=monthly, annual=annual)
