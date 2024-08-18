@@ -1,5 +1,6 @@
 #!/usr/local/bin/python3
-from bottle import route, template, request, run, view, static_file, url
+from bottle import route, template, request, run, view, static_file, url, debug
+debug(True)
 
 import sys
 sys.path.append("../../../python/")
@@ -7,6 +8,7 @@ sys.path.append("../../../python/")
 from maajanlib.logic.Pai import Pai
 from maajanlib.logic.PaiKind import PaiKind, PaiKindShort
 from maajanlib.logic.MachiPattern import MachiPattern
+from maajanlib.logic.Chiniso import generate_chiniso_tenpai
 
 pai_image_list = []
 pai_image_list += ['man_{}'.format(i) for i in range(1, 10)]
@@ -66,3 +68,8 @@ def tenpai2():
         return tenpai_core(tehai)
     except Exception as e:
         return str(e)
+
+@route('/tenpai3', method='POST')
+def tenpai3():
+    tehai, line, machiPattern = generate_chiniso_tenpai()
+    return tenpai_core(tehai)
