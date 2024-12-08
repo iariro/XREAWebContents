@@ -60,7 +60,12 @@ def getAllDataFromWebStorage(login_id, login_pass, remote_serial):
         js = json.loads(body.decode())
         for row in js['data']:
             dt = datetime.datetime.fromtimestamp(int(row['unixtime']))
+            if row['ch1'].startswith('E'):
+                continue
+
             temp = float(row['ch1'])
+            if temp >= 100:
+                continue
 
             day = dt.date().strftime('%Y/%m/%d')
             if day not in daily:
@@ -109,8 +114,10 @@ def getLatestDataFromWebStorage(login_id, login_pass, remote_serial):
             date = dt.strftime('%Y/%m/%d')
             if date not in daily:
                 daily[date] = [None] * 24
-            temp = float(row['ch1'])
-            daily[date][dt.hour] = temp
+            if row['ch1'].startswith('E') == False:
+                temp = float(row['ch1'])
+                if temp < 100:
+                    daily[date][dt.hour] = temp
     return daily
 
 def getDaysSeries(days):
