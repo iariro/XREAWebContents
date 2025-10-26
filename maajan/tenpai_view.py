@@ -49,25 +49,19 @@ def tenpai_core(tehai):
 
 @route('/tenpai', method='POST')
 def tenpai():
-    try:
-        tehai_line = request.POST.getunicode('tehai')
-        tehai = [Pai(PaiKindShort.value_of(p)) for p in tehai_line.split()]
-        return tenpai_core(tehai)
-    except Exception as e:
-        return str(e)
+    tehai_line = request.POST.getunicode('tehai')
+    tehai = [Pai(PaiKindShort.value_of(p)) for p in tehai_line.split()]
+    return tenpai_core(tehai)
 
 @route('/tenpai2', method='POST')
 def tenpai2():
-    try:
-        tehai_line = request.POST.getunicode('tehai2')
-        start, line = tehai_line.split(':')
-        tehai = []
-        for i, n in enumerate(line):
-            for j in range(0, int(n)):
-                tehai.append(Pai(PaiKindShort.value_of('{}{}'.format(start[0], int(start[1]) + i))))
-        return tenpai_core(tehai)
-    except Exception as e:
-        return str(e)
+    tehai_line = request.POST.getunicode('tehai2')
+    start, line = tehai_line.split(':')
+    tehai = []
+    for i, n in enumerate(line):
+        for j in range(0, int(n)):
+            tehai.append(Pai(PaiKindShort.value_of('{}{}'.format(start[0], int(start[1]) + i))))
+    return tenpai_core(tehai)
 
 @route('/tenpai3', method='POST')
 def tenpai3():
